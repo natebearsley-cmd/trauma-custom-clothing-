@@ -19,14 +19,14 @@ export const PRODUCTS: Product[] = [
     id: id: 'suffered-in-silence',
     name: '"Suffered In Silence" Heavyweight Graphic Cut',
     category: 'Tops',
-    image: '/IMG_0914.png',
+    image: '/images/IMG_0914.png',
     tags: ['Still Breathing', 'Survived The Storm'],
   },
   {
     id: 'pressure-makes-diamonds',
     name: '"Pressure Makes Diamonds" Graphic Tee',
     category: 'Tops',
-    image: '/IMG_0916.png',
+    image: '/images/IMG_0916.png',
     tags: ['Broken CC', 'Flame Heart', 'Devil Graphic'],
     
   
@@ -34,7 +34,7 @@ export const PRODUCTS: Product[] = [
     id: 'see-no-evil',
     name: '"See No Evil, Hear No Evil" Tattoo Angels Tee',
     category: 'Tops',
-    image: '/IMG_0917.png',
+    image: '/images/IMG_0917.png',
     tags: ['Cherub Trio', 'Los Locos', 'Faith'],
     
   
