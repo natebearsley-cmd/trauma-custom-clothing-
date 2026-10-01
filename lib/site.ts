@@ -15,8 +15,8 @@ export type Product = {
 }
 
 export const PRODUCTS: Product[] = [
-  {
-    id: id: 'suffered-in-silence',
+
+  id: 'suffered-in-silence',
     name: '"Suffered In Silence" Heavyweight Graphic Cut',
     category: 'Tops',
     image: '/images/IMG_0914.png',
