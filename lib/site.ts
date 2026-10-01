@@ -16,27 +16,29 @@ export type Product = {
 
 export const PRODUCTS: Product[] = [
   {
-    id: 'suffered-in-silence',
+    id: id: 'suffered-in-silence',
     name: '"Suffered In Silence" Heavyweight Graphic Cut',
     category: 'Tops',
-    image: '/images/suffered-in-silence.png',
+    image: '/IMG_0914.png',
     tags: ['Still Breathing', 'Survived The Storm'],
   },
   {
     id: 'pressure-makes-diamonds',
     name: '"Pressure Makes Diamonds" Graphic Tee',
     category: 'Tops',
-    image: '/images/pressure-makes-diamonds.png',
+    image: '/IMG_0916.png',
     tags: ['Broken CC', 'Flame Heart', 'Devil Graphic'],
-  },
-  {
+    
+  
+
     id: 'see-no-evil',
     name: '"See No Evil, Hear No Evil" Tattoo Angels Tee',
     category: 'Tops',
-    image: '/images/see-no-evil.png',
+    image: '/IMG_0917.png',
     tags: ['Cherub Trio', 'Los Locos', 'Faith'],
-  },
-  {
+    
+  
+  
     id: 'pain-made-me',
     name: '"Pain Made Me / Don\'t Tread On Me" Arched Collar Tee',
     category: 'Tops',
