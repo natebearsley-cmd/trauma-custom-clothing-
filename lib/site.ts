@@ -14,7 +14,7 @@ export type Product = {
   oneOfOne?: boolean
 }
 
-export const PRODUCTS: Product[] = [
+{export const PRODUCTS: Product[] = [
 
   id: 'suffered-in-silence',
     name: '"Suffered In Silence" Heavyweight Graphic Cut',
