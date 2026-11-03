@@ -13,7 +13,7 @@ export function GalleryCard({ product, imageSizes = "(min-width: 1024px) 30vw, 4
         <div className="flex flex-1 flex-col gap-2 px-3 py-3 sm:px-5 sm:py-4">
           <h3 className="break-words text-sm font-bold leading-snug text-white sm:text-base">{product.name}</h3>
           <div className="mt-auto flex items-center justify-between gap-2 pt-1">
-            <p className="text-xs text-[#f191a0] sm:text-sm">{[product.sold ? 'Sold' : product.price === null ? '' : new Intl.NumberFormat('en-US', { style: 'currency', currency: product.currency }).format(product.price), product.size].filter(Boolean).join(' · ')}</p>
+            <p className="text-xs text-[#f191a0] sm:text-sm">{[product.sold ? 'Sold' : product.price === null ? '' : new Intl.NumberFormat('en-US', { style: 'currency', currency: product.currency }).format(product.price), product.size].filter(Boolean).join(' · ') || 'View Product'}</p>
             <ArrowUpRight aria-hidden="true" className="size-4 shrink-0 text-[#f191a0]" />
           </div>
         </div>
