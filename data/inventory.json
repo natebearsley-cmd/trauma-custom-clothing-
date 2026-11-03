@@ -112,7 +112,8 @@
       ],
       "featuredApparel": true,
       "featuredCollection": true,
-      "homepageCollection": true
+      "homepageCollection": true,
+      "tiktokShopStatus": "ready"
     },
     {
       "id": "ptsd-edition-me-vs-myself-hoodie",
