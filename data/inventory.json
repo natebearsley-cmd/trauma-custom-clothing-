@@ -1369,6 +1369,48 @@
       "featuredCollection": true,
       "homepageCollection": true,
       "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "product-3e7a8e33-946b-4e02-82f3-e9eabe427359",
+      "name": "Camp xl 3 piece jumpsuit TCC high quality Dtf",
+      "description": "TRAUMA Custom Clothing 3-Piece Camo Collection\n\nSize: XL\n\nIncludes:\n\n• Custom TCC Camo Hoodie\n• Matching Camo Bottoms\n• Premium TCC Graphic Tee\n\nHigh-quality custom TRAUMA Custom Clothing set featuring signature artwork, premium construction, and coordinated styling.\n\nBuilt for those who turn pain into purpose.\n\nFeatures:\n- Custom TCC graphics\n- Premium materials\n- Matching 3-piece collection\n- Size XL\n- Excellent condition\n\nPurchase Options:\n- PayPal\n- Depop\n- Direct from TRAUMA\n\nOne of the strongest matching sets in the TRAUMA collection.",
+      "brand": "Trauma Custom Clothing",
+      "category": "Apparel",
+      "size": "",
+      "condition": "",
+      "color": "",
+      "collection": "",
+      "productType": "",
+      "orderType": "ready-made",
+      "photos": [
+        "/images/products/admin/19c17d9b-ec43-49c9-8e60-6b4712ea536e.jpg",
+        "/images/products/admin/77ea9a4e-80d1-48eb-be14-035da612d7eb.jpg",
+        "/images/products/admin/090d3bcc-55dd-4963-98d1-49b8c7b0ed2c.jpg",
+        "/images/products/admin/7d4eb99b-f022-4931-9e46-91ba5eae42f6.jpg"
+      ],
+      "photoViews": [
+        "other",
+        "other",
+        "other",
+        "other"
+      ],
+      "price": 230,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "depopUrl": "",
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": false,
+      "featuredCollection": false,
+      "featuredApparel": false,
+      "ownerConfirmed": true,
+      "requestCustomPiece": true,
+      "tiktokShopStatus": "ready"
     }
   ],
   "payments": {
