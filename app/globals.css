@@ -1,6 +1,4 @@
 @import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -45,12 +43,12 @@
   --secondary-foreground: #e8e2d6;
   --muted: #1a1918;
   --muted-foreground: #9a948a;
-  --accent: #c2272b;
-  --accent-foreground: #f2ede4;
+  --accent: #e15458;
+  --accent-foreground: #0a0a0a;
   --destructive: #e0443f;
   --border: #2a2725;
-  --input: #2f2c2a;
-  --ring: #c2272b;
+  --input: #77716b;
+  --ring: #e15458;
   --radius: 0.125rem;
 }
 
@@ -76,5 +74,43 @@
     opacity: 0.08;
     mix-blend-mode: overlay;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+@layer base {
+  :where(a, button, input, textarea, select):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+  :where(button, select) {
+    cursor: pointer;
+  }
+  input[type='checkbox'],
+  input[type='radio'] {
+    accent-color: var(--accent);
+  }
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: anywhere;
+  }
+}
+@layer components {
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+  .section-title {
+    @apply mt-3 font-display text-4xl uppercase leading-tight sm:text-5xl md:text-6xl;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }

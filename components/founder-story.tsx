@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import { ArrowUpRight, BookOpen } from 'lucide-react'
-import { REVERSAL_GUIDE_URL } from '@/lib/site'
+import { ArrowUpRight } from 'lucide-react'
+import { PAYHIP_SHOP_URL } from '@/lib/site'
 
 const TIMELINE = [
   {
@@ -29,7 +29,10 @@ const MOTTOS = ['Pain Builds Purpose', 'Respect The Scars', 'Still Breathing']
 
 export function FounderStory() {
   return (
-    <section id="story" className="scroll-mt-20 border-b border-border py-20 md:py-28">
+    <section
+      id="story"
+      className="scroll-mt-20 border-b border-border py-20 md:py-28"
+    >
       <div className="mx-auto grid max-w-7xl gap-12 px-4 md:px-8 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <div className="grain relative aspect-[4/5] overflow-hidden border border-border">
@@ -50,7 +53,7 @@ export function FounderStory() {
 
         <div className="lg:col-span-7">
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-accent">
-            Founder Story
+            Founder · Author · Recovery Coach · Entrepreneur
           </p>
           <h2 className="mt-3 text-balance font-display text-5xl uppercase leading-none text-foreground md:text-7xl">
             Nathanial Bearsley
@@ -64,9 +67,15 @@ export function FounderStory() {
           <ol className="mt-10 grid gap-px border border-border bg-border sm:grid-cols-2">
             {TIMELINE.map((item) => (
               <li key={item.title} className="bg-background p-6">
-                <p className="font-mono text-xs uppercase tracking-widest text-accent">{item.year}</p>
-                <h3 className="mt-2 font-display text-2xl uppercase text-foreground">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
+                <p className="font-mono text-xs uppercase tracking-widest text-accent">
+                  {item.year}
+                </p>
+                <h3 className="mt-2 font-display text-2xl uppercase text-foreground">
+                  {item.title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  {item.body}
+                </p>
               </li>
             ))}
           </ol>
@@ -83,32 +92,26 @@ export function FounderStory() {
             ))}
           </ul>
 
-          <article className="mt-12 flex flex-col gap-6 border border-primary/60 bg-card p-6 sm:flex-row sm:items-center md:p-8">
-            <div className="flex size-14 shrink-0 items-center justify-center bg-primary text-primary-foreground">
-              <BookOpen className="size-6" aria-hidden="true" />
-            </div>
-            <div className="flex-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-accent">
-                Companion Guide · E-Book
-              </p>
-              <h3 className="mt-1 font-display text-3xl uppercase text-foreground">The Reversal Guide</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {"Nathanial's field guide to turning the wreckage around. Written for anyone still in the storm."}
-              </p>
-            </div>
-            <div className="flex flex-col items-start gap-3 sm:items-end">
-              <p className="font-display text-4xl text-foreground">$13</p>
-              <a
-                href={REVERSAL_GUIDE_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 bg-primary px-5 py-3 text-xs font-bold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
-              >
-                Get The Guide
-                <ArrowUpRight className="size-4" aria-hidden="true" />
-              </a>
-            </div>
-          </article>
+          <aside className="mt-10 border border-border bg-card p-6 md:p-8">
+            <p className="eyebrow">Books · Digital products · Merchandise</p>
+            <h3 className="mt-3 font-display text-3xl uppercase">
+              Continue the story
+            </h3>
+            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+              Explore Nathanial’s existing releases on Payhip. Purchases and
+              payments are handled on Payhip.
+            </p>
+            <a
+              href={PAYHIP_SHOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-flex min-h-12 items-center gap-2 bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-accent"
+            >
+              Explore on Payhip
+              <ArrowUpRight className="size-4" aria-hidden="true" />
+              <span className="sr-only"> (opens in new tab)</span>
+            </a>
+          </aside>
         </div>
       </div>
     </section>

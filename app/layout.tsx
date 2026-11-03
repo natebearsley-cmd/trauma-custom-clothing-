@@ -1,19 +1,44 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Anton, Inter } from 'next/font/google'
+import localFont from 'next/font/local'
 import './globals.css'
+import { siteUrl } from '@/lib/seo'
 
-const anton = Anton({ subsets: ['latin'], weight: '400', variable: '--font-anton' })
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
+const anton = localFont({
+  src: '../public/fonts/Anton-Regular.ttf',
+  weight: '400',
+  display: 'swap',
+  variable: '--font-anton',
+})
+const inter = localFont({
+  src: '../public/fonts/Inter-Variable.ttf',
+  weight: '100 900',
+  display: 'swap',
+  variable: '--font-inter',
+})
 
 export const metadata: Metadata = {
   title: 'TRAUMA CC | Trauma Custom Clothing',
   description:
-    'Streetwear forged through survival, orthopedic titanium, and resilience. 1-of-1 cuts and limited garments by founder Nathanial Bearsley.',
-  generator: 'v0.app',
+    'Original garments, books, and digital products from Nathanial Bearsley — founder, author, recovery coach, and entrepreneur behind TRAUMA CC. Shop on Payhip.',
+  metadataBase: siteUrl,
+  alternates: { canonical: '/' },
+  applicationName: 'TRAUMA CC',
+  twitter: {
+    card: 'summary_large_image',
+    title: 'TRAUMA CC | Trauma Custom Clothing',
+    description:
+      'Original garments and pieces from Nathanial Bearsley’s own inventory.',
+    images: ['/images/hero.png'],
+  },
   openGraph: {
+    type: 'website',
+    url: '/',
+    siteName: 'TRAUMA CC',
+    locale: 'en_US',
     title: 'TRAUMA CC | Built From Trauma. Never Broke Just Bent.',
-    description: 'Streetwear forged through survival. 1-of-1 cuts and limited garments.',
+    description:
+      'Streetwear forged through survival. 1-of-1 cuts and limited garments.',
     images: ['/images/hero.png'],
   },
   icons: {
@@ -37,8 +62,17 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${anton.variable} ${inter.variable} bg-background`}>
+    <html
+      lang="en"
+      className={`${anton.variable} ${inter.variable} bg-background`}
+    >
       <body className="antialiased">
+        <a
+          href="#main-content"
+          className="sr-only z-[100] bg-foreground p-4 text-background focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          Skip to main content
+        </a>
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
