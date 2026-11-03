@@ -1,7 +1,7 @@
 import { SiteHeader } from '@/components/site-header'
 import { Hero } from '@/components/hero'
-import { TraumaCollections } from '@/components/trauma-collections'
 import { FounderStory } from '@/components/founder-story'
+import { FeaturedPieces } from '@/components/featured-pieces'
 import { CustomInquiry } from '@/components/custom-inquiry'
 import { DigitalShop } from '@/components/digital-shop'
 import { SiteFooter } from '@/components/site-footer'
@@ -19,13 +19,13 @@ export default function Page() {
       <main id="main-content">
         <Hero />
         <FounderStory />
-        <TraumaCollections inventory={inventory} />
-        <DigitalShop />
+        <FeaturedPieces inventory={inventory} />
         <CustomInquiry
           action={process.env.CUSTOM_ORDER_FORM_ACTION && safeUrl(process.env.CUSTOM_ORDER_FORM_ACTION)
             ? process.env.CUSTOM_ORDER_FORM_ACTION : null}
           customProducts={storefrontProducts(inventory).filter(isApparel).map(({ id, name }) => ({ id, name }))}
         />
+        <DigitalShop />
       </main>
       <SiteFooter />
     </>
