@@ -10,12 +10,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { StructuredData } from '@/components/structured-data'
 import { inventory } from '@/lib/inventory-store'
 import { JourneyVault } from '@/components/journey-vault'
-import soundtrack from '@/data/soundtrack.json'
-import { validateSoundtrackSettings } from '@/lib/soundtrack'
-import { TraumaSoundtrack } from '@/components/trauma-soundtrack'
 import { safeUrl, isApparel } from '@/lib/inventory'
-
-validateSoundtrackSettings(soundtrack)
 
 export default function Page() {
   return (
@@ -26,7 +21,6 @@ export default function Page() {
         <Hero />
         <FounderStory />
         <HomepageSpotlight inventory={inventory} />
-        <section aria-label="TRAUMA Soundtrack" className="border-b border-border py-12 md:py-16"><div className="mx-auto max-w-3xl px-4 md:px-8"><TraumaSoundtrack soundtrack={soundtrack} /></div></section>
         <TraumaCollections inventory={inventory} />
         <DirectFromTrauma payments={inventory.payments} />
         <CustomInquiry
