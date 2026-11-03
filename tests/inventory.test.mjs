@@ -126,3 +126,28 @@ test('Payhip source requires a direct product URL rather than the shop homepage'
   data.products[0].sourceUrl = 'https://payhip.com/Thereversal1'
   assert.throws(() => validateInventory(data), /direct Payhip source/)
 })
+
+test('management filters combine search, status, category, source and featured placement without mutating inventory', async () => {
+  const { filterInventoryProducts } = await import('../lib/inventory.ts')
+  const data = copy()
+  const filters = { search: '', status: 'all', category: '', source: '', featured: 'all' }
+  const before = JSON.stringify(data)
+  assert.equal(filterInventoryProducts(data.products, filters).length, data.products.length)
+  assert.equal(filterInventoryProducts(data.products, { ...filters, status: 'draft' }).length, data.products.length)
+  assert.equal(filterInventoryProducts(data.products, { ...filters, status: 'published' }).length, 0)
+  assert.equal(filterInventoryProducts(data.products, { ...filters, search: '  REVERSAL   GUIDE ', category: 'Books', source: 'repository', featured: 'products' })[0].id, 'the-reversal-guide')
+  assert.equal(filterInventoryProducts(data.products, { ...filters, search: 'REVERSAL GUIDE', category: 'Apparel' }).length, 0)
+  assert.equal(filterInventoryProducts(data.products, { ...filters, search: 'does-not-match-any-product' }).length, 0)
+  assert.equal(JSON.stringify(data), before)
+
+  const garment = data.products[0]
+  garment.featured = true
+  garment.sold = true
+  garment.published = true
+  const matching = { ...filters, search: garment.id, status: 'sold', featured: 'apparel' }
+  assert.deepEqual(filterInventoryProducts(data.products, matching).map((p) => p.id), [garment.id])
+  assert.equal(filterInventoryProducts(data.products, { ...matching, status: 'published' }).length, 1)
+  assert.equal(filterInventoryProducts(data.products, { ...matching, status: 'draft' }).length, 0)
+  assert.equal(filterInventoryProducts(data.products, { ...matching, featured: 'products' }).length, 0)
+  assert.equal(filterInventoryProducts(data.products, { ...matching, featured: 'none' }).length, 0)
+})

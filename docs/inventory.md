@@ -75,3 +75,11 @@ Open `/admin` using the footer’s **Manage inventory** link. Select your existi
 Choose **My Payhip product** as the source for a real Payhip listing. Paste its actual direct `https://payhip.com/b/...` URL into both Source listing URL and Payhip product URL. Copy the real listing details and cover; no automatic import or live sync is implemented. The existing direct-URL and publication checks remain in force. Payhip handles checkout and fulfillment; the local inventory controls storefront presentation.
 
 Store inspection during this task failed because the configured network proxy could not be reached, even though Payhip is allowed by the active network policy. No new product data was imported, and no existing draft was published. Admin production saving still requires the server configuration above.
+
+## Admin search, filters, previews, and featuring
+
+Search products by name, ID, brand, description, category, size, or color. Combine search with status (All, Draft, Published, Sold), category, source, and featured-placement filters. Published includes sold published records; Sold includes sold records regardless of publishing status. Counts cover the full inventory. Filtering never edits or publishes a record. The current editor stays open when its product stops matching, so unsaved edits remain available. Clear filters to restore the full list.
+
+The image preview displays up to 12 entered image URLs or local image paths, with the first labeled Cover photo. Invalid URLs and failed image loads show a text message. Previews do not upload files; use the existing repository upload workflow above.
+
+Featured Products and Featured Apparel now have separate labeled toggles in the editor. Only the toggle appropriate to the actual category is enabled. Both use the existing `featured` field; changing the category moves its existing featured selection according to the unchanged storefront rules. Featuring does not publish a draft. Keep Publish unchecked until the owner has reviewed the listing. No existing product statuses or public layouts were changed by this admin update.

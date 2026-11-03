@@ -3,6 +3,10 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import {
   validateInventory,
+  safeUrl,
+  isApparel,
+  filterInventoryProducts,
+  type InventoryFilters,
   type Inventory,
   type Product,
 } from '@/lib/inventory'
@@ -12,6 +16,34 @@ const fieldClass =
 const buttonClass =
   'min-h-12 border border-input px-5 py-3 text-sm font-semibold hover:border-foreground disabled:opacity-50'
 
+const emptyFilters: InventoryFilters = {
+  search: '', status: 'all', category: '', source: '', featured: 'all',
+}
+
+function PhotoPreview({ url, index, name }: { url: string; index: number; name: string }) {
+  const [failed, setFailed] = useState(false)
+  const valid = safeUrl(url, true)
+  return (
+    <figure className="min-w-0 border border-border p-3">
+      {valid && !failed ? (
+        // Preview the owner's URL directly; no upload, proxy, or inventory mutation.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={url} alt={`${name || 'Product'} — photo ${index + 1}`}
+          className="h-40 w-full object-contain" loading="lazy" referrerPolicy="no-referrer"
+          onError={() => setFailed(true)} />
+      ) : (
+        <p className="flex min-h-40 items-center justify-center text-center text-sm text-muted-foreground">
+          {valid ? 'Image could not be loaded. Check the URL or file path.' : 'Use an HTTPS image URL or /images/ path.'}
+        </p>
+      )}
+      <figcaption className="mt-3 break-all text-xs text-muted-foreground">
+        <span className="font-semibold">{index === 0 ? 'Cover photo' : `Photo ${index + 1}`}</span>
+        <span className="mt-1 block">{url}</span>
+      </figcaption>
+    </figure>
+  )
+}
+
 export function InventoryManager() {
   const [key, setKey] = useState('')
   const [inventory, setInventory] = useState<Inventory | null>(null)
@@ -20,6 +52,13 @@ export function InventoryManager() {
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [dirty, setDirty] = useState(false)
+  const [filters, setFilters] = useState<InventoryFilters>(emptyFilters)
+  const products = inventory?.products ?? []
+  const filtered = filterInventoryProducts(products, filters)
+  const categories = [...new Set(products.map((p) => p.category).filter(Boolean))].sort()
+  function changeFilter(patch: Partial<InventoryFilters>) {
+    setFilters((current) => ({ ...current, ...patch }))
+  }
   const product = inventory?.products.find((p) => p.id === selected)
   useEffect(() => {
     function warn(event: BeforeUnloadEvent) {
@@ -49,6 +88,7 @@ export function InventoryManager() {
       setInventory(result.inventory)
       setSha(result.sha)
       setSelected(result.inventory.products[0]?.id ?? '')
+      setFilters(emptyFilters)
       setDirty(false)
       setMessage('Loaded current GitHub inventory.')
     } catch (error) {
@@ -96,6 +136,7 @@ export function InventoryManager() {
     }
     setInventory({ ...inventory, products: [...inventory.products, next] })
     setSelected(id)
+    setFilters(emptyFilters)
     setDirty(true)
     setMessage(
       'New unsaved entry. Enter details from your own existing product, Depop listing, or Payhip product.',
@@ -215,30 +256,85 @@ export function InventoryManager() {
             {dirty ? 'Unsaved changes' : 'No unsaved changes'} · Saving creates
             a repository commit. Store changes appear after deployment.
           </p>
-          <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr]">
-            <div>
-              <label
-                htmlFor="selected-product"
-                className="text-sm font-semibold"
-              >
-                Select a product
+          <section aria-label="Find products" className="mt-8 border border-border p-5">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <label className="text-sm font-semibold sm:col-span-2 lg:col-span-4">
+                Search products
+                <input type="search" value={filters.search}
+                  onChange={(e) => changeFilter({ search: e.target.value })}
+                  className={fieldClass} aria-describedby="search-help" />
+                <span id="search-help" className="mt-2 block text-sm font-normal text-muted-foreground">
+                  Search names, IDs, brands, descriptions, categories, sizes, and colors.
+                </span>
               </label>
-              <select
-                id="selected-product"
-                value={selected}
-                onChange={(e) => setSelected(e.target.value)}
-                className={fieldClass}
-              >
-                {inventory.products.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name || 'Unsaved entry'} —{' '}
-                    {!p.published ? 'Draft' : p.sold ? 'Sold' : 'Available'}
-                  </option>
-                ))}
-              </select>
+              <label className="text-sm font-semibold">Status
+                <select value={filters.status} onChange={(e) => changeFilter({ status: e.target.value as InventoryFilters['status'] })} className={fieldClass}>
+                  <option value="all">All products ({products.length})</option>
+                  <option value="draft">Draft products ({products.filter((p) => !p.published).length})</option>
+                  <option value="published">Published products ({products.filter((p) => p.published).length})</option>
+                  <option value="sold">Sold products ({products.filter((p) => p.sold).length})</option>
+                </select>
+              </label>
+              <label className="text-sm font-semibold">Category
+                <select value={filters.category} onChange={(e) => changeFilter({ category: e.target.value })} className={fieldClass}>
+                  <option value="">All categories</option>
+                  {categories.map((category) => <option key={category} value={category}>{category}</option>)}
+                </select>
+              </label>
+              <label className="text-sm font-semibold">Source
+                <select value={filters.source} onChange={(e) => changeFilter({ source: e.target.value })} className={fieldClass}>
+                  <option value="">All sources</option>
+                  <option value="payhip">Payhip</option>
+                  <option value="depop">Depop</option>
+                  <option value="repository">Repository</option>
+                  <option value="manual">Manual</option>
+                </select>
+              </label>
+              <label className="text-sm font-semibold">Featured placement
+                <select value={filters.featured} onChange={(e) => changeFilter({ featured: e.target.value as InventoryFilters['featured'] })} className={fieldClass}>
+                  <option value="all">All placements</option>
+                  <option value="products">Featured Products</option>
+                  <option value="apparel">Featured Apparel</option>
+                  <option value="none">Not featured</option>
+                </select>
+              </label>
             </div>
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+              <p role="status" className="text-sm text-muted-foreground">{filtered.length} of {products.length} products match</p>
+              <button type="button" onClick={() => setFilters(emptyFilters)} className={buttonClass}>Clear filters</button>
+            </div>
+            <p className="mt-3 text-sm text-muted-foreground">Sold products can also be drafts or published. Filters never change product status.</p>
+          </section>
+          <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
+            <nav aria-label="Matching products" className="min-w-0">
+              <h2 className="mb-3 text-sm font-semibold">Select a product</h2>
+              {filtered.length ? (
+                <ul className="max-h-[36rem] space-y-2 overflow-y-auto">
+                  {filtered.map((p) => (
+                    <li key={p.id}>
+                      <button type="button" disabled={busy} onClick={() => setSelected(p.id)}
+                        aria-current={selected === p.id ? 'true' : undefined}
+                        className={`w-full break-words border p-4 text-left hover:border-foreground disabled:opacity-50 ${selected === p.id ? 'border-accent bg-card' : 'border-border'}`}>
+                        <span className="block font-semibold">{p.name || 'Unsaved entry'}</span>
+                        <span className="mt-2 block text-xs text-muted-foreground">
+                          {p.published ? 'Published' : 'Draft'}{p.sold ? ' · Sold' : ''}
+                          {p.category ? ` · ${p.category}` : ''}
+                        </span>
+                        {p.featured && <span className="mt-2 block text-xs">{isApparel(p) ? 'Featured Apparel' : 'Featured Products'}</span>}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : <p className="border border-border p-4 text-sm text-muted-foreground">No matching products. Clear filters to see all inventory.</p>}
+            </nav>
             {product && (
-              <div className="min-w-0 border border-border p-5 md:p-8">
+              <fieldset disabled={busy} className="min-w-0 border border-border p-5 md:p-8 disabled:opacity-60">
+                <legend className="px-2 font-semibold">Edit product</legend>
+                <h2 className="break-words text-xl font-semibold">{product.name || 'Unsaved entry'}</h2>
+                <p className="mt-2 mb-4 text-sm text-muted-foreground">
+                  {product.published ? 'Published' : 'Draft'}{product.sold ? ' · Sold' : ''}
+                  {!filtered.some((p) => p.id === product.id) && ' · This selected product is outside the current filters. Your edits are preserved.'}
+                </p>
                 <p className="mb-6 break-all text-xs text-muted-foreground">
                   ID: {product.id}
                 </p>
@@ -350,6 +446,16 @@ export function InventoryManager() {
                       repository, or use photo URLs you control.
                     </span>
                   </label>
+                  <div className="sm:col-span-2" aria-label="Product image previews">
+                    <h3 className="text-sm font-semibold">Image preview</h3>
+                    {product.photos.some((photo) => photo.trim()) ? (
+                      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                        {product.photos.map((photo) => photo.trim()).filter(Boolean).slice(0, 12).map((url, index) => (
+                          <PhotoPreview key={`${product.id}-${index}-${url}`} url={url} index={index} name={product.name} />
+                        ))}
+                      </div>
+                    ) : <p className="mt-3 text-sm text-muted-foreground">Add your real photo URLs or file paths above to preview them here.</p>}
+                  </div>
                   <label className="text-sm font-semibold sm:col-span-2">
                     Payhip product URL (leave blank for View Details only)
                     <input
@@ -422,17 +528,28 @@ export function InventoryManager() {
                       onChange={(e) => update({ published: e.target.checked })}
                       className="size-5"
                     />
-                    Publish this product
+                    Publish this product (leave unchecked to keep a draft)
                   </label>
-                  <label className="flex min-h-12 items-center gap-3 text-sm sm:col-span-2">
-                    <input
-                      type="checkbox"
-                      checked={product.featured}
-                      onChange={(e) => update({ featured: e.target.checked })}
-                      className="size-5"
-                    />
-                    Feature on homepage (Apparel, Tops, Outerwear, and Headwear appear in Featured Apparel; other categories appear in Featured Products)
-                  </label>
+                  <div className="sm:col-span-2 border-t border-border pt-5">
+                    <h3 className="text-sm font-semibold">Featured placement</h3>
+                    <label className="flex min-h-12 items-center gap-3 text-sm">
+                      <input type="checkbox" checked={product.featured && !isApparel(product)}
+                        disabled={isApparel(product)} aria-describedby="featured-help"
+                        onChange={(e) => update({ featured: e.target.checked })} className="size-5" />
+                      Featured Products
+                    </label>
+                    <label className="flex min-h-12 items-center gap-3 text-sm">
+                      <input type="checkbox" checked={product.featured && isApparel(product)}
+                        disabled={!isApparel(product)} aria-describedby="featured-help"
+                        onChange={(e) => update({ featured: e.target.checked })} className="size-5" />
+                      Featured Apparel
+                    </label>
+                    <p id="featured-help" className="text-sm text-muted-foreground">
+                      Apparel, Tops, Outerwear, and Headwear use Featured Apparel; other categories use Featured Products.
+                      Choose the accurate category to enable its toggle. Changing category moves any existing featured selection.
+                      Featuring never publishes a draft. Only reviewed, published, confirmed, unsold products appear publicly.
+                    </p>
+                  </div>
                   <label className="flex min-h-12 items-start gap-3 text-sm sm:col-span-2">
                     <input
                       type="checkbox"
@@ -468,7 +585,7 @@ export function InventoryManager() {
                 >
                   Remove this product
                 </button>
-              </div>
+              </fieldset>
             )}
           </div>
         </>

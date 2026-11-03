@@ -181,3 +181,34 @@ export function isApparel(product: Product): boolean {
 export function featuredApparel(inventory: Inventory): Product[] {
   return featuredProducts(inventory).filter(isApparel)
 }
+
+// Management-only filtering; never changes records or storefront visibility.
+export type InventoryFilters = {
+  search: string
+  status: 'all' | 'draft' | 'published' | 'sold'
+  category: string
+  source: string
+  featured: 'all' | 'products' | 'apparel' | 'none'
+}
+
+export function filterInventoryProducts(
+  products: Product[],
+  filters: InventoryFilters,
+): Product[] {
+  const terms = filters.search.trim().toLowerCase().split(/\s+/).filter(Boolean)
+  return products.filter((p) => {
+    const searchable = [p.name, p.id, p.brand, p.category, p.description, p.size, p.color]
+      .join(' ').toLowerCase()
+    return terms.every((term) => searchable.includes(term)) &&
+      (filters.status === 'all' ||
+        (filters.status === 'draft' && !p.published) ||
+        (filters.status === 'published' && p.published) ||
+        (filters.status === 'sold' && p.sold)) &&
+      (!filters.category || p.category === filters.category) &&
+      (!filters.source || p.source === filters.source) &&
+      (filters.featured === 'all' ||
+        (filters.featured === 'none' && !p.featured) ||
+        (filters.featured === 'apparel' && p.featured && isApparel(p)) ||
+        (filters.featured === 'products' && p.featured && !isApparel(p)))
+  })
+}
