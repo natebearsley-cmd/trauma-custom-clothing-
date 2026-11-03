@@ -5,6 +5,7 @@ const nextConfig = {
     // allowlisted here. Repository images use the built-in optimizer.
     remotePatterns: [{ protocol: 'https', hostname: 'images.depop.com' }],
     formats: ['image/avif', 'image/webp'],
+    qualities: [75, 90],
   },
   async headers() {
     return [

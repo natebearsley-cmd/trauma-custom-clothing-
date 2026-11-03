@@ -31,7 +31,7 @@ export function SiteFooter() {
             </li>
             <li>
               <a
-                href="#archive"
+                href="/collections?availability=sold"
                 className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
               >
                 Archive
@@ -39,7 +39,7 @@ export function SiteFooter() {
             </li>
             <li>
               <a
-                href="#journeyvault"
+                href="/#journeyvault"
                 className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
               >
                 JourneyVault

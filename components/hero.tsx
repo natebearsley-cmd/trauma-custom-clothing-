@@ -27,8 +27,7 @@ export function Hero() {
         </p>
 
         <h1 className="max-w-5xl text-balance font-display text-5xl uppercase leading-[0.9] tracking-tight text-foreground sm:text-7xl md:text-8xl lg:text-9xl">
-          Built From Trauma. <span className="text-accent">Never Broke</span>{' '}
-          Just Bent.
+          Turn Pain Into <span className="text-accent">Purpose</span>
         </h1>
 
         <p className="mt-8 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground md:text-lg">
@@ -38,17 +37,17 @@ export function Hero() {
 
         <div className="mt-10 flex flex-col gap-3 sm:flex-row">
           <a
-            href="#featured"
+            href="#story"
             className="inline-flex items-center justify-center gap-2 bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent"
           >
-            Explore the products
+            Read the story
             <ArrowDown className="size-4" aria-hidden="true" />
           </a>
           <a
-            href="#story"
+            href="/collections"
             className="inline-flex items-center justify-center border border-foreground/40 px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
           >
-            Our Story
+            View Full Collection
           </a>
         </div>
       </div>

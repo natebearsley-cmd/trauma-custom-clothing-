@@ -30,3 +30,7 @@ Anton and Inter are self-hosted with their Open Font Licenses; builds do not fet
 - `components/`: reusable storefront and manager components.
 - `public/images/products/`: original garment photos.
 - `tests/`: inventory rules and source-asset checks.
+
+## Product photographs
+
+Follow [the required TRAUMA product photo workflow](docs/product-photo-workflow.md). Preserve original garments, graphics, logos, and colors. Only the owner-listed cleanup adjustments are allowed; no mockups, invented views, or product publication without approval.

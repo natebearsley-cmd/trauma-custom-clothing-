@@ -7,7 +7,7 @@ import { PAYHIP_SHOP_URL } from '@/lib/site'
 const NAV = [
   { label: 'Products', href: '#featured' },
   { label: 'Apparel', href: '#featured-apparel' },
-  { label: 'Inventory', href: '#drops' },
+  { label: 'Collections', href: '/collections' },
   { label: 'Story', href: '#story' },
   { label: 'Custom', href: '#custom' },
   { label: 'JourneyVault', href: '#journeyvault' },
@@ -32,7 +32,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:px-8">
         <a
-          href="#top"
+          href="/#top"
           className="flex flex-col leading-none"
           aria-label="TRAUMA CC home"
         >
@@ -49,7 +49,7 @@ export function SiteHeader() {
             {NAV.map((item) => (
               <li key={item.label}>
                 <a
-                  href={item.href}
+                  href={item.href.startsWith('#') ? `/${item.href}` : item.href}
                   {...(item.external
                     ? { target: '_blank', rel: 'noopener noreferrer' }
                     : {})}
@@ -96,7 +96,7 @@ export function SiteHeader() {
             {NAV.map((item) => (
               <li key={item.label}>
                 <a
-                  href={item.href}
+                  href={item.href.startsWith('#') ? `/${item.href}` : item.href}
                   onClick={() => setOpen(false)}
                   {...(item.external
                     ? { target: '_blank', rel: 'noopener noreferrer' }

@@ -5,8 +5,13 @@ import {
   validateInventory,
   safeUrl,
   isApparel,
+  isTraumaApparel,
   filterInventoryProducts,
   type InventoryFilters,
+  type PaymentSettings,
+  HEADWEAR_COLLECTIONS,
+  PHOTO_VIEW_LABELS,
+  type PhotoView,
   type Inventory,
   type Product,
 } from '@/lib/inventory'
@@ -52,6 +57,7 @@ export function InventoryManager() {
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [dirty, setDirty] = useState(false)
+  const [galleryMode, setGalleryMode] = useState(false)
   const [filters, setFilters] = useState<InventoryFilters>(emptyFilters)
   const products = inventory?.products ?? []
   const filtered = filterInventoryProducts(products, filters)
@@ -60,6 +66,7 @@ export function InventoryManager() {
     setFilters((current) => ({ ...current, ...patch }))
   }
   const product = inventory?.products.find((p) => p.id === selected)
+  useEffect(() => { fetch('/api/admin/session', { cache: 'no-store' }).then((response) => { if (response.ok) void load() }).catch(() => {}) }, [])
   useEffect(() => {
     function warn(event: BeforeUnloadEvent) {
       if (dirty) event.preventDefault()
@@ -78,17 +85,18 @@ export function InventoryManager() {
       return
     setBusy(true)
     try {
-      const response = await fetch('/api/admin/inventory', {
-        headers: { Authorization: `Bearer ${key}` },
-        cache: 'no-store',
-      })
+      if (key) { const signed = await fetch('/api/admin/session', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ key }) }); const result = await signed.json(); if (!signed.ok) throw new Error(result.error || 'Could not sign in.'); setKey('') }
+      const response = await fetch('/api/admin/inventory', { cache: 'no-store' })
       const result = await response.json()
       if (!response.ok) throw new Error(result.error)
       validateInventory(result.inventory)
       setInventory(result.inventory)
       setSha(result.sha)
-      setSelected(result.inventory.products[0]?.id ?? '')
-      setFilters(emptyFilters)
+      const query = new URLSearchParams(window.location.search)
+      const requested = query.get('product')
+      setSelected(result.inventory.products.some((item: Product) => item.id === requested) ? requested! : result.inventory.products[0]?.id ?? '')
+      setFilters({ ...emptyFilters, category: query.get('category') ?? '', featured: query.get('featured') === 'featured' ? 'featured' : 'all' })
+      setGalleryMode(query.get('view') === 'gallery')
       setDirty(false)
       setMessage('Loaded current GitHub inventory.')
     } catch (error) {
@@ -109,6 +117,13 @@ export function InventoryManager() {
     })
     setDirty(true)
   }
+  function updatePayments(patch: Partial<PaymentSettings>) {
+    if (!inventory) return
+    setInventory({ ...inventory, payments: {
+      paypalUrl: '', paypalQrImage: '', ...inventory.payments, ...patch,
+    } })
+    setDirty(true)
+  }
   function add() {
     if (!inventory) return
     const id = `item-${crypto.randomUUID()}`
@@ -126,6 +141,10 @@ export function InventoryManager() {
       currency: 'USD',
       purchaseUrl: '',
       payhipUrl: '',
+      depopUrl: '',
+      paypalUrl: '',
+      orderType: 'ready-made',
+      productType: '',
       sold: false,
       soldDisplay: 'show',
       published: false,
@@ -161,7 +180,6 @@ export function InventoryManager() {
       const response = await fetch('/api/admin/inventory', {
         method: 'PUT',
         headers: {
-          Authorization: `Bearer ${key}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ inventory, sha }),
@@ -237,11 +255,13 @@ export function InventoryManager() {
             </button>
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
                 if (
                   !dirty ||
                   window.confirm('Discard unsaved changes and lock?')
                 ) {
+                  const response = await fetch('/api/admin/session', { method: 'DELETE' })
+                  if (!response.ok) { setMessage('Could not sign out. Try again.'); return }
                   setKey('')
                   setInventory(null)
                   setDirty(false)
@@ -249,13 +269,27 @@ export function InventoryManager() {
               }}
               className={buttonClass}
             >
-              Lock
+              Sign out
             </button>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             {dirty ? 'Unsaved changes' : 'No unsaved changes'} · Saving creates
             a repository commit. Store changes appear after deployment.
           </p>
+          <fieldset disabled={busy} className="mt-8 border border-border p-5">
+            <legend className="px-2 text-lg font-semibold">Direct From TRAUMA — PayPal settings</legend>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <label className="text-sm font-semibold">PayPal payment link
+                <input type="url" value={inventory.payments?.paypalUrl ?? ''}
+                  onChange={(e) => updatePayments({ paypalUrl: e.target.value.trim() })} className={fieldClass} />
+              </label>
+              <label className="text-sm font-semibold">PayPal QR code image URL or /images/ path
+                <input value={inventory.payments?.paypalQrImage ?? ''}
+                  onChange={(e) => updatePayments({ paypalQrImage: e.target.value.trim() })} className={fieldClass} />
+              </label>
+            </div>
+            <p className="mt-3 text-sm text-muted-foreground">Use your original PayPal QR image. Upload it to public/images/ in GitHub or supply its HTTPS image URL. No replacement QR is generated. Confirm it opens the intended PayPal destination before publishing.</p>
+          </fieldset>
           <section aria-label="Find products" className="mt-8 border border-border p-5">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <label className="text-sm font-semibold sm:col-span-2 lg:col-span-4">
@@ -278,6 +312,7 @@ export function InventoryManager() {
               <label className="text-sm font-semibold">Category
                 <select value={filters.category} onChange={(e) => changeFilter({ category: e.target.value })} className={fieldClass}>
                   <option value="">All categories</option>
+                  <option value="digital">Books & Digital Products</option>
                   {categories.map((category) => <option key={category} value={category}>{category}</option>)}
                 </select>
               </label>
@@ -293,6 +328,7 @@ export function InventoryManager() {
               <label className="text-sm font-semibold">Featured placement
                 <select value={filters.featured} onChange={(e) => changeFilter({ featured: e.target.value as InventoryFilters['featured'] })} className={fieldClass}>
                   <option value="all">All placements</option>
+                  <option value="featured">Any featured placement</option>
                   <option value="products">Featured Products</option>
                   <option value="apparel">Featured Apparel</option>
                   <option value="none">Not featured</option>
@@ -305,6 +341,10 @@ export function InventoryManager() {
             </div>
             <p className="mt-3 text-sm text-muted-foreground">Sold products can also be drafts or published. Filters never change product status.</p>
           </section>
+          {galleryMode && <section aria-label="Manage Gallery" className="mt-8"><h2 className="font-display text-3xl uppercase">Manage Gallery</h2><p className="mt-3 text-sm text-muted-foreground">Choose an actual product to review its photos and edit its gallery below.</p><ul className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{filtered.map((item) => <li key={item.id}><button type="button" disabled={busy} onClick={() => { setSelected(item.id); document.getElementById('product-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }} className="w-full border border-border bg-card p-4 text-left hover:border-accent">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {item.photos[0] && <img src={item.photos[0]} alt={item.name} loading="lazy" referrerPolicy="no-referrer" className="h-48 w-full object-contain" />}
+            <span className="mt-3 block font-semibold">{item.name}</span><span className="mt-2 block text-xs text-muted-foreground">{item.photos.length} photos · {item.published ? 'Published' : 'Draft'}</span></button></li>)}</ul></section>}
           <div className="mt-8 grid gap-8 lg:grid-cols-[280px_1fr]">
             <nav aria-label="Matching products" className="min-w-0">
               <h2 className="mb-3 text-sm font-semibold">Select a product</h2>
@@ -328,7 +368,7 @@ export function InventoryManager() {
               ) : <p className="border border-border p-4 text-sm text-muted-foreground">No matching products. Clear filters to see all inventory.</p>}
             </nav>
             {product && (
-              <fieldset disabled={busy} className="min-w-0 border border-border p-5 md:p-8 disabled:opacity-60">
+              <fieldset id="product-editor" disabled={busy} className="scroll-mt-24 min-w-0 border border-border p-5 md:p-8 disabled:opacity-60">
                 <legend className="px-2 font-semibold">Edit product</legend>
                 <h2 className="break-words text-xl font-semibold">{product.name || 'Unsaved entry'}</h2>
                 <p className="mt-2 mb-4 text-sm text-muted-foreground">
@@ -374,6 +414,7 @@ export function InventoryManager() {
                       'Wallpapers',
                       'Guides',
                       'Apparel',
+                      "Women's Collection",
                       'JourneyVault',
                       'Tops',
                       'Outerwear',
@@ -382,6 +423,50 @@ export function InventoryManager() {
                       <option key={c} value={c} />
                     ))}
                   </datalist>
+                  <label className="text-sm font-semibold sm:col-span-2">
+                    Inseam (optional)
+                    <input value={product.inseam ?? ''} maxLength={40}
+                      onChange={(e) => update({ inseam: e.target.value })} className={fieldClass} />
+                  </label>
+                  <label className="text-sm font-semibold sm:col-span-2">
+                    Collection (optional)
+                    <input value={product.collection ?? ''} maxLength={200} list="inventory-collections"
+                      onChange={(e) => update({ collection: e.target.value })} className={fieldClass} />
+                    <datalist id="inventory-collections">{['Hero Collection', "Women's Collection", ...HEADWEAR_COLLECTIONS].map((collection) => <option key={collection} value={collection} />)}</datalist>
+                  </label>
+                  <label className="text-sm font-semibold sm:col-span-2">
+                    Subtitle
+                    <input value={product.subtitle ?? ''} maxLength={300}
+                      onChange={(e) => update({ subtitle: e.target.value })} className={fieldClass} />
+                  </label>
+                  {(['themes', 'keyArtwork', 'features'] as const).map((field) => (
+                    <label key={field} className="text-sm font-semibold sm:col-span-2">
+                      {field === 'themes' ? 'Themes' : field === 'features' ? 'Features' : 'Key artwork'} — one per line
+                      <textarea rows={3} value={(product[field] ?? []).join('\n')}
+                        onChange={(e) => update({ [field]: e.target.value.split('\n') })}
+                        onBlur={() => update({ [field]: (product[field] ?? []).map((item) => item.trim()).filter(Boolean) })}
+                        className={fieldClass} />
+                    </label>
+                  ))}
+                  <label className="flex min-h-12 items-center gap-3 text-sm sm:col-span-2">
+                    <input type="checkbox" checked={product.requestCustomPiece ?? false}
+                      disabled={!isApparel(product)} onChange={(e) => update({ requestCustomPiece: e.target.checked })} className="size-5" />
+                    Show Request Custom Piece alongside this ready-made garment
+                  </label>
+                  <label className="text-sm font-semibold sm:col-span-2">
+                    Product type
+                    <input value={product.productType ?? ''} maxLength={200}
+                      onChange={(e) => update({ productType: e.target.value })} className={fieldClass} />
+                  </label>
+                  <label className="text-sm font-semibold sm:col-span-2">
+                    Apparel order type
+                    <select value={product.orderType ?? 'ready-made'} disabled={!isApparel(product)}
+                      onChange={(e) => update({ orderType: e.target.value as Product['orderType'] })} className={fieldClass}>
+                      <option value="ready-made">Ready-made — View Item on Depop</option>
+                      <option value="custom">Custom apparel — Request Quote</option>
+                    </select>
+                    <span className="mt-2 block text-sm font-normal text-muted-foreground">Custom apparel shows Request a Custom Quote instead of a price and links to the quote form. It is excluded from the ready-made Featured Apparel showcase.</span>
+                  </label>
                   <label className="text-sm font-semibold">
                     Price
                     <input
@@ -400,6 +485,14 @@ export function InventoryManager() {
                       }
                       className={fieldClass}
                     />
+                  </label>
+                  <label className="text-sm font-semibold">
+                    Original price (optional)
+                    <input type="number" min="0" max="1000000" step="0.01"
+                      value={product.originalPrice ?? ''}
+                      onChange={(e) => update({ originalPrice: e.target.value === '' ? null : Number(e.target.value) })}
+                      className={fieldClass} />
+                    <span className="mt-2 block text-sm font-normal text-muted-foreground">Enter the actual original price only. The Price field is the current sale price.</span>
                   </label>
                   <label className="text-sm font-semibold">
                     Currency
@@ -429,7 +522,7 @@ export function InventoryManager() {
                       rows={4}
                       value={product.photos.join('\n')}
                       onChange={(e) =>
-                        update({ photos: e.target.value.split('\n') })
+                        update({ photos: e.target.value.split('\n'), photoViews: undefined })
                       }
                       onBlur={() =>
                         update({
@@ -451,13 +544,13 @@ export function InventoryManager() {
                     {product.photos.some((photo) => photo.trim()) ? (
                       <div className="mt-3 grid gap-3 sm:grid-cols-2">
                         {product.photos.map((photo) => photo.trim()).filter(Boolean).slice(0, 12).map((url, index) => (
-                          <PhotoPreview key={`${product.id}-${index}-${url}`} url={url} index={index} name={product.name} />
+                          <div key={`${product.id}-${index}-${url}`}><PhotoPreview url={url} index={index} name={product.name} /><label className="mt-2 block text-sm">Photo {index + 1} view<select value={product.photoViews?.[index] ?? 'other'} onChange={(event) => { const next = product.photos.map((_, at) => product.photoViews?.[at] ?? 'other'); next[index] = event.target.value as PhotoView; update({ photoViews: next }) }} className={fieldClass}>{Object.entries(PHOTO_VIEW_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label></div>
                         ))}
                       </div>
                     ) : <p className="mt-3 text-sm text-muted-foreground">Add your real photo URLs or file paths above to preview them here.</p>}
                   </div>
                   <label className="text-sm font-semibold sm:col-span-2">
-                    Payhip product URL (leave blank for View Details only)
+                    Payhip product URL — books and digital products only
                     <input
                       type="url"
                       value={product.payhipUrl}
@@ -466,6 +559,22 @@ export function InventoryManager() {
                       }
                       className={fieldClass}
                     />
+                  </label>
+                  <label className="text-sm font-semibold sm:col-span-2">
+                    PayPal URL — direct apparel purchases
+                    <input type="url" value={product.paypalUrl ?? ''} disabled={!isApparel(product)}
+                      onChange={(e) => update({ paypalUrl: e.target.value.trim() })} className={fieldClass} />
+                    <span className="mt-2 block text-sm font-normal text-muted-foreground">Adds Pay With PayPal alongside Depop for ready-made apparel. Leave blank to omit the button. Sold pieces and custom quote products do not show purchase buttons. Digital products stay on Payhip.</span>
+                  </label>
+                  <label className="text-sm font-semibold sm:col-span-2">
+                    Depop listing URL — apparel only
+                    <input type="url" value={product.depopUrl ?? ''}
+                      onChange={(e) => update({ depopUrl: e.target.value.trim() })}
+                      className={fieldClass} />
+                    <span className="mt-2 block text-sm font-normal text-muted-foreground">
+                      Use the actual HTTPS Depop /products/ listing URL. Apparel never links to Payhip.
+                      An existing Depop Source listing URL also works. Without a listing, View Item shows local details.
+                    </span>
                   </label>
                   <label className="text-sm font-semibold">
                     Source
@@ -533,23 +642,32 @@ export function InventoryManager() {
                   <div className="sm:col-span-2 border-t border-border pt-5">
                     <h3 className="text-sm font-semibold">Featured placement</h3>
                     <label className="flex min-h-12 items-center gap-3 text-sm">
-                      <input type="checkbox" checked={product.featured && !isApparel(product)}
-                        disabled={isApparel(product)} aria-describedby="featured-help"
-                        onChange={(e) => update({ featured: e.target.checked })} className="size-5" />
-                      Featured Products
+                      <input type="checkbox" checked={isApparel(product) ? (product.featuredCollection ?? product.featured) : product.featured}
+                        aria-describedby="featured-help" onChange={(event) => update(isApparel(product)
+                          ? { featuredCollection: event.target.checked, featured: event.target.checked || (product.featuredApparel ?? product.featured) }
+                          : { featured: event.target.checked })} className="size-5" />
+                      {isApparel(product) ? 'Featured Collection' : 'Featured Products'}
                     </label>
                     <label className="flex min-h-12 items-center gap-3 text-sm">
-                      <input type="checkbox" checked={product.featured && isApparel(product)}
-                        disabled={!isApparel(product)} aria-describedby="featured-help"
-                        onChange={(e) => update({ featured: e.target.checked })} className="size-5" />
+                      <input type="checkbox" checked={isApparel(product) && (product.featuredApparel ?? product.featured)}
+                        disabled={!isTraumaApparel(product) && !(product.featuredApparel ?? product.featured)} aria-describedby="featured-help"
+                        onChange={(event) => update({ featuredApparel: event.target.checked, featured: event.target.checked || (product.featuredCollection ?? product.featured) })} className="size-5" />
                       Featured Apparel
                     </label>
-                    <p id="featured-help" className="text-sm text-muted-foreground">
-                      Apparel, Tops, Outerwear, and Headwear use Featured Apparel; other categories use Featured Products.
-                      Choose the accurate category to enable its toggle. Changing category moves any existing featured selection.
-                      Featuring never publishes a draft. Only reviewed, published, confirmed, unsold products appear publicly.
-                    </p>
+                    <p id="featured-help" className="text-sm text-muted-foreground">Choose Featured Collection, Featured Apparel, or both for real TRAUMA garments. Homepage curation shows at most eight distinct approved pieces in inventory order. Featuring never publishes a draft.</p>
                   </div>
+                  <label className="flex min-h-12 items-center gap-3 text-sm sm:col-span-2">
+                    <input type="checkbox" checked={product.homepageSpotlight ?? false}
+                      disabled={!isTraumaApparel(product) && !product.homepageSpotlight}
+                      onChange={(e) => update({ homepageSpotlight: e.target.checked })} className="size-5" />
+                    Homepage Spotlight — immediately below Founder Story
+                  </label>
+                  <p className="text-sm text-muted-foreground sm:col-span-2">The first spotlight-marked featured TRAUMA garment in inventory order appears only after it is confirmed, published, and unsold. Use Hero Collection as its collection when applicable.</p>
+                  <label className="flex min-h-12 items-center gap-3 text-sm sm:col-span-2">
+                    <input type="checkbox" checked={product.homepageCollection ?? true}
+                      onChange={(e) => update({ homepageCollection: e.target.checked })} className="size-5" />
+                    Eligible for homepage collections when published
+                  </label>
                   <label className="flex min-h-12 items-start gap-3 text-sm sm:col-span-2">
                     <input
                       type="checkbox"

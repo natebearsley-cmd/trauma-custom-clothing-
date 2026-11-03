@@ -1,31 +1,17 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { PAYHIP_SHOP_URL } from '@/lib/site'
 
-const TIMELINE = [
-  {
-    year: '2020',
-    title: 'The Collision',
-    body: 'A high-speed head-on collision nearly ended everything. Nathanial survived what most would not.',
-  },
-  {
-    year: 'Rebuild',
-    title: 'Titanium Fixation',
-    body: 'Reconstructive surgery. Plates, screws, and orthopedic titanium holding the frame together.',
-  },
-  {
-    year: 'Recovery',
-    title: 'Out Of The Dark',
-    body: 'Walked out of incarceration and addiction. Chose the long road back, one day at a time.',
-  },
-  {
-    year: 'Now',
-    title: 'Recovery Coach',
-    body: 'Turning survival into service. Every garment carries the story forward for someone still fighting.',
-  },
+const STORY = [
+  "I never expected my life to look the way it does today.",
+  "I have experienced incarceration, addiction, recovery, trauma, loss, financial struggles, and the challenge of rebuilding my life from the ground up.",
+  "I survived a severe head-on collision, became a recovery coach, returned to college, built a brand, and continue caring for my mother as she battles dementia.",
+  "There were many times I could have given up. I chose to keep moving forward.",
+  "TRAUMA was never created to celebrate pain. It was created to show that pain does not get the final word.",
+  "Every garment, every design, every book, and every project represents resilience, growth, recovery, and the belief that our past does not define our future.",
+  "If my story helps even one person find hope, every struggle was worth it.",
 ]
-
-const MOTTOS = ['Pain Builds Purpose', 'Respect The Scars', 'Still Breathing']
 
 export function FounderStory() {
   return (
@@ -55,45 +41,19 @@ export function FounderStory() {
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-accent">
             Founder · Author · Recovery Coach · Entrepreneur
           </p>
-          <h2 className="mt-3 text-balance font-display text-5xl uppercase leading-none text-foreground md:text-7xl">
-            Nathanial Bearsley
-          </h2>
-          <p className="mt-6 max-w-2xl text-pretty text-lg leading-relaxed text-muted-foreground">
-            {
-              "Trauma CC wasn't built in a studio. It was built in hospital beds, cell blocks, and recovery rooms. Every cut, every print, every stitch is proof that the damage doesn't get the final word."
-            }
-          </p>
-
-          <ol className="mt-10 grid gap-px border border-border bg-border sm:grid-cols-2">
-            {TIMELINE.map((item) => (
-              <li key={item.title} className="bg-background p-6">
-                <p className="font-mono text-xs uppercase tracking-widest text-accent">
-                  {item.year}
-                </p>
-                <h3 className="mt-2 font-display text-2xl uppercase text-foreground">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {item.body}
-                </p>
-              </li>
-            ))}
-          </ol>
-
-          <ul className="mt-10 flex flex-col gap-2" aria-label="Core mottos">
-            {MOTTOS.map((motto) => (
-              <li
-                key={motto}
-                className="flex items-center gap-4 font-display text-3xl uppercase text-foreground md:text-4xl"
-              >
-                <span className="h-px w-8 bg-accent" aria-hidden="true" />
-                {motto}
-              </li>
-            ))}
-          </ul>
+          <h2 className="mt-3 text-balance font-display text-5xl uppercase leading-none text-foreground md:text-7xl">The Story Behind TRAUMA</h2>
+          <h3 className="mt-6 font-display text-3xl uppercase text-accent">Built From Strength. Built By Struggle.</h3>
+          <div className="mt-6 max-w-2xl space-y-5 text-pretty text-lg leading-relaxed text-muted-foreground">
+            {STORY.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+          </div>
+          <p className="mt-6 font-semibold">— Nathanial Bearsley</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link href="/collections" className="inline-flex min-h-12 items-center justify-center bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:bg-accent">Explore TRAUMA Collections</Link>
+            <Link href="/custom-orders" className="inline-flex min-h-12 items-center justify-center border border-input px-5 py-3 text-sm font-semibold hover:border-accent">Request Custom Piece</Link>
+          </div>
 
           <aside className="mt-10 border border-border bg-card p-6 md:p-8">
-            <p className="eyebrow">Books · Digital products · Merchandise</p>
+            <p className="eyebrow">Books · Guides · Digital products</p>
             <h3 className="mt-3 font-display text-3xl uppercase">
               Continue the story
             </h3>

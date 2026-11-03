@@ -31,8 +31,7 @@ export function ProductShowcase({ inventory }: { inventory: Inventory }) {
         <h2 className="section-title">Made. Worn. Collected.</h2>
         <p className="mt-5 max-w-xl text-muted-foreground">
           Original garments, books, and digital products from Nathanial’s own
-          inventory. Explore the details here; Buy Now opens the product on
-          Payhip.
+          inventory. Explore apparel on Depop, and books and digital products on Payhip.
         </p>
         <div className="mt-8 flex flex-col gap-5 sm:flex-row sm:flex-wrap sm:items-end">
           <div

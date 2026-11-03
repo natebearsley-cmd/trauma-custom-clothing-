@@ -1,4 +1,4 @@
-import { createHash, timingSafeEqual } from 'node:crypto'
+import { adminAuthorized } from '@/lib/admin-auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { validateInventory } from '@/lib/inventory'
 
@@ -8,17 +8,6 @@ const repository = 'natebearsley-cmd/trauma-custom-clothing-'
 const path = 'data/inventory.json'
 const headers = { 'Cache-Control': 'no-store' }
 
-function authorized(request: NextRequest): boolean {
-  const key = process.env.INVENTORY_ADMIN_KEY
-  if (!key || key.length < 32 || !process.env.INVENTORY_GITHUB_TOKEN)
-    return false
-  const supplied =
-    request.headers.get('authorization')?.replace(/^Bearer /, '') ?? ''
-  return timingSafeEqual(
-    createHash('sha256').update(key).digest(),
-    createHash('sha256').update(supplied).digest(),
-  )
-}
 
 async function github(method: string, body?: unknown) {
   const branch = process.env.INVENTORY_BRANCH || 'main'
@@ -39,7 +28,7 @@ async function github(method: string, body?: unknown) {
 }
 
 export async function GET(request: NextRequest) {
-  if (!authorized(request))
+  if (!adminAuthorized(request))
     return NextResponse.json(
       {
         error:
@@ -71,7 +60,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
-  if (!authorized(request))
+  if (!adminAuthorized(request))
     return NextResponse.json(
       { error: 'Access denied' },
       { status: 401, headers },
