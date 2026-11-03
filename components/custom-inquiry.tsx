@@ -73,7 +73,7 @@ export function CustomInquiry({ action = null, customProducts = [], initialType 
       <div className="mx-auto grid max-w-7xl gap-12 px-4 md:px-8 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <p className="eyebrow">TRAUMA · Custom orders</p>
-          <h2 id="custom-heading" className="mt-3 font-display text-5xl uppercase leading-none md:text-7xl">Wear Your Story</h2>
+          <h2 id="custom-heading" className="mt-3 font-display text-5xl uppercase leading-none md:text-7xl">Custom Orders</h2>
           <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">Custom apparel for your story, your business, or your team. Share your idea and request a personal quote.</p>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-muted-foreground">Printing equipment is being prepared. Production timing and availability will be confirmed with your quote.</p>
           <p className="mt-8 font-display text-3xl uppercase">Request a Custom Quote</p>

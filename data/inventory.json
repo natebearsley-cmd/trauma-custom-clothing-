@@ -38,18 +38,28 @@
         "Personal Transformation"
       ],
       "requestCustomPiece": true,
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/trauma-made-me-denim-jacket-1.jpg",
+        "/images/products/featured-depop/trauma-made-me-denim-jacket-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "paypalUrl": "https://paypal.me/NathanialBearsley",
       "source": "manual",
       "sourceUrl": "",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
-      "ownerConfirmed": true
+      "ownerConfirmed": true,
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true
     },
     {
       "id": "toxic-trauma-bond",
@@ -57,7 +67,7 @@
       "subtitle": "TRAUMA C.C. 1 of 1 Custom Wearable Art",
       "brand": "Trauma Custom Clothing",
       "category": "Apparel",
-      "productType": "Custom Denim Jacket",
+      "productType": "One-of-One Custom Denim Jacket",
       "orderType": "ready-made",
       "size": "XXL",
       "condition": "Like New",
@@ -81,18 +91,28 @@
         "Large TRAUMA C.C sleeve print"
       ],
       "requestCustomPiece": true,
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/toxic-trauma-bond-1.jpg",
+        "/images/products/featured-depop/toxic-trauma-bond-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "source": "manual",
       "sourceUrl": "",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
       "ownerConfirmed": true,
-      "paypalUrl": "https://paypal.me/NathanialBearsley"
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "photoViews": [
+        "front",
+        "detail"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true
     },
     {
       "id": "ptsd-edition-me-vs-myself-hoodie",
@@ -125,18 +145,28 @@
         "Strength through adversity"
       ],
       "requestCustomPiece": true,
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/ptsd-edition-me-vs-myself-hoodie-1.jpg",
+        "/images/products/featured-depop/ptsd-edition-me-vs-myself-hoodie-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "https://depop.app.link/Q1BH5083K7b",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "paypalUrl": "https://paypal.me/NathanialBearsley",
       "source": "depop",
-      "sourceUrl": "https://depop.app.link/Q1BH5083K7b",
+      "sourceUrl": "https://www.depop.com/traumacc/",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
-      "ownerConfirmed": true
+      "ownerConfirmed": true,
+      "photoViews": [
+        "front",
+        "detail"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true
     },
     {
       "id": "trauma-cc-ecko-carpenter-jeans",
@@ -151,18 +181,28 @@
       "price": 189,
       "currency": "USD",
       "description": "1 of 1 custom Trauma Custom Clothing piece.\n\nCustom vintage Ecko Unltd carpenter jeans featuring distressed detailing, custom patchwork, luxury-inspired fabric accents, Trauma CC artwork, and hand-finished styling.\n\nA unique hybrid streetwear piece combining vintage workwear, custom reconstruction, and Trauma CC design language.",
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/trauma-cc-ecko-carpenter-jeans-1.jpg",
+        "/images/products/featured-depop/trauma-cc-ecko-carpenter-jeans-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "source": "depop",
-      "sourceUrl": "",
+      "sourceUrl": "https://www.depop.com/traumacc/",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
       "ownerConfirmed": true,
-      "paypalUrl": "https://paypal.me/NathanialBearsley"
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "photoViews": [
+        "back",
+        "detail"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true
     },
     {
       "id": "survived-graphic-tee",
@@ -194,18 +234,28 @@
         "Personal growth"
       ],
       "requestCustomPiece": true,
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/survived-graphic-tee-1.jpg",
+        "/images/products/featured-depop/survived-graphic-tee-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "source": "manual",
       "sourceUrl": "",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
       "ownerConfirmed": true,
-      "paypalUrl": "https://paypal.me/NathanialBearsley"
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true
     },
     {
       "id": "anxiety-shawna-splatter-crewneck",
@@ -238,18 +288,28 @@
         "Individuality"
       ],
       "requestCustomPiece": true,
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/anxiety-shawna-splatter-crewneck-1.jpg",
+        "/images/products/featured-depop/anxiety-shawna-splatter-crewneck-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "source": "manual",
       "sourceUrl": "",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
       "ownerConfirmed": true,
-      "paypalUrl": "https://paypal.me/NathanialBearsley"
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true
     },
     {
       "id": "unspoken-graphic-tee",
@@ -301,18 +361,29 @@
         "One-of-a-kind independent designer piece"
       ],
       "requestCustomPiece": true,
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/loose-lips-sink-ships-wide-leg-jeans-1.jpg",
+        "/images/products/featured-depop/loose-lips-sink-ships-wide-leg-jeans-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "source": "manual",
       "sourceUrl": "",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
       "ownerConfirmed": true,
-      "paypalUrl": "https://paypal.me/NathanialBearsley"
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "collection": "Women's Collection"
     },
     {
       "id": "still-breathing-bleach-wash-graphic-tee",
@@ -327,18 +398,29 @@
       "price": 89.99,
       "currency": "USD",
       "description": "TRAUMA CUSTOM CLOTHING “STILL BREATHING” 1-OF-1 GRAPHIC TEE.\n\nFront: “Still Breathing TRAUMA” typography, a purple gothic winged halo silhouette, and stylized “CC” graphics.\n\nBack: multi-tier angel cherub artwork representing “See No Evil, Hear No Evil, Speak No Evil,” framed by dark gothic crosses.",
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/still-breathing-bleach-wash-graphic-tee-1.jpg",
+        "/images/products/featured-depop/still-breathing-bleach-wash-graphic-tee-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "source": "depop",
-      "sourceUrl": "",
+      "sourceUrl": "https://www.depop.com/traumacc/",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
       "ownerConfirmed": true,
-      "paypalUrl": "https://paypal.me/NathanialBearsley"
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "collection": "Women's Collection"
     },
     {
       "id": "pressure-makes-diamonds-army-patch-capris",
@@ -370,18 +452,29 @@
         "Independent streetwear design"
       ],
       "requestCustomPiece": true,
-      "photos": [],
+      "photos": [
+        "/images/products/featured-depop/pressure-makes-diamonds-army-patch-capris-1.jpg",
+        "/images/products/featured-depop/pressure-makes-diamonds-army-patch-capris-2.jpg"
+      ],
       "purchaseUrl": "",
       "payhipUrl": "",
-      "depopUrl": "",
+      "depopUrl": "https://www.depop.com/traumacc/",
       "paypalUrl": "https://paypal.me/NathanialBearsley",
       "source": "manual",
       "sourceUrl": "",
       "sold": false,
       "soldDisplay": "show",
-      "published": false,
+      "published": true,
       "featured": true,
-      "ownerConfirmed": true
+      "ownerConfirmed": true,
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "collection": "Women's Collection"
     },
     {
       "id": "suffered-in-silence-leggings",
@@ -762,6 +855,516 @@
       "source": "manual",
       "sourceUrl": "",
       "paypalUrl": ""
+    },
+    {
+      "id": "unspoken-tie-dye-graphic-tee-small",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Tops",
+      "size": "S",
+      "color": "Multicolor",
+      "condition": "Excellent",
+      "photos": [
+        "/images/products/featured-depop/unspoken-tie-dye-graphic-tee-small-1.jpg",
+        "/images/products/featured-depop/unspoken-tie-dye-graphic-tee-small-2.jpg"
+      ],
+      "description": "One-of-one TRAUMA CC tie-dye tee with multicolor spiral artwork and custom prints.",
+      "price": 41.65,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Unspoken Tie-Dye Graphic Tee",
+      "originalPrice": 49,
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/",
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "productType": "One-of-One Graphic Tee"
+    },
+    {
+      "id": "adidas-nizza-rf-purple-chain-custom",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Footwear",
+      "size": "US Men’s 11.5",
+      "color": "White and purple",
+      "condition": "Brand new",
+      "photos": [
+        "/images/products/featured-depop/adidas-nizza-rf-purple-chain-custom-1.jpg",
+        "/images/products/featured-depop/adidas-nizza-rf-purple-chain-custom-2.jpg"
+      ],
+      "description": "White Adidas Nizza RF sneakers customized by TRAUMA CC with purple accents and black chain artwork.",
+      "price": 179.35,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Custom Adidas Nizza RF Purple Chain Sneakers",
+      "originalPrice": 211,
+      "photoViews": [
+        "other",
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/",
+      "paypalUrl": "https://paypal.me/NathanialBearsley"
+    },
+    {
+      "id": "betrayal-eyes-dont-lie-hoodie",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Outerwear",
+      "size": "XL",
+      "color": "Gray and purple",
+      "condition": "Brand new",
+      "photos": [
+        "/images/products/featured-depop/betrayal-eyes-dont-lie-hoodie-1.jpg",
+        "/images/products/featured-depop/betrayal-eyes-dont-lie-hoodie-2.jpg"
+      ],
+      "description": "One-of-one gray TRAUMA hoodie with Eyes Don’t Lie artwork on the front, Unspoken Trauma on the back, and sleeve graphics.",
+      "price": 60.35,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Betrayal / Eyes Don’t Lie Graphic Hoodie",
+      "originalPrice": 71,
+      "photoViews": [
+        "front",
+        "back"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/",
+      "paypalUrl": "https://paypal.me/NathanialBearsley",
+      "productType": "One-of-One Graphic Hoodie"
+    },
+    {
+      "id": "unspoken-pink-custom-high-tops",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Footwear",
+      "size": "",
+      "color": "Pink and purple",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/unspoken-pink-custom-high-tops-1.jpg"
+      ],
+      "description": "Pink custom high-tops with purple Unspoken lettering and hand-and-lips artwork. Check the shop for sizing and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Unspoken Pink Custom High-Tops",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "born-from-pain-black-tee",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Tops",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/born-from-pain-black-tee-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Born From Pain Black Tee",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "pain-made-me-rose-trucker",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/pain-made-me-rose-trucker-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Pain Made Me Rose Trucker Hat",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "unspoken-red-letter-trucker",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/unspoken-red-letter-trucker-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Unspoken Red Letter Trucker Hat",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "trauma-red-lips-trucker",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/trauma-red-lips-trucker-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "TRAUMA CC Red Lips Trucker Hat",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "unspoken-purple-trucker",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/unspoken-purple-trucker-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Unspoken Purple Graphic Trucker Hat",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "pressure-makes-diamonds-black-tank",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Tops",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/pressure-makes-diamonds-black-tank-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Pressure Makes Diamonds Black Tank",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "trauma-black-quilted-graphic-jacket",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Outerwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/trauma-black-quilted-graphic-jacket-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "TRAUMA CC Black Quilted Graphic Jacket",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "made-in-chaos-dark-beanie",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/made-in-chaos-dark-beanie-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "Made in Chaos Dark Beanie",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "trauma-cc-stacked-dark-beanie",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/trauma-cc-stacked-dark-beanie-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "TRAUMA CC Stacked Logo Dark Beanie",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "trauma-cc-dot-dark-beanie",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/trauma-cc-dot-dark-beanie-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "TRAUMA CC Dot Logo Dark Beanie",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "trauma-red-logo-cream-beanie",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/trauma-red-logo-cream-beanie-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "TRAUMA Red Logo Cream Beanie",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
+    },
+    {
+      "id": "trauma-cc-bar-dark-beanie",
+      "brand": "Trauma Custom Clothing (T.C.C.)",
+      "category": "Headwear",
+      "size": "",
+      "color": "",
+      "condition": "",
+      "photos": [
+        "/images/products/featured-depop/trauma-cc-bar-dark-beanie-1.jpg"
+      ],
+      "description": "Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "price": null,
+      "currency": "USD",
+      "purchaseUrl": "",
+      "payhipUrl": "",
+      "source": "manual",
+      "sourceUrl": "",
+      "sold": false,
+      "soldDisplay": "show",
+      "published": true,
+      "featured": true,
+      "ownerConfirmed": true,
+      "name": "TRAUMA CC Bar Logo Dark Beanie",
+      "photoViews": [
+        "other"
+      ],
+      "featuredApparel": true,
+      "featuredCollection": true,
+      "homepageCollection": true,
+      "depopUrl": "https://www.depop.com/traumacc/"
     }
   ],
   "payments": {

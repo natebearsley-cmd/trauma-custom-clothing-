@@ -5,13 +5,12 @@ import { Menu, X, ArrowUpRight } from 'lucide-react'
 import { PAYHIP_SHOP_URL } from '@/lib/site'
 
 const NAV = [
-  { label: 'Products', href: '#featured' },
-  { label: 'Apparel', href: '#featured-apparel' },
-  { label: 'Collections', href: '/collections' },
-  { label: 'Story', href: '#story' },
-  { label: 'Custom', href: '#custom' },
-  { label: 'JourneyVault', href: '#journeyvault' },
-  { label: 'Payhip Shop', href: PAYHIP_SHOP_URL, external: true },
+  { label: 'Story', href: '/#story', external: false },
+  { label: 'Collections', href: '/#drops', external: false },
+  { label: 'Apparel', href: '/#featured-apparel', external: false },
+  { label: 'Books & Digital', href: '/#books-digital', external: false },
+  { label: 'Custom', href: '/#custom', external: false },
+  { label: 'Contact', href: '/#contact', external: false },
 ]
 
 export function SiteHeader() {

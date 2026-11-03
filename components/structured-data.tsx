@@ -1,4 +1,5 @@
 import { siteUrl } from '@/lib/seo'
+import { DEPOP_SHOP_URL } from '@/lib/site'
 
 export function StructuredData() {
   const data = {
@@ -13,7 +14,7 @@ export function StructuredData() {
         founder: { '@id': `${siteUrl.origin}/#founder` },
         sameAs: [
           'https://payhip.com/Thereversal1',
-          'https://www.depop.com/atec911/',
+          DEPOP_SHOP_URL,
           'https://www.tiktok.com/@nateb19841',
         ],
       },

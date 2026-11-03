@@ -1,3 +1,6 @@
+export const DEPOP_SHOP_HANDLE = 'traumacc'
+export const DEPOP_SHOP_URL = `https://www.depop.com/${DEPOP_SHOP_HANDLE}/`
+
 export type PhotoView = 'front' | 'back' | 'detail' | 'branding' | 'other'
 export const PHOTO_VIEW_LABELS: Record<PhotoView, string> = { front: 'Front view', back: 'Back view', detail: 'Detail view', branding: 'Branding / tag', other: 'Photo' }
 
@@ -104,7 +107,7 @@ export function paypalDestination(product: Product): string | null {
 export function productDestination(product: Product): { url: string; platform: 'Depop' | 'Payhip' } | null {
   if (product.sold || isCustomApparel(product)) return null
   if (isApparel(product)) {
-    const url = [product.depopUrl, product.sourceUrl].find((value) => value && isDepopProductUrl(value))
+    const url = [product.depopUrl, product.sourceUrl].find((value) => value && (value === DEPOP_SHOP_URL || isDepopProductUrl(value)))
     return url ? { url, platform: 'Depop' } : null
   }
   return isPayhipProductUrl(product.payhipUrl) ? { url: product.payhipUrl, platform: 'Payhip' } : null
@@ -215,8 +218,8 @@ export function validateInventory(value: unknown): asserts value is Inventory {
       throw new Error('PayPal URL must be a direct HTTPS PayPal.me or PayPal payment link')
     if (p.depopUrl !== undefined &&
       (typeof p.depopUrl !== 'string' || p.depopUrl.length > 2000 ||
-        (p.depopUrl !== '' && !isDepopProductUrl(p.depopUrl))))
-      throw new Error('Depop URL must be a direct HTTPS product listing (https://www.depop.com/products/...)')
+        (p.depopUrl !== '' && p.depopUrl !== DEPOP_SHOP_URL && !isDepopProductUrl(p.depopUrl))))
+      throw new Error('Depop URL must be the official TRAUMA shop or a direct HTTPS Depop product listing')
     if (p.purchaseUrl && !safeUrl(p.purchaseUrl))
       throw new Error('Purchase link must use HTTPS')
     if (p.payhipUrl && !isPayhipProductUrl(p.payhipUrl))
@@ -274,8 +277,14 @@ export function featuredProducts(inventory: Inventory): Product[] {
   )
 }
 
+export const MATCHING_SETS_CATEGORY = 'Matching Sets'
+
+export function isMatchingSet(product: Product): boolean {
+  return product.category.trim().toLowerCase() === MATCHING_SETS_CATEGORY.toLowerCase()
+}
+
 export function isApparel(product: Product): boolean {
-  return ['apparel', 'tops', 'outerwear', 'headwear', 'hats & beanies', 'hats', 'beanies', 'footwear', 'denim', "women's collection"].includes(
+  return isMatchingSet(product) || ['apparel', 'tops', 'outerwear', 'headwear', 'hats & beanies', 'hats', 'beanies', 'footwear', 'denim', "women's collection"].includes(
     product.category.trim().toLowerCase(),
   )
 }
@@ -290,7 +299,7 @@ export function isTraumaApparel(product: Product): boolean {
 }
 
 export function featuredApparel(inventory: Inventory): Product[] {
-  return featuredProducts(inventory).filter((product) => isTraumaApparel(product) && !isCustomApparel(product) && (product.featuredApparel ?? product.featured)).slice(0, 7)
+  return featuredProducts(inventory).filter((product) => isTraumaApparel(product) && !isMatchingSet(product) && !isCustomApparel(product) && (product.featuredApparel ?? product.featured)).slice(0, 7)
 }
 
 // Management-only filtering; never changes records or storefront visibility.
@@ -326,9 +335,10 @@ export function filterInventoryProducts(
 }
 
 export const GALLERY_CATEGORIES = [
-  { id: 'featured', label: '🖤 Featured Pieces' },
-  { id: 'featured-apparel', label: '👕 Featured Apparel' },
-  { id: 'hero', label: '🔥 Hero Collection' },
+  { id: 'matching-sets', label: MATCHING_SETS_CATEGORY },
+  { id: 'hero', label: 'Hero Pieces' },
+  { id: 'featured-apparel', label: 'Featured Apparel' },
+  { id: 'featured', label: 'Featured Pieces' },
   { id: 'shirts', label: '👕 Shirts' },
   { id: 'hoodies', label: '🧥 Hoodies' },
   { id: 'denim', label: '👖 Denim' },
@@ -337,8 +347,15 @@ export const GALLERY_CATEGORIES = [
   { id: 'footwear', label: '👟 Footwear' },
   { id: 'custom-shoes', label: '👟 Custom Shoes' },
   { id: 'artwear', label: '🎨 One-of-One Artwear' },
-  { id: 'digital', label: '📚 Books & Guides' },
+  { id: 'digital', label: 'Books & Guides' },
 ] as const
+const GALLERY_NAV_ORDER = ['featured', 'matching-sets', 'hoodies', 'shirts', 'denim', 'headwear', 'footwear', 'women', 'artwear', 'digital'] as const
+export function visibleGalleryCategories(inventory: Inventory) {
+  return GALLERY_NAV_ORDER.flatMap((id) => {
+    const category = GALLERY_CATEGORIES.find((item) => item.id === id)
+    return category && galleryProducts(inventory, id).length ? [{ ...category, label: category.label.replace(/^\p{Extended_Pictographic}\s*/u, '') }] : []
+  })
+}
 export const HEADWEAR_COLLECTIONS = ['Trauma CC Beanies', 'Made In Chaos Beanies', 'UNSPOKEN Hats', 'Trauma CC Trucker Hats', 'Custom Headwear']
 export const CUSTOM_GALLERY_TYPES = ['Custom Hats', 'Custom Shoes', 'Custom Hoodies', 'Custom T-Shirts', 'Custom Jeans', 'Custom Jackets', 'Custom Sports Bras', 'Custom Bras', 'Custom Leggings', "Custom Women's Sets", 'Custom Beanies', 'Custom Denim']
 export const CUSTOM_CREATION_TYPES = ['Custom Hats', 'Custom Beanies', 'Custom Shoes', 'Custom Hoodies', 'Custom Jackets', 'Custom Denim', 'Custom Sports Bras', 'Custom Bras', 'Custom Leggings', "Custom Women's Sets"]
@@ -358,24 +375,25 @@ export function womensCollectionType(product: Product): string {
 }
 
 export function galleryCategory(product: Product): string {
+  if (isMatchingSet(product)) return 'matching-sets'
   if (!isApparel(product)) return 'digital'
   const text = `${product.category} ${product.productType ?? ''} ${product.name}`.toLowerCase()
   if (/beanie|headwear|hat\b|hats\b|trucker/.test(text)) return 'headwear'
   if (/footwear|shoes|sneakers/.test(text)) return 'footwear'
   if (/hoodie/.test(text)) return 'hoodies'
   if (/jeans|denim|capris|carpenter/.test(text)) return 'denim'
-  if (/t-shirt|tshirt|\btee\b|shirt/.test(text) && !/sweatshirt/.test(text)) return 'shirts'
+  if (/t-shirt|tshirt|\btee\b|shirt|\btank\b/.test(text) && !/sweatshirt/.test(text)) return 'shirts'
   return isWomensCollection(product) ? 'women' : 'artwear'
 }
 
 export function productCollection(product: Product): string {
   if (product.collection?.trim()) return product.collection
   const id = galleryCategory(product)
-  return GALLERY_CATEGORIES.find((category) => category.id === id)?.label.replace(/^\S+\s/, '') ?? 'TRAUMA originals'
+  return GALLERY_CATEGORIES.find((category) => category.id === id)?.label.replace(/^\p{Extended_Pictographic}\s*/u, '') ?? 'TRAUMA originals'
 }
 
 export function galleryProducts(inventory: Inventory, category = 'all', collection = '', availability = 'all'): Product[] {
-  return inventory.products.filter((p) => {
+  const products = inventory.products.filter((p) => {
     if (!p.published || !p.ownerConfirmed || (isApparel(p) && !isTraumaApparel(p))) return false
     if (availability === 'available' && p.sold) return false
     if (availability === 'sold' && !p.sold) return false
@@ -383,43 +401,44 @@ export function galleryProducts(inventory: Inventory, category = 'all', collecti
       if (!isWomensCollection(p) || (collection && womensCollectionType(p) !== collection)) return false
     } else if (collection && productCollection(p) !== collection) return false
     if (category === 'featured') return (p.featuredCollection ?? p.featured) && !p.sold && (!isApparel(p) || isTraumaApparel(p)) && !isCustomApparel(p)
-    if (category === 'featured-apparel') return (p.featuredApparel ?? p.featured) && !p.sold && isTraumaApparel(p) && !isCustomApparel(p)
-    if (category === 'hero') return p.homepageSpotlight === true || productCollection(p).toLowerCase() === 'hero collection'
+    if (category === 'featured-apparel') return (p.featuredApparel ?? p.featured) && !p.sold && isTraumaApparel(p) && !isMatchingSet(p) && !isCustomApparel(p)
+    if (category === 'hero') return !isMatchingSet(p) && (p.homepageSpotlight === true || productCollection(p).toLowerCase() === 'hero collection')
     if (category === 'women') return true
     if (category === 'apparel') return isApparel(p)
-    if (category === 'artwear') return isApparel(p) && /1.of.1|one.of.one|wearable art/i.test(`${p.productType ?? ''} ${p.subtitle ?? ''} ${p.description}`)
+    if (category === 'artwear') return !isMatchingSet(p) && isApparel(p) && /1.of.1|one.of.one|wearable art/i.test(`${p.productType ?? ''} ${p.subtitle ?? ''} ${p.description}`)
     return category === 'all' || galleryCategory(p) === category
   })
+  return products.sort((a, b) => Number(isMatchingSet(b)) - Number(isMatchingSet(a)))
 }
 
 
 export function homepageSpotlightProduct(inventory: Inventory): Product | null {
-  return galleryProducts(inventory, 'featured').find((product) => isTraumaApparel(product) && product.homepageSpotlight && product.homepageCollection !== false) ?? null
+  return galleryProducts(inventory, 'featured').find((product) => isTraumaApparel(product) && !isMatchingSet(product) && product.homepageSpotlight && product.homepageCollection !== false) ?? null
 }
 
 export const HOMEPAGE_COLLECTIONS = [
-  { key: 'hero', id: 'hero-collection', title: '🔥 Hero Collection', href: '/collections?category=hero' },
-  { key: 'apparel', id: 'featured-apparel', title: '👕 Apparel', href: '/collections?category=apparel' },
-  { key: 'denim', id: 'denim', title: '👖 Denim', href: '/collections?category=denim' },
-  { key: 'headwear', id: 'headwear', title: '🧢 Hats & Beanies', href: '/collections?category=headwear' },
-  { key: 'footwear', id: 'custom-footwear', title: '👟 Custom Footwear', href: '/custom-orders?type=Custom%20Shoes' },
-  { key: 'women', id: 'womens-collection', title: "🖤 Women's Collection", href: '/collections?category=women' },
-  { key: 'digital', id: 'featured', title: '📚 Books & Guides', href: '/collections?category=digital' },
-  { key: 'custom', id: 'custom-creations', title: '🎨 Custom Orders', href: '/custom-orders' },
+  { key: 'matching-sets', id: 'matching-sets', title: MATCHING_SETS_CATEGORY, href: '/collections?category=matching-sets' },
+  { key: 'hero', id: 'hero-collection', title: 'Hero Pieces', href: '/collections?category=hero' },
+  { key: 'apparel', id: 'featured-apparel', title: 'Featured Apparel', href: '/collections?category=featured-apparel' },
+  { key: 'digital', id: 'featured', title: 'Books & Digital Products', href: '/collections?category=digital' },
+  { key: 'custom', id: 'custom-creations', title: 'Custom Orders', href: '/custom-orders' },
 ] as const
 
 export function homepageProducts(inventory: Inventory): Product[] {
   const eligible = galleryProducts(inventory, 'all', '', 'available')
     .filter((product) => product.featured && !isCustomApparel(product) && product.homepageCollection !== false)
   const spotlight = homepageSpotlightProduct(inventory)
-  return (spotlight ? [spotlight, ...eligible.filter((product) => product.id !== spotlight.id)] : eligible).slice(0, 8)
+  const sets = eligible.filter(isMatchingSet).sort((a, b) => Number(!!b.homepageSpotlight) - Number(!!a.homepageSpotlight))
+  // Reserve room for the existing hero spotlight when one is available.
+  const remaining = eligible.filter((product) => !isMatchingSet(product) && product.id !== spotlight?.id)
+    .sort((a, b) => Number(b.featuredApparel === true) - Number(a.featuredApparel === true))
+  return [...sets.slice(0, spotlight ? 7 : 8), ...(spotlight ? [spotlight] : []), ...remaining].slice(0, 8)
 }
 
 export function homepageCollectionKey(product: Product): string {
+  if (isMatchingSet(product)) return 'matching-sets'
   if (product.homepageSpotlight || product.collection?.trim().toLowerCase() === 'hero collection') return 'hero'
-  if (isWomensCollection(product)) return 'women'
-  const category = galleryCategory(product)
-  return ['denim', 'headwear', 'footwear', 'digital'].includes(category) ? category : 'apparel'
+  return isApparel(product) ? 'apparel' : 'digital'
 }
 
 

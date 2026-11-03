@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
-import { productDestination, paypalDestination, productPhotoLabel, isApparel, isCustomApparel, type Product } from '@/lib/inventory'
+import { DEPOP_SHOP_URL, productDestination, paypalDestination, productPhotoLabel, isApparel, isCustomApparel, type Product } from '@/lib/inventory'
 
 export function ProductCard({
   product,
@@ -137,7 +137,7 @@ export function ProductCard({
             rel="noopener noreferrer"
             className="mt-auto inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-accent"
           >
-            {apparel ? "View On Depop" : "Buy on Payhip"} <ArrowUpRight className="size-4" aria-hidden="true" />
+            {apparel ? (destination.url === DEPOP_SHOP_URL ? "Visit TRAUMA on Depop" : "View On Depop") : "Buy on Payhip"} <ArrowUpRight className="size-4" aria-hidden="true" />
             <span className="sr-only">
               {product.name} on {destination.platform} (opens in new tab)
             </span>

@@ -8,14 +8,20 @@ import {
   isDepopUrl,
   isPayhipProductUrl,
 } from '../lib/inventory.ts'
-const inventory = JSON.parse(
+const releasedInventory = JSON.parse(
   readFileSync(new URL('../data/inventory.json', import.meta.url)),
 )
-const copy = () => structuredClone(inventory)
+// A fully unpublished copy exercises review and approval flows independently of the live assortment.
+const inventory = { ...releasedInventory, products: releasedInventory.products.map((p) => ({ ...p, published: false })) }
+const copy = () => {
+  const fixture = structuredClone(inventory)
+  fixture.products.push({ ...fixture.products[0], id: 'loose-lips-sink-ships-premium-3-piece-collection', category: 'Matching Sets', collection: 'Matching Sets', price: 260, photos: ['/images/hero.png'], photoViews: ['front'], paypalUrl: '', depopUrl: '', sourceUrl: '', source: 'manual', featuredApparel: false, homepageCollection: true })
+  return fixture
+}
 
 test('existing inventory is valid, all photo paths exist, and no unconfirmed drafts are public', () => {
-  validateInventory(inventory)
-  for (const p of inventory.products)
+  validateInventory(releasedInventory)
+  for (const p of releasedInventory.products)
     for (const photo of p.photos)
       assert.ok(
         existsSync(new URL(`../public${photo}`, import.meta.url)),
@@ -80,12 +86,12 @@ test('duplicate IDs, unsafe URLs, invalid statuses and prices are rejected', () 
     assert.throws(() => validateInventory(data))
   }
   assert.equal(safeUrl('https://user:password@depop.com'), false)
-  assert.equal(isDepopUrl('https://www.depop.com/atec911/'), true)
+  assert.equal(isDepopUrl('https://www.depop.com/traumacc/'), true)
 })
 
 test('Buy Now destinations must be direct Payhip product pages', () => {
   assert.equal(isPayhipProductUrl('https://payhip.com/Thereversal1'), false)
-  assert.equal(isPayhipProductUrl('https://www.depop.com/atec911/'), false)
+  assert.equal(isPayhipProductUrl('https://www.depop.com/traumacc/'), false)
   assert.equal(
     isPayhipProductUrl('https://payhip.com.attacker.example/b/test'),
     false,
@@ -169,7 +175,7 @@ test('apparel routes only to Depop, while books route only to Payhip', async () 
   assert.equal(productDestination(apparel).platform, 'Depop')
   apparel.sold = true
   assert.equal(productDestination(apparel), null)
-  assert.equal(isDepopProductUrl('https://www.depop.com/atec911/'), false)
+  assert.equal(isDepopProductUrl('https://www.depop.com/traumacc/'), false)
   assert.equal(isDepopProductUrl('https://www.depop.com.attacker.example/products/item/'), false)
   assert.equal(isDepopProductUrl('http://www.depop.com/products/item/'), false)
   const book = data.products.find((p) => p.category === 'Books')
@@ -258,8 +264,8 @@ test('owner-supplied jeans and the six intended garments remain unpublished cand
   assert.equal(jeans.price, 189)
   assert.equal(jeans.size, '32')
   assert.equal(jeans.orderType, 'ready-made')
-  assert.deepEqual(jeans.photos, [])
-  assert.equal(productDestination(jeans), null)
+  assert.equal(jeans.photos.length, 2)
+  assert.equal(productDestination(jeans).url, 'https://www.depop.com/traumacc/')
   assert.deepEqual(featuredApparel(inventory), [])
 })
 
@@ -292,8 +298,8 @@ test('Still Breathing screenshot details are preserved in a separate unpublished
   assert.equal(product.color, 'Red / Multi')
   assert.equal(product.published, false)
   assert.equal(product.featured, true)
-  assert.deepEqual(product.photos, [])
-  assert.equal(product.depopUrl, '')
+  assert.equal(product.photos.length, 2)
+  assert.equal(product.depopUrl, 'https://www.depop.com/traumacc/')
   assert.ok(inventory.products.some((p) => p.id === 'see-no-evil'))
 })
 
@@ -309,8 +315,8 @@ test('Loose Lips wide-leg jeans preserve owner data and the latest five-item pri
   assert.equal(jeans.requestCustomPiece, true)
   assert.equal(isTraumaApparel(jeans), true)
   assert.equal(jeans.published, false)
-  assert.deepEqual(jeans.photos, [])
-  assert.equal(productDestination(jeans), null)
+  assert.equal(jeans.photos.length, 2)
+  assert.equal(productDestination(jeans).url, 'https://www.depop.com/traumacc/')
   assert.deepEqual(featuredApparel(inventory), [])
   for (const patch of [{ inseam: 30 }, { features: [''] }, { features: 'invalid' }]) {
     const data = copy()
@@ -333,9 +339,9 @@ test('SURVIVED owner-supplied draft preserves its details and never publishes or
   assert.equal(tee.requestCustomPiece, true)
   assert.equal(tee.published, false)
   assert.equal(isTraumaApparel(tee), true)
-  assert.deepEqual(tee.photos, [])
+  assert.equal(tee.photos.length, 2)
   assert.equal(tee.payhipUrl, '')
-  assert.equal(productDestination(tee), null)
+  assert.equal(productDestination(tee).url, 'https://www.depop.com/traumacc/')
   assert.deepEqual(featuredApparel(inventory), [])
 })
 
@@ -352,8 +358,8 @@ test('ANXIETY preserves actual sale and original prices as an unpublished featur
   assert.equal(isTraumaApparel(product), true)
   assert.equal(product.features.length, 7)
   assert.equal(product.themes.length, 5)
-  assert.deepEqual(product.photos, [])
-  assert.equal(productDestination(product), null)
+  assert.equal(product.photos.length, 2)
+  assert.equal(productDestination(product).url, 'https://www.depop.com/traumacc/')
   for (const originalPrice of [-1, 58, 69.001, Infinity, '69']) {
     const data = copy()
     data.products.find((p) => p.id === 'anxiety-shawna-splatter-crewneck').originalPrice = originalPrice
@@ -398,7 +404,7 @@ test('PayPal is an independent apparel action without replacing Depop or digital
 test('payment settings and optional per-product PayPal fields validate without publishing inventory', () => {
   assert.equal(inventory.payments.paypalUrl, 'https://paypal.me/NathanialBearsley')
   assert.equal(inventory.payments.paypalQrImage, '')
-  assert.equal(inventory.products.filter((p) => p.paypalUrl).length, 11)
+  assert.ok(inventory.products.filter((p) => p.paypalUrl).every((p) => p.paypalUrl === inventory.payments.paypalUrl))
   assert.equal(inventory.products.filter((p) => p.published).length, 0)
   for (const mutate of [
     (d) => { d.products[0].paypalUrl = 'https://attacker.example/payment' },
@@ -431,9 +437,9 @@ test('red PTSD hoodie remains a distinct unpublished draft with actual sale and 
   assert.equal(hoodie.requestCustomPiece, true)
   assert.equal(hoodie.published, false)
   assert.equal(isTraumaApparel(hoodie), true)
-  assert.deepEqual(hoodie.photos, [])
+  assert.equal(hoodie.photos.length, 2)
   assert.equal(productDestination(hoodie).platform, 'Depop')
-  assert.equal(productDestination(hoodie).url, 'https://depop.app.link/Q1BH5083K7b')
+  assert.equal(productDestination(hoodie).url, 'https://www.depop.com/traumacc/')
   assert.equal(paypalDestination(hoodie), 'https://paypal.me/NathanialBearsley')
   assert.deepEqual(featuredApparel(inventory), [])
 })
@@ -452,8 +458,8 @@ test('army patch capris preserve owner-supplied details as a separate unpublishe
   assert.equal(capris.published, false)
   assert.equal(capris.featured, true)
   assert.equal(isTraumaApparel(capris), true)
-  assert.deepEqual(capris.photos, [])
-  assert.equal(productDestination(capris), null)
+  assert.equal(capris.photos.length, 2)
+  assert.equal(productDestination(capris).url, 'https://www.depop.com/traumacc/')
   assert.equal(paypalDestination(capris), 'https://paypal.me/NathanialBearsley')
   assert.ok(inventory.products.some((p) => p.id === 'pressure-makes-diamonds'))
   assert.deepEqual(featuredApparel(inventory), [])
@@ -495,14 +501,17 @@ test('TRAUMA gallery categories route existing products and never expose drafts 
 })
 
 
-test('owner-supplied Depop app link is assigned only to the red PTSD hoodie', async () => {
-  const { isDepopProductUrl } = await import('../lib/inventory.ts')
-  assert.equal(isDepopProductUrl('https://depop.app.link/Q1BH5083K7b'), true)
+test('the red PTSD hoodie opens the official shop, and another seller profile is rejected', async () => {
+  const { DEPOP_SHOP_URL, isDepopProductUrl, productDestination } = await import('../lib/inventory.ts')
+  assert.equal(isDepopProductUrl('https://depop.app.link/TestShortId'), true)
   assert.equal(isDepopProductUrl('https://depop.app.link/'), false)
-  assert.equal(isDepopProductUrl('https://depop.app.link.attacker.example/Q1BH5083K7b'), false)
-  const matching = inventory.products.filter((product) => product.depopUrl === 'https://depop.app.link/Q1BH5083K7b')
+  assert.equal(isDepopProductUrl('https://depop.app.link.attacker.example/TestShortId'), false)
+  const matching = inventory.products.filter((product) => product.id === "ptsd-edition-me-vs-myself-hoodie" && product.sourceUrl === DEPOP_SHOP_URL)
   assert.deepEqual(matching.map((product) => product.id), ['ptsd-edition-me-vs-myself-hoodie'])
   assert.equal(matching[0].published, false)
+  const otherShop = { ...matching[0], depopUrl: 'https://www.depop.com/other-seller/', sourceUrl: '' }
+  assert.equal(productDestination(otherShop), null)
+  assert.throws(() => validateInventory({ version: 1, products: [otherShop] }), /Depop URL/)
 })
 
 
@@ -516,7 +525,7 @@ test('TRAUMA MADE ME is first in Hero Collection but its spotlight stays hidden 
   assert.equal(productCollection(jacket), 'Hero Collection')
   assert.equal(isTraumaApparel(jacket), true)
   assert.equal(jacket.published, false)
-  assert.deepEqual(jacket.photos, [])
+  assert.equal(jacket.photos.length, 2)
   assert.equal(homepageSpotlightProduct(inventory), null)
   assert.equal(CUSTOM_CREATION_TYPES.length, 10)
   assert.ok(CUSTOM_ORDER_TYPES.includes('Custom Beanies'))
@@ -562,14 +571,14 @@ test('women collection leggings remain an unpublished apparel draft with valid r
 
 test('homepage shows at most eight distinct approved products including the spotlight without limiting the full gallery', async () => {
   const { homepageProducts, homepageSpotlightProduct, homepageCollectionKey, HOMEPAGE_COLLECTIONS, galleryProducts } = await import('../lib/inventory.ts')
-  assert.equal(HOMEPAGE_COLLECTIONS.length, 8)
+  assert.deepEqual(HOMEPAGE_COLLECTIONS.map(({ title }) => title), ['Matching Sets', 'Hero Pieces', 'Featured Apparel', 'Books & Digital Products', 'Custom Orders'])
   assert.deepEqual(homepageProducts(inventory), [])
   const data = copy()
   for (const product of data.products.filter((p) => p.ownerConfirmed)) product.published = true
   const selected = homepageProducts(data)
   assert.equal(selected.length, 8)
   assert.equal(new Set(selected.map((p) => p.id)).size, 8)
-  assert.equal(selected[0].id, 'trauma-made-me-denim-jacket')
+  assert.equal(selected[0].id, 'loose-lips-sink-ships-premium-3-piece-collection')
   const spotlight = homepageSpotlightProduct(data)
   const otherCards = selected.filter((p) => p.id !== spotlight.id)
   assert.equal(otherCards.length, 7)
@@ -583,4 +592,45 @@ test('homepage shows at most eight distinct approved products including the spot
   assert.ok(!homepageProducts(data).some((p) => p.id === data.products[0].id))
   data.products[1].sold = true
   assert.ok(!homepageProducts(data).some((p) => p.id === data.products[1].id))
+})
+
+test('Matching Sets are physical apparel, lead the gallery when approved, and stay hidden while in draft', async () => {
+  const { galleryProducts, homepageProducts, isApparel, productDestination, paypalDestination } = await import('../lib/inventory.ts')
+  const data = copy()
+  const set = data.products.find((p) => p.category === 'Matching Sets')
+  assert.equal(set.price, 260)
+  assert.equal(set.published, false)
+  assert.equal(isApparel(set), true)
+  assert.equal(productDestination(set), null)
+  assert.equal(paypalDestination(set), null)
+  assert.ok(!galleryProducts(data, 'matching-sets').length)
+  assert.ok(!homepageProducts(data).some((p) => p.id === set.id))
+  data.products[0].published = true
+  set.published = true
+  assert.equal(galleryProducts(data)[0].id, set.id)
+  assert.deepEqual(galleryProducts(data, 'matching-sets').map((p) => p.id), [set.id])
+  for (const category of ['hero', 'featured-apparel', 'hoodies', 'digital'])
+    assert.ok(!galleryProducts(data, category).some((p) => p.id === set.id))
+})
+
+test('every selected Depop draft appears in Featured Apparel after approval', async () => {
+  const { DEPOP_SHOP_URL, galleryProducts, homepageProducts, productDestination } = await import('../lib/inventory.ts')
+  const data = copy()
+  const selected = data.products.filter((p) => p.photos.some((url) => url.startsWith('/images/products/featured-depop/')))
+  assert.equal(selected.length, 25)
+  assert.ok(selected.every((p) => !p.published && p.featuredApparel && productDestination(p)?.url === DEPOP_SHOP_URL))
+  assert.equal(galleryProducts(data, 'featured-apparel').length, 0)
+  for (const product of selected) product.published = true
+  assert.equal(galleryProducts(data, 'featured-apparel').length, 25)
+  assert.ok(homepageProducts(data).every((p) => p.featuredApparel))
+})
+
+test('release shows all 25 owner-approved photo listings and only populated category tabs', async () => {
+  const { DEPOP_SHOP_URL, galleryProducts, visibleGalleryCategories, paypalDestination, productDestination } = await import('../lib/inventory.ts')
+  const pieces = galleryProducts(releasedInventory, 'featured')
+  assert.equal(pieces.length, 25)
+  assert.ok(pieces.every((p) => p.photos.length > 0 && p.ownerConfirmed && productDestination(p)?.url === DEPOP_SHOP_URL))
+  assert.ok(pieces.every((p) => p.price === null ? !paypalDestination(p) : !!paypalDestination(p)))
+  const visible = visibleGalleryCategories(releasedInventory).map((tab) => tab.id)
+  assert.deepEqual(visible, ['featured', 'hoodies', 'shirts', 'denim', 'headwear', 'footwear', 'women', 'artwear'])
 })

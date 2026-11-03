@@ -414,6 +414,7 @@ export function InventoryManager() {
                       'Wallpapers',
                       'Guides',
                       'Apparel',
+                      'Matching Sets',
                       "Women's Collection",
                       'JourneyVault',
                       'Tops',
@@ -432,7 +433,7 @@ export function InventoryManager() {
                     Collection (optional)
                     <input value={product.collection ?? ''} maxLength={200} list="inventory-collections"
                       onChange={(e) => update({ collection: e.target.value })} className={fieldClass} />
-                    <datalist id="inventory-collections">{['Hero Collection', "Women's Collection", ...HEADWEAR_COLLECTIONS].map((collection) => <option key={collection} value={collection} />)}</datalist>
+                    <datalist id="inventory-collections">{['Matching Sets', 'Hero Collection', "Women's Collection", ...HEADWEAR_COLLECTIONS].map((collection) => <option key={collection} value={collection} />)}</datalist>
                   </label>
                   <label className="text-sm font-semibold sm:col-span-2">
                     Subtitle

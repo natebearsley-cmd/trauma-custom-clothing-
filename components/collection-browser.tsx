@@ -2,29 +2,29 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { ProductCard } from '@/components/product-card'
-import { CustomOrderGallery } from '@/components/trauma-collections'
-import { GALLERY_CATEGORIES, HEADWEAR_COLLECTIONS, WOMENS_COLLECTION_TYPES, galleryProducts, type Inventory } from '@/lib/inventory'
+import { GalleryCard } from '@/components/gallery-card'
+import { galleryProducts, visibleGalleryCategories, type Inventory } from '@/lib/inventory'
 
 export function CollectionBrowser({ inventory, category = 'all', collection = '', availability = 'all' }: { inventory: Inventory; category?: string; collection?: string; availability?: string }) {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState(availability)
-  const [headwear, setHeadwear] = useState(collection)
-  const products = galleryProducts(inventory, category, ['headwear', 'women'].includes(category) ? headwear : collection, status)
-    .filter((product) => `${product.name} ${product.description} ${product.productType ?? ''}`.toLowerCase().includes(search.trim().toLowerCase()))
-  const label = category === 'all' ? 'All collections' : category === 'apparel' ? 'Apparel' : GALLERY_CATEGORIES.find((item) => item.id === category)?.label ?? 'All collections'
+  const tabs = visibleGalleryCategories(inventory)
+  const matching = galleryProducts(inventory, category, collection, status)
+  const products = matching.filter((product) => `${product.name} ${product.description} ${product.productType ?? ''}`.toLowerCase().includes(search.trim().toLowerCase()))
+  const label = tabs.find((item) => item.id === category)?.label ?? (category === 'featured-apparel' ? 'Featured Apparel' : 'All pieces')
+  if (!galleryProducts(inventory).length) return null
   return <>
-    <nav aria-label="Browse collections" className="mt-10 flex flex-wrap gap-3">{[{ id: 'all', label: 'All collections' }, ...GALLERY_CATEGORIES].map((item) => <Link key={item.id} href={`/collections?category=${item.id}`} aria-current={category === item.id ? 'page' : undefined} className={`inline-flex min-h-12 items-center border px-4 py-3 text-sm ${category === item.id ? 'border-accent bg-accent text-accent-foreground' : 'border-border hover:border-accent'}`}>{item.label}</Link>)}</nav>
-    {category === 'custom-shoes' ? <div className="mt-12"><h2 className="mb-6 font-display text-4xl uppercase">Custom Orders</h2><CustomOrderGallery /></div> : <>
-      <div className="mt-10 grid items-end gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        <label className="text-sm font-semibold">Search the collection<input type="search" value={search} onChange={(event) => setSearch(event.target.value)} className="mt-2 min-h-12 w-full border border-input bg-background px-4" /></label>
-        <label className="text-sm font-semibold">Availability<select value={status} onChange={(event) => setStatus(event.target.value)} className="mt-2 min-h-12 w-full border border-input bg-background px-4"><option value="all">All pieces</option><option value="available">Available</option><option value="sold">Sold / archive</option></select></label>
-        {category === 'women' && <label className="text-sm font-semibold">Women's collection type<select value={headwear} onChange={(event) => setHeadwear(event.target.value)} className="mt-2 min-h-12 w-full border border-input bg-background px-4"><option value="">All women's pieces</option>{WOMENS_COLLECTION_TYPES.map((name) => <option key={name}>{name}</option>)}</select></label>}
-        {category === 'headwear' && <label className="text-sm font-semibold">Headwear collection<select value={headwear} onChange={(event) => setHeadwear(event.target.value)} className="mt-2 min-h-12 w-full border border-input bg-background px-4"><option value="">All hats & beanies</option>{HEADWEAR_COLLECTIONS.map((name) => <option key={name}>{name}</option>)}</select></label>}
-      </div>
-      <div className="mt-10 flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5"><h2 className="font-display text-4xl uppercase">{label}</h2><p role="status" className="text-sm text-muted-foreground">{products.length} {products.length === 1 ? 'piece' : 'pieces'}</p></div>
-      {products.length ? <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{products.map((product) => <ProductCard key={product.id} product={product} featured />)}</ul> : <p className="mt-8 max-w-xl text-muted-foreground">No published products match this view. Browse another collection or request a custom piece.</p>}
-      <Link href="/custom-orders" className="mt-8 inline-flex min-h-12 items-center border border-input px-5 py-3 text-sm font-semibold hover:border-accent">Request Custom Order</Link>
-    </>}
+    <nav aria-label="Browse collections" className="mt-8 flex flex-wrap gap-2">
+      {[{ id: 'all', label: 'All pieces' }, ...tabs].map((item) => (
+        <Link key={item.id} href={`/collections?category=${item.id}`} aria-current={category === item.id ? 'page' : undefined} className={`inline-flex min-h-11 items-center border px-3 py-2 text-sm ${category === item.id ? 'border-[#e98793] bg-[#752634] text-white' : 'border-white/15 bg-[#211f23] hover:border-[#e98793]'}`}>{item.label}</Link>
+      ))}
+    </nav>
+    <div className="mt-7 grid gap-3 sm:grid-cols-2">
+      <label className="text-sm font-semibold">Search the gallery<input type="search" value={search} onChange={(event) => setSearch(event.target.value)} className="mt-2 min-h-11 w-full border border-input bg-background px-3" /></label>
+      <label className="text-sm font-semibold">Availability<select value={status} onChange={(event) => setStatus(event.target.value)} className="mt-2 min-h-11 w-full border border-input bg-background px-3"><option value="all">All pieces</option><option value="available">Available</option><option value="sold">Sold / archive</option></select></label>
+    </div>
+    <div className="mt-9 flex flex-wrap items-end justify-between gap-3 border-b border-[#a52d41] pb-4"><h2 className="font-display text-3xl uppercase sm:text-4xl">{label}</h2><p role="status" className="text-sm text-muted-foreground">{products.length} {products.length === 1 ? 'piece' : 'pieces'}</p></div>
+    {products.length > 0 ? <ul className="mt-5 grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-3">{products.map((product) => <GalleryCard key={product.id} product={product} />)}</ul> :
+      (search || status !== 'all') && <button type="button" onClick={() => { setSearch(''); setStatus('all') }} className="mt-5 min-h-11 underline underline-offset-4">Clear filters</button>}
   </>
 }

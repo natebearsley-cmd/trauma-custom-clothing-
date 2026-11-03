@@ -1,5 +1,5 @@
 import type { Product, PhotoView } from './inventory'
-export const QUICK_APPAREL_CATEGORIES = ['Apparel', 'Tops', 'Outerwear', 'Denim', 'Headwear', "Women's Collection", 'Footwear']
+export const QUICK_APPAREL_CATEGORIES = ['Matching Sets', 'Apparel', 'Tops', 'Outerwear', 'Denim', 'Headwear', "Women's Collection", 'Footwear']
 export const QUICK_PRODUCT_CATEGORIES = [...QUICK_APPAREL_CATEGORIES, 'Books', 'Guides', 'Wallpapers', 'Digital Downloads']
 export const MAX_PRODUCT_PHOTO_BYTES = 3 * 1024 * 1024
 export const MAX_PRODUCT_PHOTOS = 12
@@ -32,12 +32,12 @@ export function buildQuickAddProduct(fields: QuickAddFields, paths: string[], se
     if (fields[field] !== undefined && (typeof fields[field] !== 'string' || fields[field]!.length > 200)) throw new Error(`Invalid ${field}.`)
   for (const flag of ['featuredCollection', 'featuredApparel'] as const) if (fields[flag] !== undefined && typeof fields[flag] !== 'boolean') throw new Error('Review your featured selections.')
   const featuredCollection = fields.featuredCollection ?? fields.featured
-  const featuredApparel = apparel && (fields.featuredApparel ?? fields.featured)
+  const featuredApparel = apparel && fields.category !== 'Matching Sets' && (fields.featuredApparel ?? fields.featured)
   return {
     id: `product-${session}`, name: fields.name.trim(), description: fields.description.trim(),
     brand: apparel ? 'Trauma Custom Clothing' : '', category: fields.category,
     size: fields.size?.trim() ?? '', condition: fields.condition?.trim() ?? '', color: fields.color?.trim() ?? '',
-    collection: fields.collection?.trim() || (fields.category === "Women's Collection" ? "Women's Collection" : ''),
+    collection: fields.collection?.trim() || (fields.category === 'Matching Sets' ? 'Matching Sets' : fields.category === "Women's Collection" ? "Women's Collection" : ''),
     productType: fields.productType?.trim() ?? '', orderType: apparel ? 'ready-made' : undefined, photos: paths,
     photoViews: fields.photoViews ?? paths.map(() => 'other'),
     price: fields.price, currency: 'USD', purchaseUrl: '',
