@@ -59,7 +59,8 @@
       ],
       "featuredApparel": true,
       "featuredCollection": true,
-      "homepageCollection": true
+      "homepageCollection": true,
+      "tiktokShopStatus": "ready"
     },
     {
       "id": "toxic-trauma-bond",
