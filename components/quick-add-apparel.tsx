@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import Link from 'next/link'
+import { TikTokListingPackage, type TikTokListing } from '@/components/tiktok-listing-package'
 import { validateInventory, PHOTO_VIEW_LABELS, type PhotoView } from '@/lib/inventory'
 import { MAX_PRODUCT_PHOTO_BYTES, MAX_PRODUCT_PHOTOS, QUICK_APPAREL_CATEGORIES, QUICK_PRODUCT_CATEGORIES, type QuickAddFields } from '@/lib/quick-add'
 import type { PhotoReceipt } from '@/lib/product-photo-upload'
@@ -34,7 +35,7 @@ export function QuickAddApparel() {
   const [dirty, setDirty] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
-  const [saved, setSaved] = useState<{ productId: string; published: boolean } | null>(null)
+  const [saved, setSaved] = useState<{ productId: string; published: boolean; tiktokListing: TikTokListing | null } | null>(null)
   const receipts = useRef(new Map<File, PhotoReceipt>())
   const formRef = useRef<HTMLFormElement>(null)
   const uploadRef = useRef<HTMLInputElement>(null)
@@ -83,6 +84,7 @@ export function QuickAddApparel() {
       featured: form.get('featuredCollection') === 'on' || form.get('featuredApparel') === 'on',
       featuredCollection: form.get('featuredCollection') === 'on', featuredApparel: form.get('featuredApparel') === 'on',
       photoViews: files.map((file) => views.get(file) ?? 'other'), published: mode === 'published',
+      tiktokReady: form.get('tiktokReady') === 'on',
       ownerConfirmed: form.get('ownerConfirmed') === 'on', reviewApproved: form.get('reviewApproved') === 'on',
     }
     setBusy(true); setError('')
@@ -108,7 +110,7 @@ export function QuickAddApparel() {
       })
       const result = await response.json().catch(() => ({ error: 'The save response was interrupted. Refresh inventory and retry; your details are kept.' }))
       if (!response.ok) throw new Error(result.error || 'Could not save this product.')
-      setSha(result.sha); setSaved({ productId: result.productId, published: result.published }); setDirty(false); setMessage(result.message)
+      setSha(result.sha); setSaved({ productId: result.productId, published: result.published, tiktokListing: result.tiktokListing ?? null }); setDirty(false); setMessage(result.message)
     } catch (reason) { setError(reason instanceof Error ? reason.message : 'Could not save this product.'); setMessage('Your form and selected photos are kept. Refresh inventory if needed, then try Save again.') }
     finally { setBusy(false) }
   }
@@ -119,7 +121,7 @@ export function QuickAddApparel() {
   return <div className="mt-8">
     {!opened ? <form onSubmit={open} className="max-w-xl border border-border bg-card p-6"><label htmlFor="quick-key" className="font-semibold">Admin key<input id="quick-key" type="password" required autoComplete="current-password" value={key} onChange={(event) => setKey(event.target.value)} className={field} /></label><p className="mt-3 text-sm text-muted-foreground">Your key stays in this tab’s memory. Use the same key as your inventory manager.</p><button disabled={busy} className={`${button} mt-5 bg-primary text-primary-foreground`}>{busy ? 'Opening…' : 'Open Quick Add'}</button></form> : <>
       <div className="mb-6 flex flex-wrap gap-3"><button type="button" disabled={busy} onClick={() => open()} className={button}>Refresh inventory</button><Link href="/admin/inventory" className={button}>Full inventory manager</Link><button type="button" disabled={busy} onClick={async () => { if (!dirty || window.confirm('Discard this unsaved product and sign out?')) { const response = await fetch('/api/admin/session', { method: 'DELETE' }); if (!response.ok) { setError('Could not sign out. Try again.'); return } setKey(''); setOpened(false); setFiles([]); receipts.current.clear(); setSaved(null); setDirty(false) } }} className={button}>Sign out</button></div>
-      {saved ? <div className="border border-accent bg-card p-6"><h2 className="text-2xl font-semibold">{saved.published ? 'Saved with publishing approved' : 'Draft saved'}</h2><p className="mt-4 leading-relaxed">{message}</p>{saved.published && <Link href={`/products/${saved.productId}`} className={`${button} mt-5`}>Open product after deployment</Link>}<button type="button" onClick={another} className={`${button} mt-5 ml-0 sm:ml-3`}>Add another product</button></div> : <form ref={formRef} onSubmit={save} onChange={() => setDirty(true)}>
+      {saved ? <div className="border border-accent bg-card p-6"><h2 className="text-2xl font-semibold">{saved.published ? 'Saved with publishing approved' : 'Draft saved'}</h2><p className="mt-4 leading-relaxed">{message}</p>{saved.published && <Link href={`/products/${saved.productId}`} className={`${button} mt-5`}>Open product after deployment</Link>}<button type="button" onClick={another} className={`${button} mt-5 ml-0 sm:ml-3`}>Add another product</button><Link href={`/admin/tiktok-shop?product=${encodeURIComponent(saved.productId)}`} className={`${button} mt-5 ml-0 sm:ml-3`}>Open in TikTok Shop Prep</Link>{saved.tiktokListing && <TikTokListingPackage listing={saved.tiktokListing} />}</div> : <form ref={formRef} onSubmit={save} onChange={() => setDirty(true)}>
         <fieldset disabled={busy} className="space-y-6 border border-border bg-card p-5 md:p-8">
           <legend className="px-2 font-semibold">Add your real TRAUMA product</legend>
           <label className="block font-semibold">Product Name<input name="name" required maxLength={200} autoComplete="off" className={field} /></label>
@@ -132,6 +134,7 @@ export function QuickAddApparel() {
           <details className="border-y border-border py-3"><summary className="flex min-h-12 cursor-pointer items-center font-semibold">Optional apparel details</summary><div className="mt-4 grid gap-5 sm:grid-cols-2">{[['size', 'Size'], ['condition', 'Condition'], ['color', 'Color'], ['productType', 'Product type'], ['collection', 'Collection (leave blank for automatic grouping)']].map(([name, label]) => <label key={name} className="text-sm font-semibold">{label}<input name={name} maxLength={200} className={field} /></label>)}</div></details>
           <fieldset className="space-y-3 border border-border p-4"><legend className="px-2 font-semibold">Featured placement</legend><label className="flex min-h-12 items-center gap-3"><input name="featuredCollection" type="checkbox" className="size-5 shrink-0" /><span>Add to Featured Collection</span></label><label className="flex min-h-12 items-center gap-3"><input name="featuredApparel" type="checkbox" disabled={!QUICK_APPAREL_CATEGORIES.includes(category)} className="size-5 shrink-0" /><span>Add to Featured Apparel</span></label><p className="text-sm text-muted-foreground">Choose either or both. All published pieces enter their category gallery; homepage curation is limited to eight distinct pieces.</p></fieldset>
           <fieldset className="space-y-3 border border-border p-4"><legend className="px-2 font-semibold">Save status</legend><label className="flex min-h-11 items-center gap-3"><input type="radio" name="status" value="draft" checked={mode === 'draft'} onChange={() => setMode('draft')} />Save as draft</label><label className="flex min-h-11 items-center gap-3"><input type="radio" name="status" value="published" checked={mode === 'published'} onChange={() => setMode('published')} />Publish after my review</label><p className="text-sm text-muted-foreground">Drafts stay private. Approved publishing creates the page and gallery entries after the connected website deployment succeeds. Homepage curation is limited to eight pieces.</p></fieldset>
+          <label className="flex min-h-12 items-start gap-3"><input name="tiktokReady" type="checkbox" className="mt-1 size-5 shrink-0" /><span>Ready for TikTok Shop<span className="mt-1 block text-sm text-muted-foreground">Save this status and get a copy-ready listing package. Saving here does not post to TikTok.</span></span></label>
           <label className="flex min-h-12 items-start gap-3"><input name="ownerConfirmed" type="checkbox" required className="mt-1 size-5 shrink-0" /><span>I confirm this is my real TRAUMA product and the details and photos accurately represent it.</span></label>
           {mode === 'published' && <label className="flex min-h-12 items-start gap-3"><input name="reviewApproved" type="checkbox" required className="mt-1 size-5 shrink-0" /><span>I have reviewed this product and approve publishing it.</span></label>}
           <button type="submit" disabled={busy} className={`${button} w-full bg-primary text-primary-foreground sm:w-auto`}>{busy ? 'Saving…' : 'Save Product'}</button>

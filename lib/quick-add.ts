@@ -1,3 +1,4 @@
+import { tiktokReadinessIssues } from './tiktok-shop.ts'
 import type { Product, PhotoView } from './inventory'
 export const QUICK_APPAREL_CATEGORIES = ['Matching Sets', 'Apparel', 'Tops', 'Outerwear', 'Denim', 'Headwear', "Women's Collection", 'Footwear']
 export const QUICK_PRODUCT_CATEGORIES = [...QUICK_APPAREL_CATEGORIES, 'Books', 'Guides', 'Wallpapers', 'Digital Downloads']
@@ -9,6 +10,7 @@ export type QuickAddFields = {
   depopUrl: string; paypalUrl: string; payhipUrl: string
   size?: string; condition?: string; color?: string; collection?: string; productType?: string
   featuredCollection?: boolean; featuredApparel?: boolean; photoViews?: PhotoView[]
+  tiktokReady?: boolean
   featured: boolean; published: boolean; ownerConfirmed: boolean; reviewApproved: boolean
 }
 export function buildQuickAddProduct(fields: QuickAddFields, paths: string[], session: string): Product {
@@ -33,7 +35,8 @@ export function buildQuickAddProduct(fields: QuickAddFields, paths: string[], se
   for (const flag of ['featuredCollection', 'featuredApparel'] as const) if (fields[flag] !== undefined && typeof fields[flag] !== 'boolean') throw new Error('Review your featured selections.')
   const featuredCollection = fields.featuredCollection ?? fields.featured
   const featuredApparel = apparel && fields.category !== 'Matching Sets' && (fields.featuredApparel ?? fields.featured)
-  return {
+  if (fields.tiktokReady !== undefined && typeof fields.tiktokReady !== 'boolean') throw new Error('Invalid TikTok Shop readiness.')
+  const product: Product = {
     id: `product-${session}`, name: fields.name.trim(), description: fields.description.trim(),
     brand: apparel ? 'Trauma Custom Clothing' : '', category: fields.category,
     size: fields.size?.trim() ?? '', condition: fields.condition?.trim() ?? '', color: fields.color?.trim() ?? '',
@@ -45,5 +48,8 @@ export function buildQuickAddProduct(fields: QuickAddFields, paths: string[], se
     source: fields.depopUrl.trim() ? 'depop' : fields.payhipUrl.trim() ? 'payhip' : 'manual', sourceUrl: fields.depopUrl.trim() || fields.payhipUrl.trim(),
     sold: false, soldDisplay: 'show', published: fields.published, featured: featuredCollection || featuredApparel, featuredCollection, featuredApparel,
     ownerConfirmed: true, requestCustomPiece: apparel,
+    ...(fields.tiktokReady ? { tiktokShopStatus: 'ready' as const } : {}),
   }
+  if (fields.tiktokReady && tiktokReadinessIssues(product).length) throw new Error('Complete the product details before marking it ready for TikTok Shop.')
+  return product
 }

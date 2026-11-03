@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { adminAuthorized, sameOrigin } from '@/lib/admin-auth'
 import { buildQuickAddProduct, MAX_PRODUCT_PHOTOS } from '@/lib/quick-add'
 import { validPhotoReceipt, type PhotoReceipt } from '@/lib/product-photo-upload'
+import { generateTikTokListing } from '@/lib/tiktok-shop'
 import { validateInventory } from '@/lib/inventory'
 import { commitQuickAdd, InventoryWriteError } from '@/lib/github-inventory-write'
 export const runtime = 'nodejs'
@@ -20,7 +21,7 @@ export async function POST(request: NextRequest) {
     const product = buildQuickAddProduct(body.product, receipts.map((receipt) => receipt.path.replace(/^public/, '')), body.session)
     validateInventory({ version: 1, products: [product] })
     const result = await commitQuickAdd({ product, images: receipts, expectedSha: body.sha, assertInventory: validateInventory })
-    return NextResponse.json({ sha: result.sha, productId: result.product.id, published: result.product.published, replayed: result.replayed,
+    return NextResponse.json({ sha: result.sha, productId: result.product.id, published: result.product.published, replayed: result.replayed, tiktokListing: generateTikTokListing(result.product),
       message: result.product.published ? 'Saved with publication approved. The product page, gallery, collection, and selected featured placement appear after the connected deployment succeeds.' : 'Draft saved with its photos. It will stay out of public pages and galleries until you approve publishing it.' }, { headers })
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : 'Could not save this product.' }, { status: error instanceof InventoryWriteError ? error.status : 400, headers }) }
 }

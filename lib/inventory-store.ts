@@ -7,5 +7,5 @@ validateInventory(source)
 export const inventory: Inventory = {
   version: 1,
   ...(source.payments ? { payments: source.payments } : {}),
-  products: source.products.filter((p) => p.published && p.ownerConfirmed),
+  products: source.products.filter((p) => p.published && p.ownerConfirmed).map(({ tiktokShopStatus: _status, ...product }) => product),
 }

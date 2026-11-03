@@ -1,3 +1,5 @@
+import { TIKTOK_STATUSES, type TikTokShopStatus } from './tiktok-shop.ts'
+
 export const DEPOP_SHOP_HANDLE = 'traumacc'
 export const DEPOP_SHOP_URL = `https://www.depop.com/${DEPOP_SHOP_HANDLE}/`
 
@@ -7,6 +9,7 @@ export const PHOTO_VIEW_LABELS: Record<PhotoView, string> = { front: 'Front view
 export type Product = {
   id: string
   name: string
+  tiktokShopStatus?: TikTokShopStatus
   brand: string
   category: string
   size: string
@@ -158,6 +161,7 @@ export function validateInventory(value: unknown): asserts value is Inventory {
       throw new Error('Product IDs must be unique lowercase slugs')
     ids.add(p.id)
     if (!p.name.trim()) throw new Error('Product name is required')
+    if (p.tiktokShopStatus !== undefined && !TIKTOK_STATUSES.includes(p.tiktokShopStatus)) throw new Error('Invalid TikTok Shop status')
     if (
       p.price !== null &&
       (typeof p.price !== 'number' ||
