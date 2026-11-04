@@ -58,6 +58,7 @@ export function JourneyVault({ action }: { action: string | null }) {
               aria-describedby="waitlist-help"
               className="min-h-12 min-w-0 border border-input bg-background px-4 text-base"
             />
+            <label className="flex items-start gap-3 text-sm text-muted-foreground"><input type="checkbox" name="marketing_consent" value="yes" required className="mt-1 size-5 shrink-0" />I agree to receive JourneyVault launch emails from TRAUMA. I can unsubscribe at any time.</label>
             <button
               type="submit"
               className="min-h-12 bg-primary px-5 py-3 font-semibold text-primary-foreground hover:bg-accent"

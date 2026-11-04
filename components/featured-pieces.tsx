@@ -100,7 +100,7 @@ export function FeaturedPieces({ inventory }: { inventory: Inventory }) {
             </FeaturedPiecesRail>
           </section>
         )}
-        <Shelf id="best-sellers" title="Best Sellers" products={bestSellers} />
+        <Shelf id="best-sellers" title="Featured Picks" products={bestSellers} />
         <Shelf id="featured-apparel" title="Featured Apparel" products={apparel} href="/collections?category=featured-apparel&availability=available" />
         <Shelf id="accessories" title="Accessories" products={accessories} href="/collections?category=headwear&availability=available" />
         <Shelf id="one-of-one" title="One of One Collection" description="No two pieces are identical." products={oneOfOne} href="/collections?category=artwear&availability=available" />

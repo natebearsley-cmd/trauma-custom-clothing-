@@ -15,13 +15,8 @@ export function SiteFooter() {
           </p>
           <ul className="flex flex-wrap gap-5">
             {[
-              ['Shipping', '/shipping'], ['Returns', '/returns'], ['FAQ', '/faq'], ['QuietWork AI', '/quietwork'],
+              ['Shipping', '/shipping'], ['Returns', '/returns'], ['FAQ', '/faq'], ['Contact TRAUMA', '/contact'],
             ].map(([label, href]) => <li key={href}><a href={href} className="inline-flex min-h-11 items-center text-sm underline underline-offset-4">{label}</a></li>)}
-            <li>
-              <a href="/admin" className="inline-flex min-h-11 items-center text-sm underline underline-offset-4">
-                Manage inventory
-              </a>
-            </li>
             <li>
               <a
                 href={PAYHIP_SHOP_URL}

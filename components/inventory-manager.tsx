@@ -407,6 +407,24 @@ export function InventoryManager() {
                       />
                     </label>
                   ))}
+                  <label className="text-sm font-semibold">Inventory type
+                    <select value={product.inventoryType ?? ''} onChange={(e) => update({ inventoryType: e.target.value ? e.target.value as Product['inventoryType'] : undefined })} className={fieldClass}>
+                      <option value="">Not classified</option><option value="apparel">Apparel</option><option value="reworked-denim">Reworked denim</option><option value="one-of-one">One-of-one custom</option><option value="digital">Digital product</option>
+                    </select>
+                  </label>
+                  <label className="text-sm font-semibold">Fulfillment
+                    <select value={product.fulfillmentType ?? ''} onChange={(e) => update({ fulfillmentType: e.target.value ? e.target.value as Product['fulfillmentType'] : undefined })} className={fieldClass}>
+                      <option value="">Confirm fulfillment</option><option value="physical">Physical — buyer pays shipping</option><option value="digital">Digital — no shipping</option>
+                    </select>
+                  </label>
+                  <label className="text-sm font-semibold">Packed weight (oz)
+                    <input type="number" min="0.01" max="2400" step="0.01" value={product.packedWeightOz ?? ''} onChange={(e) => update({ packedWeightOz: e.target.value === '' ? undefined : Number(e.target.value) })} className={fieldClass} />
+                    <span className="block text-xs font-normal text-muted-foreground">Weigh the garment with its packaging. Never estimate from its title.</span>
+                  </label>
+                  <label className="text-sm font-semibold">Stock quantity
+                    <input type="number" min="0" step="1" value={product.stockQuantity ?? ''} onChange={(e) => update({ stockQuantity: e.target.value === '' ? undefined : Number(e.target.value) })} className={fieldClass} />
+                    <span className="block text-xs font-normal text-muted-foreground">One-of-one pieces have at most one unit. Mark sold after marketplace sales.</span>
+                  </label>
                   <datalist id="product-categories">
                     {[
                       'Books',

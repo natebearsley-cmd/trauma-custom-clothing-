@@ -144,10 +144,10 @@ export function ProductCard({
           </a>
         ) : null}
         {paypalUrl && (
-          <a href={paypalUrl} target="_blank" rel="noopener noreferrer"
+          <a href={`/checkout/${product.id}`}
             className="inline-flex min-h-12 items-center justify-center gap-2 border border-input px-4 py-3 text-sm font-semibold hover:border-accent">
-            Pay With PayPal <ArrowUpRight className="size-4" aria-hidden="true" />
-            <span className="sr-only"> for {product.name} (opens in new tab)</span>
+            Review shipping & PayPal <ArrowUpRight className="size-4" aria-hidden="true" />
+            <span className="sr-only"> for {product.name}</span>
           </a>
         )}
         {apparel && !custom && !product.sold && product.requestCustomPiece && (

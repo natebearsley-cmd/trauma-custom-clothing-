@@ -3,6 +3,7 @@ import { Hero } from '@/components/hero'
 import { FounderStory } from '@/components/founder-story'
 import { FeaturedPieces } from '@/components/featured-pieces'
 import { CustomInquiry } from '@/components/custom-inquiry'
+import { EmailSignup } from '@/components/email-signup'
 import { DigitalShop } from '@/components/digital-shop'
 import { SiteFooter } from '@/components/site-footer'
 
@@ -26,6 +27,7 @@ export default function Page() {
           customProducts={storefrontProducts(inventory).filter(isApparel).map(({ id, name }) => ({ id, name }))}
         />
         <DigitalShop />
+        {process.env.WAITLIST_FORM_ACTION && safeUrl(process.env.WAITLIST_FORM_ACTION) && <EmailSignup action={process.env.WAITLIST_FORM_ACTION} />}
       </main>
       <SiteFooter />
     </>

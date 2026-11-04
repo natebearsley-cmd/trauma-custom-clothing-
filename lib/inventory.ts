@@ -8,6 +8,10 @@ export const PHOTO_VIEW_LABELS: Record<PhotoView, string> = { front: 'Front view
 
 export type Product = {
   id: string
+  inventoryType?: 'apparel' | 'reworked-denim' | 'one-of-one' | 'digital'
+  fulfillmentType?: 'physical' | 'digital'
+  packedWeightOz?: number
+  stockQuantity?: number
   name: string
   tiktokShopStatus?: TikTokShopStatus
   brand: string
@@ -160,6 +164,14 @@ export function validateInventory(value: unknown): asserts value is Inventory {
     if (!/^[a-z0-9][a-z0-9-]{0,99}$/.test(p.id) || ids.has(p.id))
       throw new Error('Product IDs must be unique lowercase slugs')
     ids.add(p.id)
+    if (p.inventoryType !== undefined && !['apparel', 'reworked-denim', 'one-of-one', 'digital'].includes(p.inventoryType)) throw new Error('Invalid inventory type')
+    if (p.inventoryType === 'digital' && p.fulfillmentType === 'physical') throw new Error('Digital inventory cannot require physical fulfillment')
+    if (p.sold && p.stockQuantity !== undefined && p.stockQuantity !== 0) throw new Error('Sold inventory must have zero stock')
+    if (p.published && !p.sold && p.stockQuantity === 0) throw new Error('Zero-stock inventory must be marked sold before publishing')
+    if (p.fulfillmentType !== undefined && !['physical', 'digital'].includes(p.fulfillmentType)) throw new Error('Invalid fulfillment type')
+    if (p.packedWeightOz !== undefined && (!Number.isFinite(p.packedWeightOz) || p.packedWeightOz <= 0 || p.packedWeightOz > 2400)) throw new Error('Packed weight must be greater than zero and at most 2400 ounces')
+    if (p.stockQuantity !== undefined && (!Number.isSafeInteger(p.stockQuantity) || p.stockQuantity < 0)) throw new Error('Stock quantity must be a nonnegative integer')
+    if (p.inventoryType === 'one-of-one' && p.stockQuantity !== undefined && p.stockQuantity > 1) throw new Error('One-of-one stock cannot exceed one')
     if (!p.name.trim()) throw new Error('Product name is required')
     if (p.tiktokShopStatus !== undefined && !TIKTOK_STATUSES.includes(p.tiktokShopStatus)) throw new Error('Invalid TikTok Shop status')
     if (
@@ -288,6 +300,8 @@ export function isMatchingSet(product: Product): boolean {
 }
 
 export function isApparel(product: Product): boolean {
+  if (product.inventoryType === 'digital') return false
+  if (product.inventoryType && ['apparel', 'reworked-denim', 'one-of-one'].includes(product.inventoryType)) return true
   return isMatchingSet(product) || ['apparel', 'tops', 'outerwear', 'headwear', 'hats & beanies', 'hats', 'beanies', 'footwear', 'denim', "women's collection"].includes(
     product.category.trim().toLowerCase(),
   )

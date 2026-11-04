@@ -4,7 +4,7 @@ import { CollectionBrowser } from '@/components/collection-browser'
 import { inventory } from '@/lib/inventory-store'
 import { GALLERY_CATEGORIES, galleryProducts } from '@/lib/inventory'
 
-export const metadata = { title: 'TRAUMA Collections', description: 'Explore original TRAUMA apparel, headwear, one-of-one artwear, books, and custom orders.' }
+export const metadata = { title: 'TRAUMA Collections', description: 'Explore original TRAUMA apparel, headwear, one-of-one artwear, books, and custom orders.', alternates: { canonical: '/collections' } }
 export default async function CollectionsPage({ searchParams }: { searchParams: Promise<{ category?: string; collection?: string; availability?: string; q?: string }> }) {
   const query = await searchParams
   const requested = ['all', 'apparel', ...GALLERY_CATEGORIES.map((item) => item.id)].includes(query.category ?? '') ? query.category! : 'all'

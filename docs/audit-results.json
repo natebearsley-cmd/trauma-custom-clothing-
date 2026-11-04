@@ -1,0 +1,297 @@
+{
+  "scope": "Local production build; external marketplace/runtime checks limited by HTTP 403",
+  "viewports": [
+    320,
+    360,
+    375,
+    390,
+    412,
+    430,
+    768,
+    1024,
+    1440
+  ],
+  "tests": {
+    "passed": 52,
+    "failed": 0
+  },
+  "build": "passed",
+  "dependencyAudit": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0
+  },
+  "browser": {
+    "pages": [
+      {
+        "path": "/",
+        "status": 200
+      },
+      {
+        "path": "/collections",
+        "status": 200
+      },
+      {
+        "path": "/collections/tiktok",
+        "status": 200
+      },
+      {
+        "path": "/custom-orders",
+        "status": 200
+      },
+      {
+        "path": "/contact",
+        "status": 200
+      },
+      {
+        "path": "/shipping",
+        "status": 200
+      },
+      {
+        "path": "/returns",
+        "status": 200
+      },
+      {
+        "path": "/faq",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-made-me-denim-jacket",
+        "status": 200
+      },
+      {
+        "path": "/products/toxic-trauma-bond",
+        "status": 200
+      },
+      {
+        "path": "/products/ptsd-edition-me-vs-myself-hoodie",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-cc-ecko-carpenter-jeans",
+        "status": 200
+      },
+      {
+        "path": "/products/survived-graphic-tee",
+        "status": 200
+      },
+      {
+        "path": "/products/anxiety-shawna-splatter-crewneck",
+        "status": 200
+      },
+      {
+        "path": "/products/loose-lips-sink-ships-wide-leg-jeans",
+        "status": 200
+      },
+      {
+        "path": "/products/still-breathing-bleach-wash-graphic-tee",
+        "status": 200
+      },
+      {
+        "path": "/products/pressure-makes-diamonds-army-patch-capris",
+        "status": 200
+      },
+      {
+        "path": "/products/unspoken-tie-dye-graphic-tee-small",
+        "status": 200
+      },
+      {
+        "path": "/products/adidas-nizza-rf-purple-chain-custom",
+        "status": 200
+      },
+      {
+        "path": "/products/betrayal-eyes-dont-lie-hoodie",
+        "status": 200
+      },
+      {
+        "path": "/products/unspoken-pink-custom-high-tops",
+        "status": 200
+      },
+      {
+        "path": "/products/born-from-pain-black-tee",
+        "status": 200
+      },
+      {
+        "path": "/products/pain-made-me-rose-trucker",
+        "status": 200
+      },
+      {
+        "path": "/products/unspoken-red-letter-trucker",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-red-lips-trucker",
+        "status": 200
+      },
+      {
+        "path": "/products/unspoken-purple-trucker",
+        "status": 200
+      },
+      {
+        "path": "/products/pressure-makes-diamonds-black-tank",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-black-quilted-graphic-jacket",
+        "status": 200
+      },
+      {
+        "path": "/products/made-in-chaos-dark-beanie",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-cc-stacked-dark-beanie",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-cc-dot-dark-beanie",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-red-logo-cream-beanie",
+        "status": 200
+      },
+      {
+        "path": "/products/trauma-cc-bar-dark-beanie",
+        "status": 200
+      },
+      {
+        "path": "/products/product-3e7a8e33-946b-4e02-82f3-e9eabe427359",
+        "status": 200
+      }
+    ],
+    "assets": [],
+    "overflow": [],
+    "console": [],
+    "links": [],
+    "security": [
+      {
+        "path": "/admin",
+        "loginOnly": true,
+        "editorVisible": false
+      },
+      {
+        "path": "/admin/inventory",
+        "loginOnly": true,
+        "editorVisible": false
+      },
+      {
+        "path": "/admin/quick-add",
+        "loginOnly": true,
+        "editorVisible": false
+      },
+      {
+        "path": "/admin/tiktok-shop",
+        "loginOnly": true,
+        "editorVisible": false
+      },
+      {
+        "path": "/api/admin/session",
+        "status": 401
+      },
+      {
+        "path": "/api/admin/inventory",
+        "status": 401
+      }
+    ],
+    "interactions": [
+      {
+        "mobileMenuEscape": true
+      },
+      {
+        "illinoisOrigin": true,
+        "noFreeShipping": true
+      }
+    ]
+  },
+  "flows": {
+    "quoteEmailDraft": true,
+    "emailQuoteReady": true,
+    "draftProductStatus": 404,
+    "unknownProductStatus": 404,
+    "quietworkStatus": 404,
+    "assets": [],
+    "checkout": [
+      {
+        "id": "trauma-made-me-denim-jacket",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "toxic-trauma-bond",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "ptsd-edition-me-vs-myself-hoodie",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "trauma-cc-ecko-carpenter-jeans",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "survived-graphic-tee",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "anxiety-shawna-splatter-crewneck",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "loose-lips-sink-ships-wide-leg-jeans",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "still-breathing-bleach-wash-graphic-tee",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "pressure-makes-diamonds-army-patch-capris",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "unspoken-tie-dye-graphic-tee-small",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "adidas-nizza-rf-purple-chain-custom",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "betrayal-eyes-dont-lie-hoodie",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      },
+      {
+        "id": "product-3e7a8e33-946b-4e02-82f3-e9eabe427359",
+        "status": 200,
+        "quoteLink": true,
+        "rawPayPalLink": false
+      }
+    ]
+  }
+}

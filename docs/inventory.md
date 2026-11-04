@@ -264,3 +264,10 @@ The screen is mobile responsive, keeps the admin key in tab memory, previews onl
 ## Current mobile dashboard and Quick Add workflow
 
 Use `docs/admin-quick-start.md` as the current nontechnical guide. `/admin` is now the six-button business dashboard; the full editor moved to `/admin/inventory`, and `/admin/quick-add` is Quick Add Product. A signed seven-day HttpOnly session cookie is shared across admin screens. Password autofill may use the phone's Face ID; the website does not claim native biometric/passkey support. Photos upload through the admin interface, preserving originals, with front/back/detail/branding labels and independent Featured Collection/Apparel selections. Books and digital categories are supported by the same Quick Add screen with Payhip, while apparel retains Depop/PayPal. Publication still requires explicit owner approval in the form. Existing product drafts were not published or modified for this dashboard change.
+
+
+## Shipping and stock fields (November 2026)
+
+The full inventory editor includes `inventoryType` (`apparel`, `reworked-denim`, `one-of-one`, `digital`), `fulfillmentType` (`physical`, `digital`), `packedWeightOz`, and `stockQuantity`. Existing records may omit these until the owner supplies measured values. Reworked denim and one-of-one types route as physical apparel. One-of-one stock cannot exceed one; sold records with explicit counts must have zero; published zero-stock pieces must be marked sold.
+
+UPS Ground is the default, from Albany, Illinois, with buyer-paid weight-based shipping, tracking and estimated transit of 3–5 business days. USPS Ground Advantage is the lightweight backup. Most orders ship within one business day when stock is available; custom production timing requires a quote. See `docs/shipping-architecture.md` for the unconnected carrier-provider boundary. An inventory count is not a stock reservation or marketplace synchronization.

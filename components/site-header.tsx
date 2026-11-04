@@ -7,10 +7,10 @@ import { PAYHIP_SHOP_URL } from '@/lib/site'
 const NAV = [
   { label: 'Story', href: '/#story', external: false },
   { label: 'Collections', href: '/#drops', external: false },
-  { label: 'Apparel', href: '/#featured-apparel', external: false },
+  { label: 'Apparel', href: '/collections?category=apparel&availability=available', external: false },
   { label: 'Books & Digital', href: '/#books-digital', external: false },
   { label: 'Custom', href: '/#custom', external: false },
-  { label: 'Contact', href: '/#contact', external: false },
+  { label: 'Contact', href: '/contact', external: false },
 ]
 
 export function SiteHeader() {

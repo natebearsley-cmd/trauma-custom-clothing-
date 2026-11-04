@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { ArrowUpRight, Upload } from 'lucide-react'
 import { CUSTOM_ORDER_TYPES } from '@/lib/inventory'
+import { CONTACT_EMAIL_URL } from '@/lib/contact'
 import { DEPOP_SHOP_URL } from '@/lib/site'
 
 const PRODUCT_TYPES = CUSTOM_ORDER_TYPES
@@ -23,6 +24,7 @@ export function CustomInquiry({ action = null, customProducts = [], initialType 
   const [productType, setProductType] = useState(PRODUCT_TYPES.includes(initialType) ? initialType : '')
   const [files, setFiles] = useState<File[]>([])
   const [fileError, setFileError] = useState('')
+  const [emailDraft, setEmailDraft] = useState('')
   const [message, setMessage] = useState('')
   const formRef = useRef<HTMLFormElement>(null)
   const filesRef = useRef<HTMLInputElement>(null)
@@ -61,9 +63,10 @@ export function CustomInquiry({ action = null, customProducts = [], initialType 
       `Design files (attach separately): ${files.map((file) => file.name).join(', ') || 'None selected'}`,
       'Quote request only. Price, availability, and production timing require confirmation.',
     ].join('\n')
+    setEmailDraft(`${CONTACT_EMAIL_URL}?subject=${encodeURIComponent('TRAUMA custom quote request')}&body=${encodeURIComponent(brief)}`)
     try {
       await navigator.clipboard.writeText(brief)
-      setMessage('Brief copied. Send it to TRAUMA on Depop and attach your design files separately. Nothing has been sent automatically.')
+      setMessage('Brief copied. Email your request using the link below, or send it on Depop. Attach your design files separately. Nothing has been sent automatically.')
     } catch {
       setMessage(`Copy this brief and send it to TRAUMA on Depop. Attach files separately; nothing has been sent.\n\n${brief}`)
     }
@@ -104,9 +107,10 @@ export function CustomInquiry({ action = null, customProducts = [], initialType 
           </div>
           <div className="flex flex-col gap-2"><label htmlFor="quote-notes" className={labelClass}>Additional notes (optional)</label><textarea id="quote-notes" name="additional_notes" rows={3} maxLength={3000} className={fieldClass} /></div>
           <p id="custom-privacy" className="text-xs leading-relaxed text-muted-foreground">Your contact information and design files are used to respond to your quote request. Only share information and artwork you want TRAUMA to receive.</p>
-          <p id="custom-delivery" className="text-sm leading-relaxed text-muted-foreground">{action ? 'Submitting sends your details and files to TRAUMA’s quote service. The service’s response page confirms receipt.' : 'Online quote delivery is not connected yet. No requests or files are collected here. You can copy your brief and send it to TRAUMA on Depop, attaching files separately.'}</p>
-          <button type="submit" disabled={!action || !!fileError} className="inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-5 py-4 text-sm font-bold uppercase tracking-widest text-primary-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50">Request a Custom Quote<ArrowUpRight className="size-4" aria-hidden="true" /></button>
-          <button type="button" onClick={copyBrief} className="min-h-12 border border-input px-5 py-3 text-sm font-semibold hover:border-accent">Copy quote brief</button>
+          <p id="custom-delivery" className="text-sm leading-relaxed text-muted-foreground">{action ? 'Submitting sends your details and files to TRAUMA’s quote service. The service’s response page confirms receipt.' : 'Online quote delivery is not connected yet. No requests or files are collected here. Prepare an email quote below, or copy your brief for Depop. Attach your files separately.'}</p>
+          <button type={action ? "submit" : "button"} onClick={action ? undefined : copyBrief} disabled={!!fileError} className="inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-5 py-4 text-sm font-bold uppercase tracking-widest text-primary-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50">{action ? "Request a Custom Quote" : "Prepare email quote"}<ArrowUpRight className="size-4" aria-hidden="true" /></button>
+          <button type="button" onClick={copyBrief} className="min-h-12 border border-input px-5 py-3 text-sm font-semibold hover:border-accent">Prepare &amp; copy quote request</button>
+          {emailDraft && <a href={emailDraft} className="inline-flex min-h-12 items-center justify-center bg-primary px-5 py-3 font-semibold text-primary-foreground">Email this quote request</a>}
           <p role="status" aria-live="polite" className="whitespace-pre-wrap break-words text-sm text-muted-foreground">{message}</p>
         </form>
       </div>

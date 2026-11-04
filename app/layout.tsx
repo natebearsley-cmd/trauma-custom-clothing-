@@ -20,7 +20,7 @@ const inter = localFont({
 export const metadata: Metadata = {
   title: 'TRAUMA CC | Trauma Custom Clothing',
   description:
-    'Original garments, books, and digital products from Nathanial Bearsley — founder, author, recovery coach, and entrepreneur behind TRAUMA CC. Shop on Payhip.',
+    'Original garments, books, and digital products from Nathanial Bearsley — founder, author, recovery coach, and entrepreneur behind TRAUMA CC. Shop apparel on Depop, request a custom piece, and explore digital products on Payhip.',
   metadataBase: siteUrl,
   alternates: { canonical: '/' },
   applicationName: 'TRAUMA CC',
@@ -74,7 +74,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         {children}
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === 'production' && process.env.VERCEL === '1' && <Analytics />}
       </body>
     </html>
   )

@@ -7,6 +7,7 @@ import { galleryProducts, isMatchingSet, paypalDestination, productDestination }
 import { inventory } from '@/lib/inventory-store'
 
 export const metadata = {
+  alternates: { canonical: '/collections/tiktok' },
   title: 'TikTok Sales Collection | TRAUMA Custom Clothing',
   description: 'Shop a curated edit of TRAUMA hoodies, custom denim, statement tees, and one-of-one pieces.',
 }
@@ -39,6 +40,7 @@ export default function TikTokCollectionPage() {
       <main id="main-content" className="mx-auto max-w-6xl px-4 pb-16 pt-7 sm:px-8 md:pb-24 md:pt-12">
         <p className="eyebrow">TRAUMA Custom Clothing</p>
         <h1 className="section-title mt-2">TikTok Sales Collection</h1>
+        <p className="mt-4 max-w-2xl text-muted-foreground">One-of-one clothing built from trauma, recovery, and resilience. Ships from Albany, Illinois. Buyer-paid UPS Ground shipping is confirmed before payment.</p>
         {products.length > 0 && (
           <ul className="mt-6 grid gap-5 sm:grid-cols-2 sm:gap-7">
             {products.map((product, index) => {
@@ -61,7 +63,7 @@ export default function TikTokCollectionPage() {
                         View Product · {price}<ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
                       </Link>
                       <div className="flex flex-wrap gap-2">
-                        {paypal && <a href={paypal} className={secondaryButton}>Pay with PayPal</a>}
+                        {paypal && <Link href={`/checkout/${product.id}`} className={secondaryButton}>Shipping &amp; PayPal</Link>}
                         {depop?.platform === 'Depop' && <a href={depop.url} className={secondaryButton}>Shop on Depop</a>}
                       </div>
                     </div>

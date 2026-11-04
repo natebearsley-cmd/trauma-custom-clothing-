@@ -1,10 +1,12 @@
+import { notFound } from 'next/navigation'
 import { StoreInfo } from '@/components/store-info'
 
-export const metadata = { title: 'QuietWork AI | TRAUMA', description: 'QuietWork AI helps service businesses organize inquiries and quote requests.', alternates: { canonical: '/quietwork' } }
+export const metadata = { robots: { index: false, follow: false }, title: 'QuietWork AI | TRAUMA', description: 'QuietWork AI helps service businesses organize inquiries and quote requests.', alternates: { canonical: '/quietwork' } }
 
 const quietworkEmail = 'mailto:traumacustomclothingofficial@gmail.com?subject=QuietWork%20AI%20Demo%20Request'
 
 export default function QuietWorkPage() {
+  if (process.env.ENABLE_QUIETWORK_PUBLIC !== 'true') notFound()
   return <StoreInfo title="QuietWork AI" label="From the founder of TRAUMA">
     <section className="border-l-2 border-accent pl-5">
       <h2 className="text-2xl font-bold">Let QuietWork Lighten The Workload.</h2>

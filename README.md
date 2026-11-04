@@ -34,3 +34,8 @@ Anton and Inter are self-hosted with their Open Font Licenses; builds do not fet
 ## Product photographs
 
 Follow [the required TRAUMA product photo workflow](docs/product-photo-workflow.md). Preserve original garments, graphics, logos, and colors. Only the owner-listed cleanup adjustments are allowed; no mockups, invented views, or product publication without approval.
+
+
+## Audit and release
+
+See [PROJECT_STATUS.md](PROJECT_STATUS.md) for implemented improvements, remaining launch blockers and evidence, and [LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md) before public release. Shipping requirements and integration boundaries are in [docs/shipping-architecture.md](docs/shipping-architecture.md). `.env.example` lists configuration names without secrets. The current checkout remains marketplace/manual-quote based; live carrier rates and transactional direct orders are not connected.
