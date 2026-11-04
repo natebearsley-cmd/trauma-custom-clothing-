@@ -3,10 +3,11 @@ import { test } from 'node:test'
 import { shippingEstimate, shippingRequest, SHIPPING_ORIGIN } from '../lib/shipping.ts'
 
 test('physical shipping is buyer paid, weight based, and originates in Illinois', () => {
-  assert.equal(SHIPPING_ORIGIN, 'Albany, Illinois, USA')
+  assert.equal(SHIPPING_ORIGIN, 'Albany, Illinois 61230, USA')
   const product = { id: 'denim', fulfillmentType: 'physical', packedWeightOz: 24 }
   const request = shippingRequest([{ product, quantity: 2 }], '90210', 'USPS Ground Advantage')
   assert.equal(request.originState, 'IL')
+  assert.equal(request.originPostalCode, '61230')
   assert.equal(request.packedWeightOz, 48)
   assert.equal(request.buyerPaysShipping, true)
   assert.equal(request.requiresCarrierQuote, true)
@@ -31,8 +32,9 @@ test('carrier payload requires a confirmed origin ZIP and measured dimensions', 
   const { carrierQuoteRequest } = await import('../lib/shipping.ts')
   const request = shippingRequest([{ product: { id: 'hoodie', packedWeightOz: 28 }, quantity: 1 }], '90210', 'USPS Ground Advantage')
   assert.throws(() => carrierQuoteRequest(request, '', { length: 12, width: 10, height: 3 }))
-  assert.throws(() => carrierQuoteRequest(request, '12345', { length: 0, width: 10, height: 3 }))
-  assert.equal(carrierQuoteRequest(request, '12345', { length: 12, width: 10, height: 3 }).originState, 'IL')
+  assert.throws(() => carrierQuoteRequest(request, '61230', { length: 0, width: 10, height: 3 }))
+  assert.throws(() => carrierQuoteRequest(request, '12345', { length: 12, width: 10, height: 3 }))
+  assert.equal(carrierQuoteRequest(request, '61230', { length: 12, width: 10, height: 3 }).originState, 'IL')
 })
 
 test('UPS Ground defaults to tracked buyer-paid shipping and uses its own weight limit', () => {

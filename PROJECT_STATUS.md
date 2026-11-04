@@ -41,7 +41,7 @@ Ordered by the owner's revenue priorities.
 | --- | --- | --- | --- |
 | 1 | Category-based prices and free shipping could undercharge physical orders. | Buyer-paid destination/weight-based quotes. | Removed invented estimates and threshold; implemented carrier payload builder and clear policy. Live quotes still need a provider. |
 | 1 | Carrier/origin requirements changed during the audit; inconsistent promises would confuse buyers. | One Illinois origin and UPS-first policy. | Latest requirements applied: UPS Ground default, USPS Ground Advantage backup, 3–5 day UPS estimate, tracking, usually one-business-day dispatch when stocked. |
-| 1 | No confirmed origin ZIP, actual weights or package measurements. | Collect measured inputs before rating. | Schema/editor and validation ready; missing inputs are not fabricated. Owner input remains required. |
+| 1 | Packed weights, package measurements and full return address are still needed. | Collect measured inputs before rating. | Origin ZIP confirmed as 61230 and applied to shipping payloads; schema/editor ready. Remaining measurements and return address require owner input. |
 | 1 | No rate/label-provider connection. | Configure a UPS/USPS-capable provider or marketplace settings. | Not connected: no carrier account/credentials available. Current payment flow requires a quote or marketplace final charge. |
 | 2 | Some PayPal buttons bypassed shipping review. | Make final total confirmation mandatory before generic PayPal payment. | Routed all identified public PayPal CTAs through review; preserved marketplace purchase paths. |
 | 2 | Generic PayPal links do not create secure shipping-inclusive orders or reserve one-of-one stock. | Use marketplace checkout now; add server-priced checkout, signed webhooks and transactional stock for direct ecommerce. | Manual quote/marketplace path implemented. Automated payment/order/reservation backend remains unfinished. |
@@ -89,7 +89,7 @@ See `docs/audit-results.json` for final machine-readable local browser results a
 
 ## Immediate next actions
 
-1. Confirm exact Albany, Illinois ship-from ZIP/return address; weigh all packaged inventory. Configure UPS Ground first and USPS Ground Advantage backup in the actual selling account.
+1. Origin ZIP is confirmed as 61230 for Albany, Illinois. Confirm the full return address and weigh all packaged inventory. Configure UPS Ground first and USPS Ground Advantage backup in the actual selling account.
 2. Confirm the existing business mailbox; send and receive a real custom quote and shipping inquiry. Attach files manually for email quotes.
 3. Configure a rate provider/marketplace and verify a shipping-inclusive purchase, label and tracking. Use transactional orders/reservations before automating one-of-one direct checkout.
 4. Attach the original ZIP and confirm production Vercel project/URL; perform the outstanding three-way comparison and deployed smoke test.
@@ -103,3 +103,7 @@ Code release `ba7aea02113f181af3cdc05779004973852925ac` was pushed to `main`. Th
 Deployment: https://vercel.com/nathanialbearsley-2937/tra/HbCAnYmsWoYZWS29faDDMZdPpuHK
 
 The deployed code includes the UPS-first policy and sales-workflow changes described above. This confirms Vercel's deployment result, not a completed live purchase or runtime smoke test: direct storefront access is still blocked in this environment. No Vercel credentials, marketplace settings, carrier accounts or email-provider credentials were configured. The original ZIP is still required for backup comparison.
+
+## Confirmed shipping ZIP
+
+The owner confirmed **Albany, Illinois 61230**. Shared origin configuration, carrier-request payloads and policy text use 61230. Carrier payloads reject a different origin ZIP. Full return address, package measurements and carrier-account setup remain outstanding.

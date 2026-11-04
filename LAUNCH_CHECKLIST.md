@@ -11,7 +11,8 @@ November 4, 2026. Check boxes indicate verified work, not assumed account config
 - [x] Policy states most stocked orders ship within one business day.
 - [x] Tracking included on all physical orders; custom production timing quoted separately.
 - [x] Schema/editor accept actual packed weights; quote payload requires measured dimensions and confirmed origin ZIP.
-- [ ] Confirm exact ship-from ZIP and return address.
+- [x] Owner confirmed ship-from ZIP: Albany, Illinois 61230; applied to shared shipping configuration.
+- [ ] Confirm full return address.
 - [ ] Weigh packed apparel, denim, hoodies and custom items; enter real values.
 - [ ] Configure UPS account/rate provider or marketplace shipping; enable USPS backup.
 - [ ] Test destination-specific rates, multi-item packaging, errors, labels and tracking.

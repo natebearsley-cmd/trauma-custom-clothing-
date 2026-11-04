@@ -1,6 +1,7 @@
 import type { Product } from './inventory'
 
-export const SHIPPING_ORIGIN = 'Albany, Illinois, USA'
+export const SHIPPING_ORIGIN_POSTAL_CODE = '61230'
+export const SHIPPING_ORIGIN = `Albany, Illinois ${SHIPPING_ORIGIN_POSTAL_CODE}, USA`
 export const PROCESSING_TIME = 'Most orders ship within 1 business day when inventory is available'
 export const DEFAULT_SHIPPING_SERVICE = 'UPS Ground' as const
 export const SHIPPING_SERVICES = [DEFAULT_SHIPPING_SERVICE, 'USPS Ground Advantage'] as const
@@ -22,7 +23,7 @@ export function shippingRequest(items: { product: Pick<Product, 'id' | 'fulfillm
   }
   const maxWeightOz = service === 'UPS Ground' ? 2400 : 1120
   if (packedWeightOz > maxWeightOz) throw new Error('Package exceeds the selected carrier weight limit; request a separate quote')
-  return { originCity: 'Albany', originState: 'IL', destinationPostalCode, service, packedWeightOz, buyerPaysShipping: true as const, trackingIncluded: true as const, requiresCarrierQuote: packedWeightOz > 0 }
+  return { originCity: 'Albany', originState: 'IL', originPostalCode: SHIPPING_ORIGIN_POSTAL_CODE, destinationPostalCode, service, packedWeightOz, buyerPaysShipping: true as const, trackingIncluded: true as const, requiresCarrierQuote: packedWeightOz > 0 }
 }
 
 export function shippingEstimate(product: Pick<Product, 'fulfillmentType'>): number | null {
@@ -33,7 +34,7 @@ export const usd = (cents: number) => new Intl.NumberFormat('en-US', { style: 'c
 // Feed this payload to a server-side UPS/USPS-capable rate provider. API keys and
 // label purchasing belong on the server; the browser must not submit prices.
 export function carrierQuoteRequest(request: ReturnType<typeof shippingRequest>, originPostalCode: string, dimensionsIn: { length: number; width: number; height: number }) {
-  if (!/^\d{5}$/.test(originPostalCode)) throw new Error('Configure the confirmed Albany, Illinois origin ZIP')
+  if (originPostalCode !== SHIPPING_ORIGIN_POSTAL_CODE) throw new Error('Shipping origin must be the confirmed Albany, Illinois ZIP 61230')
   if (!request.requiresCarrierQuote) throw new Error('Digital orders do not need a carrier quote')
   if (Object.values(dimensionsIn).some(value => !Number.isFinite(value) || value <= 0)) throw new Error('Measured package dimensions are required')
   return { ...request, originPostalCode, originCountry: 'US', destinationCountry: 'US', dimensionsIn }

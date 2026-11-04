@@ -1,6 +1,6 @@
 # Shipping architecture — Albany, Illinois
 
-The owner corrected the origin to **Albany, Illinois, USA**. Obtain the owner's exact origin ZIP and return address before enabling carrier quotes or labels. Never place the street address in public client data.
+The owner corrected the origin to **Albany, Illinois 61230, USA**. Origin ZIP 61230 is owner-confirmed and included in shipping payloads. Obtain the full return address before enabling carrier quotes or labels. Never place the street address in public client data.
 
 ## Recommended carrier mix
 
@@ -26,7 +26,7 @@ The buyer pays shipping on physical products. No $100 free-shipping rule. Digita
 
 ## Next production integration
 
-1. Enter actual packed weights; confirm origin ZIP/return address and package dimensions.
+1. Enter actual packed weights; use confirmed origin ZIP 61230; confirm the full return address and package dimensions.
 2. Configure UPS Ground and USPS Ground Advantage through a UPS/USPS-capable rate/label provider or the existing marketplace. Keep credentials server-side.
 3. A future on-site checkout must load product prices from trusted server inventory, obtain destination-specific rates, bind a rate ID to an expiring quote, recalculate before charging, and verify signed payment webhooks.
 4. Record orders and stock in a transactional database with reservation/expiration and webhook idempotency before selling one-of-one stock across multiple channels. Repository JSON is not an atomic order database.
