@@ -1,3 +1,4 @@
+import { publicPageMetadata } from '@/lib/seo'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
@@ -6,11 +7,7 @@ import { SiteFooter } from '@/components/site-footer'
 import { galleryProducts, isMatchingSet, paypalDestination, productDestination } from '@/lib/inventory'
 import { inventory } from '@/lib/inventory-store'
 
-export const metadata = {
-  alternates: { canonical: '/collections/tiktok' },
-  title: 'TikTok Sales Collection | TRAUMA Custom Clothing',
-  description: 'Shop a curated edit of TRAUMA hoodies, custom denim, statement tees, and one-of-one pieces.',
-}
+export const metadata = publicPageMetadata('/collections/tiktok')
 
 const picks = [
   'ptsd-edition-me-vs-myself-hoodie',

@@ -49,9 +49,11 @@ November 4, 2026. Check boxes indicate verified work, not assumed account config
 - [x] Canonical metadata for collections/custom/TikTok/contact; product Open Graph and Product structured data.
 - [x] Sitemap includes published product routes, contact and TikTok; excludes testing/admin pages.
 - [x] Product-update email form requires explicit consent and stays hidden without a provider.
-- [ ] Confirm current production domain and `SITE_URL`; inspect production sitemap/canonicals/robots.
+- [x] Owner confirmed https://tra-coral.vercel.app/; local sitemap/canonical/robots checks pass for all 34 public routes.
+- [ ] Confirm production `SITE_URL` and public sitemap/canonical/robots responses in Search Console.
 - [ ] Verify Search Console ownership, submit sitemap and inspect representative URLs.
-- [ ] Validate product rich results; verify externally managed prices and availability remain current.
+- [x] Product/Organization JSON-LD locally checked; unknown prices do not produce incomplete Product rich-result markup.
+- [ ] Validate with Google Rich Results Test; verify externally managed prices and availability remain current.
 - [ ] Set TikTok bio to the verified landing page; measure visits and product/checkout clicks with agreed campaign tags.
 - [ ] Verify TikTok Seller Center listings/stock separately; local preparation is not automatic TikTok Shop integration.
 - [ ] Configure a real customer-list provider, double opt-in, unsubscribe and privacy information; test enrollment/removal.

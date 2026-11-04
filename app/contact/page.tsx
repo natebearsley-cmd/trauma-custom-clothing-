@@ -1,7 +1,8 @@
+import { publicPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { StoreInfo } from '@/components/store-info'
 import { CONTACT_EMAIL, CONTACT_EMAIL_URL } from '@/lib/contact'
-export const metadata = { title: 'Contact TRAUMA | Orders & Custom Clothing', description: 'Contact TRAUMA Custom Clothing about your order, custom apparel, or shipping from Albany, Illinois.', alternates: { canonical: '/contact' } }
+export const metadata = publicPageMetadata('/contact')
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ product?: string }> }) {
   const { product } = await searchParams
   const productId = typeof product === 'string' && /^[a-z0-9-]{1,100}$/.test(product) ? product : null

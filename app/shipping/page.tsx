@@ -1,7 +1,8 @@
+import { publicPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { StoreInfo } from '@/components/store-info'
 import { PROCESSING_TIME, SHIPPING_ORIGIN, SHIPPING_SERVICES } from '@/lib/shipping'
-export const metadata = { title: 'Shipping Policy | TRAUMA Custom Clothing', alternates: { canonical: '/shipping' } }
+export const metadata = publicPageMetadata('/shipping')
 export default function ShippingPage() {
   return <StoreInfo title="TRAUMA Shipping Policy">
     <section className="space-y-2"><h2 className="text-xl font-bold">Buyer-paid shipping</h2><p>Physical products ship from {SHIPPING_ORIGIN}. The buyer pays shipping, separately from the item price. There is no free-shipping threshold.</p><p>Shipping depends on the packed weight, package dimensions, destination, and selected service. Confirm the final shipping charge at the marketplace checkout or in your written custom-order quote before paying.</p></section>

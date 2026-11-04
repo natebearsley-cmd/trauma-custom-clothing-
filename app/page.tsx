@@ -1,3 +1,4 @@
+import { publicPageMetadata } from '@/lib/seo'
 import { SiteHeader } from '@/components/site-header'
 import { Hero } from '@/components/hero'
 import { FounderStory } from '@/components/founder-story'
@@ -11,6 +12,8 @@ import { StructuredData } from '@/components/structured-data'
 import { inventory } from '@/lib/inventory-store'
 import { safeUrl, isApparel, storefrontProducts } from '@/lib/inventory'
 
+
+export const metadata = publicPageMetadata('/')
 
 export default function Page() {
   return (

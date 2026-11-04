@@ -1,9 +1,10 @@
+import { publicPageMetadata } from '@/lib/seo'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 import { CustomInquiry } from '@/components/custom-inquiry'
 import { inventory } from '@/lib/inventory-store'
 import { CUSTOM_ORDER_TYPES, safeUrl, isApparel, storefrontProducts } from '@/lib/inventory'
-export const metadata = { title: 'Request a Custom Order | TRAUMA', description: 'Request a custom apparel quote from TRAUMA Custom Clothing.', alternates: { canonical: '/custom-orders' } }
+export const metadata = publicPageMetadata('/custom-orders')
 export default async function CustomOrdersPage({ searchParams }: { searchParams: Promise<{ type?: string }> }) {
   const query = await searchParams
   const action = process.env.CUSTOM_ORDER_FORM_ACTION

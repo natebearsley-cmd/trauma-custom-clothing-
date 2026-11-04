@@ -1,7 +1,8 @@
+import { publicPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { StoreInfo } from '@/components/store-info'
 
-export const metadata = { title: 'Returns Policy | TRAUMA Custom Clothing', alternates: { canonical: '/returns' } }
+export const metadata = publicPageMetadata('/returns')
 
 export default function ReturnsPage() {
   return <StoreInfo title="TRAUMA Returns Policy">

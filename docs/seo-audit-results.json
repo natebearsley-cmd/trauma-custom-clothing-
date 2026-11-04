@@ -1,0 +1,375 @@
+{
+  "scope": "Local production HTML; live host requests blocked by execution proxy HTTP 403",
+  "issues": [],
+  "publicPageCount": 34,
+  "sitemapCount": 34,
+  "robots": "User-Agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\n\nSitemap: https://tra-coral.vercel.app/sitemap.xml\n",
+  "pages": [
+    {
+      "path": "/",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app"
+      ],
+      "description": "Explore TRAUMA custom apparel, reworked denim, one-of-one pieces and recovery-inspired digital products. Independent clothing from Albany, Illinois.",
+      "schemaTypes": [
+        "@graph"
+      ]
+    },
+    {
+      "path": "/collections",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/collections"
+      ],
+      "description": "Browse TRAUMA hoodies, graphic tees, reworked denim, hats and one-of-one clothing. View garment photos, sizing, stories and purchase options.",
+      "schemaTypes": []
+    },
+    {
+      "path": "/collections/tiktok",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/collections/tiktok"
+      ],
+      "description": "Discover the TRAUMA TikTok collection: statement hoodies, custom denim and graphic tees. Explore available pieces and confirm shipping before payment.",
+      "schemaTypes": []
+    },
+    {
+      "path": "/custom-orders",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/custom-orders"
+      ],
+      "description": "Request a TRAUMA custom clothing quote. Share your design, sizes and quantities for personal apparel, memorial pieces, business clothing or team orders.",
+      "schemaTypes": []
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/contact"
+      ],
+      "description": "Contact TRAUMA Custom Clothing about a piece, custom quote or order. Ask about buyer-paid shipping from Albany, Illinois 61230 before payment.",
+      "schemaTypes": []
+    },
+    {
+      "path": "/shipping",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/shipping"
+      ],
+      "description": "TRAUMA ships from Albany, Illinois 61230 with buyer-paid UPS Ground shipping and tracking. Review processing times and the USPS Ground Advantage backup.",
+      "schemaTypes": []
+    },
+    {
+      "path": "/returns",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/returns"
+      ],
+      "description": "Read TRAUMA\u2019s returns policy for custom and one-of-one clothing, including how to report damaged deliveries or incorrect items within seven days.",
+      "schemaTypes": []
+    },
+    {
+      "path": "/faq",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/faq"
+      ],
+      "description": "Find answers about TRAUMA custom orders, shipping from Albany, Illinois, UPS Ground delivery estimates and how to get help with an order.",
+      "schemaTypes": []
+    },
+    {
+      "path": "/products/trauma-made-me-denim-jacket",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-made-me-denim-jacket"
+      ],
+      "description": "TRAUMA MADE ME Denim Jacket (XL) by TRAUMA Custom Clothing. TRAUMA Custom Clothing custom bleached denim jacket created to raise awareness for mental...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/toxic-trauma-bond",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/toxic-trauma-bond"
+      ],
+      "description": "TOXIC TRAUMA BOND (XXL) by TRAUMA Custom Clothing. Handmade one-of-one black denim jacket featuring custom TRAUMA C.C. graphics, distressed branding...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/ptsd-edition-me-vs-myself-hoodie",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/ptsd-edition-me-vs-myself-hoodie"
+      ],
+      "description": "PTSD Edition / Me Vs Myself Hoodie (XL) by TRAUMA Custom Clothing. TRAUMA Custom Clothing \"PTSD Edition / Me Vs Myself\" Hoodie. A premium heavyweight hoodie...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/trauma-cc-ecko-carpenter-jeans",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-cc-ecko-carpenter-jeans"
+      ],
+      "description": "Custom Vintage Ecko Unltd Carpenter Jeans \u2013 Trauma CC LV Patched Baggy Y2K (32) by TRAUMA Custom Clothing. 1 of 1 custom Trauma Custom Clothing piece...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/survived-graphic-tee",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/survived-graphic-tee"
+      ],
+      "description": "SURVIVED Graphic Tee (XL) by TRAUMA Custom Clothing. Built Different. Battle Tested. The TRAUMA C.C. SURVIVED Graphic Tee is designed for those who have...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/anxiety-shawna-splatter-crewneck",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/anxiety-shawna-splatter-crewneck"
+      ],
+      "description": "ANXIETY Shawna Splatter Crewneck (Large) by TRAUMA Custom Clothing. 1-of-1 TRAUMA \"Anxiety\" Shawna Splatter Crewneck. A one-of-a-kind hand-dyed crewneck...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/loose-lips-sink-ships-wide-leg-jeans",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/loose-lips-sink-ships-wide-leg-jeans"
+      ],
+      "description": "Loose Lips Sink Ships Wide-Leg Graphic Jeans (Women's 25) by TRAUMA Custom Clothing. Rare Trauma Custom Clothing custom wide-leg graphic jeans built around...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/still-breathing-bleach-wash-graphic-tee",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/still-breathing-bleach-wash-graphic-tee"
+      ],
+      "description": "Still Breathing Bleach Wash Graphic Tee (L (Relaxed Fit)) by TRAUMA Custom Clothing. TRAUMA CUSTOM CLOTHING \u201cSTILL BREATHING\u201d 1-OF-1 GRAPHIC TEE. Front...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/pressure-makes-diamonds-army-patch-capris",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/pressure-makes-diamonds-army-patch-capris"
+      ],
+      "description": "Pressure Makes Diamonds Custom Army Patch Capris (Women's 28) by TRAUMA Custom Clothing. Rare Y2K BKE Sabrina low-rise custom capris reconstructed by Trauma...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/unspoken-tie-dye-graphic-tee-small",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/unspoken-tie-dye-graphic-tee-small"
+      ],
+      "description": "Unspoken Tie-Dye Graphic Tee (S) by TRAUMA Custom Clothing. One-of-one TRAUMA CC tie-dye tee with multicolor spiral artwork and custom prints.",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/adidas-nizza-rf-purple-chain-custom",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/adidas-nizza-rf-purple-chain-custom"
+      ],
+      "description": "Custom Adidas Nizza RF Purple Chain Sneakers (US Men\u2019s 11.5) by TRAUMA Custom Clothing. White Adidas Nizza RF sneakers customized by TRAUMA CC with purple...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/betrayal-eyes-dont-lie-hoodie",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/betrayal-eyes-dont-lie-hoodie"
+      ],
+      "description": "Betrayal / Eyes Don\u2019t Lie Graphic Hoodie (XL) by TRAUMA Custom Clothing. One-of-one gray TRAUMA hoodie with Eyes Don\u2019t Lie artwork on the front, Unspoken...",
+      "schemaTypes": [
+        "Product"
+      ]
+    },
+    {
+      "path": "/products/unspoken-pink-custom-high-tops",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/unspoken-pink-custom-high-tops"
+      ],
+      "description": "Unspoken Pink Custom High-Tops by TRAUMA Custom Clothing. Pink custom high-tops with purple Unspoken lettering and hand-and-lips artwork. Check the shop for...",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/born-from-pain-black-tee",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/born-from-pain-black-tee"
+      ],
+      "description": "Born From Pain Black Tee by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/pain-made-me-rose-trucker",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/pain-made-me-rose-trucker"
+      ],
+      "description": "Pain Made Me Rose Trucker Hat by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/unspoken-red-letter-trucker",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/unspoken-red-letter-trucker"
+      ],
+      "description": "Unspoken Red Letter Trucker Hat by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/trauma-red-lips-trucker",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-red-lips-trucker"
+      ],
+      "description": "TRAUMA CC Red Lips Trucker Hat by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/unspoken-purple-trucker",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/unspoken-purple-trucker"
+      ],
+      "description": "Unspoken Purple Graphic Trucker Hat by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/pressure-makes-diamonds-black-tank",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/pressure-makes-diamonds-black-tank"
+      ],
+      "description": "Pressure Makes Diamonds Black Tank by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/trauma-black-quilted-graphic-jacket",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-black-quilted-graphic-jacket"
+      ],
+      "description": "TRAUMA CC Black Quilted Graphic Jacket by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/made-in-chaos-dark-beanie",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/made-in-chaos-dark-beanie"
+      ],
+      "description": "Made in Chaos Dark Beanie by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/trauma-cc-stacked-dark-beanie",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-cc-stacked-dark-beanie"
+      ],
+      "description": "TRAUMA CC Stacked Logo Dark Beanie by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/trauma-cc-dot-dark-beanie",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-cc-dot-dark-beanie"
+      ],
+      "description": "TRAUMA CC Dot Logo Dark Beanie by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/trauma-red-logo-cream-beanie",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-red-logo-cream-beanie"
+      ],
+      "description": "TRAUMA Red Logo Cream Beanie by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/trauma-cc-bar-dark-beanie",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/trauma-cc-bar-dark-beanie"
+      ],
+      "description": "TRAUMA CC Bar Logo Dark Beanie by TRAUMA Custom Clothing. Shown in the TRAUMA shop lineup. Check the shop for current size, price, and availability.",
+      "schemaTypes": [
+        "WebPage"
+      ]
+    },
+    {
+      "path": "/products/product-3e7a8e33-946b-4e02-82f3-e9eabe427359",
+      "status": 200,
+      "canonical": [
+        "https://tra-coral.vercel.app/products/product-3e7a8e33-946b-4e02-82f3-e9eabe427359"
+      ],
+      "description": "Camp xl 3 piece jumpsuit TCC high quality Dtf by TRAUMA Custom Clothing. TRAUMA Custom Clothing 3-Piece Camo Collection Size: XL Includes: \u2022 Custom TCC Camo...",
+      "schemaTypes": [
+        "Product"
+      ]
+    }
+  ],
+  "pricedProductSchemas": 13,
+  "unpricedWebPages": 13,
+  "filteredCanonicals": "passed",
+  "privateNoindex": "passed",
+  "verification": "ready; actual Google token not supplied; no placeholder tag emitted",
+  "googleRichResultsTest": "not run; manual Google validation remains required"
+}

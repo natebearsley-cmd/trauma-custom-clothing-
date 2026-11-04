@@ -1,8 +1,9 @@
+import { publicPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { StoreInfo } from '@/components/store-info'
 import { DELIVERY_TIMES, PROCESSING_TIME, SHIPPING_ORIGIN } from '@/lib/shipping'
 
-export const metadata = { title: 'FAQ | TRAUMA Custom Clothing', alternates: { canonical: '/faq' } }
+export const metadata = publicPageMetadata('/faq')
 
 export default function FaqPage() {
   const link = 'underline underline-offset-4'

@@ -39,3 +39,5 @@ Follow [the required TRAUMA product photo workflow](docs/product-photo-workflow.
 ## Audit and release
 
 See [PROJECT_STATUS.md](PROJECT_STATUS.md) for implemented improvements, remaining launch blockers and evidence, and [LAUNCH_CHECKLIST.md](LAUNCH_CHECKLIST.md) before public release. Shipping requirements and integration boundaries are in [docs/shipping-architecture.md](docs/shipping-architecture.md). `.env.example` lists configuration names without secrets. The current checkout remains marketplace/manual-quote based; live carrier rates and transactional direct orders are not connected.
+
+Google Search configuration and verification steps: [docs/GOOGLE_SEARCH_SETUP.md](docs/GOOGLE_SEARCH_SETUP.md). Generated descriptions: [docs/SEO_META_DESCRIPTIONS.md](docs/SEO_META_DESCRIPTIONS.md). Google Business Profile eligibility/checklist: [docs/GOOGLE_BUSINESS_PROFILE_CHECKLIST.md](docs/GOOGLE_BUSINESS_PROFILE_CHECKLIST.md).

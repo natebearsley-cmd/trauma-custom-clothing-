@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
-import { siteUrl } from '@/lib/seo'
+import { siteUrl, STORE_NAME, PUBLIC_PAGE_SEO } from '@/lib/seo'
 
 const anton = localFont({
   src: '../public/fonts/Anton-Regular.ttf',
@@ -18,12 +18,11 @@ const inter = localFont({
 })
 
 export const metadata: Metadata = {
-  title: 'TRAUMA CC | Trauma Custom Clothing',
-  description:
-    'Original garments, books, and digital products from Nathanial Bearsley — founder, author, recovery coach, and entrepreneur behind TRAUMA CC. Shop apparel on Depop, request a custom piece, and explore digital products on Payhip.',
+  title: PUBLIC_PAGE_SEO['/'].title,
+  description: PUBLIC_PAGE_SEO['/'].description,
   metadataBase: siteUrl,
-  alternates: { canonical: '/' },
-  applicationName: 'TRAUMA CC',
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION?.trim() || undefined },
+  applicationName: STORE_NAME,
   twitter: {
     card: 'summary_large_image',
     title: 'TRAUMA CC | Trauma Custom Clothing',

@@ -8,7 +8,7 @@ Audit date: November 4, 2026 (America/Chicago).
 
 Source: `natebearsley-cmd/trauma-custom-clothing-`, starting commit `8852218c7690eb1885b960d4e1dce93ee1a8868f`.
 
-The workspace contains an existing Git checkout and its development history. **The user-referenced uploaded ZIP is not attached or accessible in this session.** No ZIP-to-source comparison has been completed. The source's default deployment URL is `https://tra-coral.vercel.app`; the owner has not yet confirmed the production domain. GitHub commit status identifies the existing Vercel project as `nathanialbearsley-2937/tra` and reports the starting source commit successfully deployed. Direct access returned a network-policy 403, and the connected web reader could not access it. Consequently, this is a source/history and local production-build audit, not a verified comparison with the running Vercel deployment.
+The workspace contains an existing Git checkout and its development history. **The user-referenced uploaded ZIP is not attached or accessible in this session.** No ZIP-to-source comparison has been completed. The source's default deployment URL is `https://tra-coral.vercel.app`; the owner has now confirmed this production website. GitHub commit status identifies the existing Vercel project as `nathanialbearsley-2937/tra` and reports the starting source commit successfully deployed. Direct access returned a network-policy 403, and the connected web reader could not access it. Consequently, this is a source/history and local production-build audit, not a verified comparison with the running Vercel deployment.
 
 Inventory contains 42 records: 26 published, 16 drafts. No product was newly published, no garment photo was generated or altered, and no draft facts, prices, weights, or stock counts were invented.
 
@@ -54,7 +54,7 @@ Ordered by the owner's revenue priorities.
 | 4 | Printing equipment/production availability is still pending in existing copy. | Confirm capacity and lead times before promising fulfillment. | Honest status retained; custom timing remains subject to accepted quote. |
 | 5 | TikTok purchase links skipped shipping review and lacked shipping context. | Use fast product links, clear dispatch terms, and a shipping review path. | Implemented. Existing TikTok Shop Prep is preserved; there is no Seller Center API sync. |
 | 6 | Collection/custom/TikTok canonical metadata could inherit the home URL; product sharing used generic data. | Explicit canonical URLs, per-product sharing and structured data. | Implemented; sitemap includes TikTok and contact and excludes the testing page. |
-| 6 | Google indexing and correct production domain are unconfirmed. | Confirm SITE_URL, verify Search Console and submit sitemap. | Code foundation exists; domain/account actions remain outstanding. No indexing guarantee. |
+| 6 | Google ownership/indexing are unconfirmed; the production website is now owner-confirmed. | Confirm SITE_URL, verify Search Console and submit sitemap. | Public metadata/schema and local sitemap checks completed; Search Console token/account verification and live Google checks remain outstanding. No indexing guarantee. |
 | 7 | Disconnected waitlist cannot build a customer list. | Connect an email provider with consent, double opt-in, unsubscribe and privacy terms. | Provider-ready product-update form added; hidden until configured. No addresses collected. |
 | Security | Critical/high dependency advisories were present. | Upgrade framework and affected transitive packages. | Updated; audit now reports zero known vulnerabilities. This is not a penetration-test guarantee. |
 | Security | Admin page shells and an admin navigation link were public. | Server-side session gate and remove public business-tool navigation. | Implemented. The sign-in entry remains intentionally reachable; business tools require authentication. APIs fail closed without setup. |
@@ -78,7 +78,7 @@ Git history and existing files establish the following, without claiming access 
 ## Validation and limits
 
 - Production Next.js build passes, including TypeScript checks; frozen-lockfile install succeeds.
-- All 52 unit tests pass, covering inventory, fulfillment/stock, shipping defaults/limits, signed admin sessions, uploads/Quick Add, soundtrack state and TikTok preparation.
+- All 55 unit tests pass, covering inventory, fulfillment/stock, shipping defaults/limits, signed admin sessions, uploads/Quick Add, soundtrack state and TikTok preparation.
 - Browser audit checks 34 public pages (all 26 published product pages plus main/policy/contact pages), discovered internal links and anchors, image loading and layouts at 320, 360, 375, 390, 412, 430, 768, 1024 and 1440 pixels. These are Chromium viewport checks, not physical iPhone/Safari or Android hardware certification.
 - Separate flow checks cover all 13 eligible PayPal-review routes, custom email draft preparation, inventory photo URLs, unknown/draft product 404s and hidden QuietWork route.
 - Final local browser audit: 34/34 public pages returned 200; no broken discovered internal links/anchors, failed displayed images, horizontal overflow or captured console errors. All 13 PayPal-review routes returned 200 and required quote confirmation. All checked inventory photo URLs returned 200.
@@ -92,7 +92,7 @@ See `docs/audit-results.json` for final machine-readable local browser results a
 1. Origin ZIP is confirmed as 61230 for Albany, Illinois. Confirm the full return address and weigh all packaged inventory. Configure UPS Ground first and USPS Ground Advantage backup in the actual selling account.
 2. Confirm the existing business mailbox; send and receive a real custom quote and shipping inquiry. Attach files manually for email quotes.
 3. Configure a rate provider/marketplace and verify a shipping-inclusive purchase, label and tracking. Use transactional orders/reservations before automating one-of-one direct checkout.
-4. Attach the original ZIP and confirm production Vercel project/URL; perform the outstanding three-way comparison and deployed smoke test.
+4. Attach the original ZIP and use the confirmed production website; perform the outstanding three-way comparison and deployed smoke test.
 5. Verify admin setup, available stock/prices, returns policy and production capacity. Keep drafts unpublished until approved.
 6. Configure `SITE_URL`, Search Console and the optional signup/form providers. Verify consent, unsubscribe and delivery before advertising email signup.
 
@@ -107,3 +107,11 @@ The deployed code includes the UPS-first policy and sales-workflow changes descr
 ## Confirmed shipping ZIP
 
 The owner confirmed **Albany, Illinois 61230**. Shared origin configuration, carrier-request payloads and policy text use 61230. Carrier payloads reject a different origin ZIP. Full return address, package measurements and carrier-account setup remain outstanding.
+
+## Google Search configuration
+
+The owner confirmed https://tra-coral.vercel.app/ and Albany, Illinois 61230. All 34 public routes now have unique meta descriptions and explicit canonicals. Local production HTTP checks pass for sitemap membership, robots directives, canonical metadata (including filter/query variants), JSON-LD parsing and private-page noindex directives. Thirteen priced pages use Product/Offer markup; thirteen unpriced pages use WebPage/Thing rather than incomplete Google Product markup. Organization/Person/WebSite identity and location are consistent.
+
+Search Console HTML verification support is prepared via `GOOGLE_SITE_VERIFICATION`; no token has been supplied or fabricated. Google ownership verification, Rich Results Test results, sitemap submission, actual indexing/rankings and live-site responses remain unverified. The execution proxy blocks the live robots/sitemap requests with HTTP 403. Business Profile eligibility is unconfirmed: shipping-only online businesses do not qualify solely by having a fulfillment location.
+
+See `docs/GOOGLE_SEARCH_SETUP.md`, `docs/GOOGLE_BUSINESS_PROFILE_CHECKLIST.md`, `docs/SEO_META_DESCRIPTIONS.md` and `docs/seo-audit-results.json`. Founder content, brand colors and publication status were preserved.
