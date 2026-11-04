@@ -69,7 +69,8 @@ November 4, 2026. Check boxes indicate verified work, not assumed account config
 - [ ] Repeat navigation/product/contact tests on the deployed revision.
 - [ ] Check real iPhone Safari and Android Chrome: menus, product images, email handoff and checkout.
 - [ ] Upload/provide the original ZIP for the outstanding backup/live/source comparison.
-- [ ] Confirm the Vercel build completed successfully and production domain points at the release commit.
+- [x] Vercel reports successful deployment of code release `ba7aea0` to the existing TRAUMA project.
+- [ ] Confirm the public production domain points at the release and complete live smoke tests.
 - [ ] Verify live carrier charges, payment receipt, tracking and support delivery before describing the platform as fully automated or launch-ready.
 
 A Git push can trigger Vercel only when the existing project is connected to this repository/branch. A successful source push alone does not prove production deployment.

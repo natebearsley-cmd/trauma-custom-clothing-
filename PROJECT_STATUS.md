@@ -95,3 +95,11 @@ See `docs/audit-results.json` for final machine-readable local browser results a
 4. Attach the original ZIP and confirm production Vercel project/URL; perform the outstanding three-way comparison and deployed smoke test.
 5. Verify admin setup, available stock/prices, returns policy and production capacity. Keep drafts unpublished until approved.
 6. Configure `SITE_URL`, Search Console and the optional signup/form providers. Verify consent, unsubscribe and delivery before advertising email signup.
+
+## Deployment result
+
+Code release `ba7aea02113f181af3cdc05779004973852925ac` was pushed to `main`. The existing Vercel project `nathanialbearsley-2937/tra` reported **success — Deployment has completed** through its GitHub commit status.
+
+Deployment: https://vercel.com/nathanialbearsley-2937/tra/HbCAnYmsWoYZWS29faDDMZdPpuHK
+
+The deployed code includes the UPS-first policy and sales-workflow changes described above. This confirms Vercel's deployment result, not a completed live purchase or runtime smoke test: direct storefront access is still blocked in this environment. No Vercel credentials, marketplace settings, carrier accounts or email-provider credentials were configured. The original ZIP is still required for backup comparison.
