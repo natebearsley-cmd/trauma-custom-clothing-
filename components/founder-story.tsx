@@ -41,8 +41,12 @@ export function FounderStory() {
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-accent">
             Founder · Author · Recovery Coach · Entrepreneur
           </p>
-          <h2 className="mt-3 text-balance font-display text-5xl uppercase leading-none text-foreground md:text-7xl">The Story Behind TRAUMA</h2>
-          <h3 className="mt-6 font-display text-3xl uppercase text-accent">Built From Strength. Built By Struggle.</h3>
+          <h2 className="mt-3 text-balance font-display text-5xl uppercase leading-none text-foreground md:text-7xl">Founder Story</h2>
+          <div className="mt-6 space-y-1 font-display text-2xl text-accent sm:text-3xl">
+            <p>Started with a needle and thread.</p>
+            <p>Built during recovery.</p>
+            <p>Created to prove adversity does not get the final word.</p>
+          </div>
           <div className="mt-6 max-w-2xl space-y-5 text-pretty text-lg leading-relaxed text-muted-foreground">
             {STORY.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </div>

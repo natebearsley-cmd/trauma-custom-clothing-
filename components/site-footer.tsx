@@ -14,6 +14,9 @@ export function SiteFooter() {
             {`© ${new Date().getFullYear()} Trauma Custom Clothing. All rights reserved.`}
           </p>
           <ul className="flex flex-wrap gap-5">
+            {[
+              ['Shipping', '/shipping'], ['Returns', '/returns'], ['FAQ', '/faq'], ['QuietWork AI', '/quietwork'],
+            ].map(([label, href]) => <li key={href}><a href={href} className="inline-flex min-h-11 items-center text-sm underline underline-offset-4">{label}</a></li>)}
             <li>
               <a href="/admin" className="inline-flex min-h-11 items-center text-sm underline underline-offset-4">
                 Manage inventory

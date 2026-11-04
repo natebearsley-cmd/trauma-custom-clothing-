@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { GalleryCard } from '@/components/gallery-card'
 import { galleryProducts, visibleGalleryCategories, type Inventory } from '@/lib/inventory'
 
-export function CollectionBrowser({ inventory, category = 'all', collection = '', availability = 'all' }: { inventory: Inventory; category?: string; collection?: string; availability?: string }) {
-  const [search, setSearch] = useState('')
+export function CollectionBrowser({ inventory, category = 'all', collection = '', availability = 'all', initialSearch = '' }: { inventory: Inventory; category?: string; collection?: string; availability?: string; initialSearch?: string }) {
+  const [search, setSearch] = useState(initialSearch)
   const [status, setStatus] = useState(availability)
   const tabs = visibleGalleryCategories(inventory)
   const matching = galleryProducts(inventory, category, collection, status)
