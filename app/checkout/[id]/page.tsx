@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { StoreInfo } from '@/components/store-info'
+import { InsiderPlacement } from '@/components/insider-placement'
+import { insiderEligibleIds, insiderHref } from '@/lib/insider'
 import { galleryProducts, paypalDestination, productDestination } from '@/lib/inventory'
 import { inventory } from '@/lib/inventory-store'
 import { DELIVERY_TIMES, PROCESSING_TIME, SHIPPING_ORIGIN, shippingEstimate, usd } from '@/lib/shipping'
@@ -30,7 +32,9 @@ export default async function CheckoutPage({ params }: { params: Promise<{ id: s
         {marketplace && <a href={marketplace.url} className="inline-flex min-h-12 items-center border border-input px-5 py-3 font-semibold hover:border-accent">View listing on {marketplace.platform}</a>}
         <Link href="/shipping" className="inline-flex min-h-12 items-center underline underline-offset-4">Shipping policy</Link>
       </div>
+      {insiderEligibleIds([product]).has(product.id) && <p className="text-sm">This piece is eligible for the <a href={insiderHref('cart')} className="text-accent underline underline-offset-4">Insider welcome offer</a> when you request a direct invoice.</p>}
     </section>
+    <InsiderPlacement placement="cart" compact />
     <Link href={`/products/${product.id}`} className="inline-flex min-h-11 items-center underline underline-offset-4">← Back to this piece</Link>
   </StoreInfo>
 }
