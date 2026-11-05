@@ -15,7 +15,7 @@ export default function QuietWorkPage() {
     <section className="border border-border bg-card p-5 sm:p-7">
       <p className="eyebrow">Flat Rate</p>
       <h2 className="mt-2 font-display text-4xl">$59 Per Year</h2>
-      <p className="mt-3 text-muted-foreground">No setup fee. Request a demo to learn more about the annual plan.</p>
+      <p className="mt-3 text-muted-foreground">No setup fee or automatic renewal. Try the demo first. If you decide to sign up, you can request a PayPal invoice for one year. You choose whether to renew.</p>
       <a className="mt-5 inline-flex min-h-12 items-center bg-primary px-5 py-3 font-semibold text-primary-foreground hover:bg-accent" href={quietworkEmail}>Request a Demo</a>
     </section>
   </StoreInfo>
