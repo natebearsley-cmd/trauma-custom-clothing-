@@ -1,4 +1,5 @@
 import { ArrowUpRight } from 'lucide-react'
+import { InsiderPlacement } from '@/components/insider-placement'
 import { DEPOP_SHOP_HANDLE, DEPOP_SHOP_URL, TIKTOK_URL, PAYHIP_SHOP_URL } from '@/lib/site'
 
 export function SiteFooter() {
@@ -8,6 +9,7 @@ export function SiteFooter() {
         <p className="font-display text-5xl uppercase leading-none text-foreground/10 sm:text-8xl md:text-9xl">
           Still Breathing
         </p>
+        <InsiderPlacement placement="footer" compact />
         <h2 className="section-title">Contact</h2>
         <div className="flex flex-col gap-6 border-t border-border pt-8 md:flex-row md:items-center md:justify-between">
           <p className="text-sm text-muted-foreground">
@@ -15,7 +17,7 @@ export function SiteFooter() {
           </p>
           <ul className="flex flex-wrap gap-5">
             {[
-              ['Shipping', '/shipping'], ['Returns', '/returns'], ['FAQ', '/faq'], ['Contact TRAUMA', '/contact'],
+              ['Shipping', '/shipping'], ['Returns', '/returns'], ['FAQ', '/faq'], ['Contact TRAUMA', '/contact'], ['TRAUMA Gives Back', '/gives-back'],
             ].map(([label, href]) => <li key={href}><a href={href} className="inline-flex min-h-11 items-center text-sm underline underline-offset-4">{label}</a></li>)}
             <li>
               <a

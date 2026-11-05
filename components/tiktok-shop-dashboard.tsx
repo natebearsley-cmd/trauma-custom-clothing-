@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { TikTokListingPackage } from '@/components/tiktok-listing-package'
 import { isDepopUrl, productPhotoLabel, type Inventory } from '@/lib/inventory'
-import { generateTikTokListing, tiktokPriority, tiktokReadinessIssues, TIKTOK_STATUSES, TIKTOK_STATUS_LABELS, type TikTokShopStatus } from '@/lib/tiktok-shop'
+import { generateTikTokListing, tiktokPriority, tiktokReadinessIssues, tiktokReviewFlags, TIKTOK_STATUSES, TIKTOK_STATUS_LABELS, type TikTokShopStatus } from '@/lib/tiktok-shop'
 import { TIKTOK_URL } from '@/lib/site'
 
 const button = 'inline-flex min-h-11 items-center border border-input px-4 py-2 text-sm font-semibold hover:border-accent'
@@ -38,6 +38,7 @@ export function TikTokShopDashboard() {
     .sort((a, b) => tiktokPriority(a).rank - tiktokPriority(b).rank || a.name.localeCompare(b.name))
   const product = products.find((item) => item.id === selected) ?? products[0]
   const issues = product ? tiktokReadinessIssues(product) : []
+  const reviewFlags = product ? tiktokReviewFlags(product) : []
   const listing = product ? generateTikTokListing(product) : null
   const current = product?.tiktokShopStatus ?? 'not-started'
   async function save(next: TikTokShopStatus) {
@@ -86,10 +87,14 @@ export function TikTokShopDashboard() {
         <div className="mt-6 space-y-3 border-t border-border pt-4">
           <label className="flex min-h-11 items-center gap-3 font-semibold"><input type="checkbox" className="size-5" checked={current === 'ready' || current === 'listed'} disabled={saving || ((issues.length > 0 || !listing) && current !== 'ready' && current !== 'listed')} onChange={(e) => void save(e.target.checked ? 'ready' : 'in-preparation')} />Ready for TikTok Shop</label>
           {issues.length > 0 && <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">{issues.map((issue) => <li key={issue}>{issue}</li>)}</ul>}
+          {reviewFlags.length > 0 && <div className="border border-border border-l-accent p-4 text-sm">
+            <p className="font-semibold">Marketplace checks before publishing</p>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-muted-foreground">{reviewFlags.map((flag) => <li key={flag}>{flag}</li>)}</ul>
+          </div>}
           {current === 'not-started' && <button type="button" className={button} disabled={saving} onClick={() => void save('in-preparation')}>Start preparation</button>}
           {current === 'ready' && !issues.length && listing && <button type="button" className={button} disabled={saving} onClick={() => void save('listed')}>Mark as listed manually</button>}
           {current === 'listed' && <p className="text-sm text-muted-foreground">Marked as listed manually.</p>}
-          <p className="text-sm text-muted-foreground">Readiness tracks your workflow. Confirm category, shipping details, condition and brand eligibility in Seller Center before posting.</p>
+          <p className="text-sm text-muted-foreground">Readiness tracks your workflow. Match the seller SKU and exact garment in Seller Center before creating a listing. “Listed manually” is not a live sync.</p>
           {error && <p role="alert" className="text-sm">{error}</p>}<p role="status" className="text-sm">{saving ? 'Saving status…' : message}</p>
         </div>
         {listing && <TikTokListingPackage key={product.id} listing={listing} />}

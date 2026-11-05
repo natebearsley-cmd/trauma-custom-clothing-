@@ -16,6 +16,8 @@ export const PUBLIC_PAGE_SEO = {
   '/contact': { title: 'Contact TRAUMA | Orders, Custom Clothing & Shipping', description: 'Contact TRAUMA Custom Clothing about a piece, custom quote or order. Ask about buyer-paid shipping from Albany, Illinois 61230 before payment.' },
   '/shipping': { title: 'Shipping Policy | TRAUMA Custom Clothing', description: 'TRAUMA ships from Albany, Illinois 61230 with buyer-paid UPS Ground shipping and tracking. Review processing times and the USPS Ground Advantage backup.' },
   '/returns': { title: 'Returns & Order Issues | TRAUMA Custom Clothing', description: 'Read TRAUMA’s returns policy for custom and one-of-one clothing, including how to report damaged deliveries or incorrect items within seven days.' },
+  '/insider-club': { title: 'TRAUMA Insider Club | TRAUMA Custom Clothing', description: 'Get first look at independent TRAUMA streetwear, reworked denim and one-of-one drops. Find out how to join the TRAUMA Insider Club.' },
+  '/gives-back': { title: 'TRAUMA Gives Back | TRAUMA Custom Clothing', description: 'Learn how TRAUMA plans to support recovery, rehabilitation, mental health and community assistance, and how future campaigns will be reported.' },
   '/faq': { title: 'Clothing, Custom Orders & Shipping FAQ | TRAUMA', description: 'Find answers about TRAUMA custom orders, shipping from Albany, Illinois, UPS Ground delivery estimates and how to get help with an order.' },
 } as const
 

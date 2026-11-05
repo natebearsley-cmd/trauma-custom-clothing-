@@ -34,6 +34,21 @@ export function tiktokReadinessIssues(product: Product): string[] {
   ]
 }
 
+export function tiktokReviewFlags(product: Product): string[] {
+  const text = [product.name, product.brand, product.productType, product.description].filter(Boolean).join(' ')
+  return [
+    ...(product.fulfillmentType === 'digital' || product.inventoryType === 'digital' || /\bdigital\b/i.test(product.category)
+      ? ['Verify Virtual Goods category approval before considering this item.'] : []),
+    ...(!product.condition.trim() || /like new|excellent|pre.owned|used/i.test(product.condition)
+      ? ['Verify actual condition; used items require an approved category.'] : []),
+    ...(/\b(adidas|nike|ecko|louis vuitton|LV patched|BKE|cro(f|ft)t?\s*&\s*barrow)\b/i.test(text)
+      ? ['Third-party brand or artwork indicated. Verify the base, authenticity and any required rights or authorization before listing or promotion.'] : []),
+    ...(/\b(?:matching sets?|3.piece|three.piece)\b/i.test([product.name, product.category].join(' '))
+      ? ['Verify exact contents and bundle eligibility; compare against existing listings and component stock.'] : []),
+    ...(!product.packedWeightOz ? ['Measure packed weight and dimensions before entering shipping details.'] : []),
+  ]
+}
+
 function cleanCopy(value: string): string {
   return value.replace(/(?:https?:\/\/|www\.)[^\s]+/gi, '').replace(/#[\p{L}\p{N}_]+/gu, '')
     .split(/\r?\n/).filter((line) => !/\b(?:depop|payhip|paypal)\b|\b(?:message|dm)\s+(?:me|us)\s+(?:to|for)\b/i.test(line))
@@ -42,9 +57,13 @@ function cleanCopy(value: string): string {
 
 export function generateTikTokListing(product: Product) {
   if (!product.ownerConfirmed || !product.photos.length || !product.description.trim()) return null
-  const name = cleanCopy(product.name).replace(/\s+/g, ' ').trim()
+  const name = cleanCopy(product.name).replace(/\b(?:rare find|high quality|must have)\b/gi, '').replace(/\s+/g, ' ').trim()
   const type = cleanCopy(product.productType ?? '')
-  const title = name && type && !name.toLowerCase().includes(type.toLowerCase()) ? `${name} — ${type}` : name
+  const baseTitle = name && type && !name.toLowerCase().includes(type.toLowerCase()) ? `${name} — ${type}` : name
+  const size = cleanCopy(product.size)
+  const simpleSize = /^(?:XS|S|M|L|XL|XXL|[2-6]XL|W\d{2}|\d{2}(?:\.5)?)$/i.test(size)
+  const hasSize = simpleSize && new RegExp(`(?:^|[\\s(/-])${size.replace('.', '\\.')}(?:$|[\\s)/-])`, 'i').test(baseTitle)
+  const title = baseTitle && simpleSize && !hasSize ? `${baseTitle} ${size}` : baseTitle
   const description = cleanCopy(product.description)
   if (!title || !description) return null
   const details = [['Size', product.size], ['Condition', product.condition], ['Color', product.color], ['Inseam', product.inseam]]

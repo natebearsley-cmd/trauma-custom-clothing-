@@ -4,7 +4,7 @@ import { Hero } from '@/components/hero'
 import { FounderStory } from '@/components/founder-story'
 import { FeaturedPieces } from '@/components/featured-pieces'
 import { CustomInquiry } from '@/components/custom-inquiry'
-import { EmailSignup } from '@/components/email-signup'
+import { InsiderPlacement } from '@/components/insider-placement'
 import { DigitalShop } from '@/components/digital-shop'
 import { SiteFooter } from '@/components/site-footer'
 
@@ -24,13 +24,13 @@ export default function Page() {
         <Hero />
         <FounderStory />
         <FeaturedPieces inventory={inventory} />
+        <InsiderPlacement placement="home" className="mx-auto max-w-7xl px-4 py-10 md:px-8" />
         <CustomInquiry
           action={process.env.CUSTOM_ORDER_FORM_ACTION && safeUrl(process.env.CUSTOM_ORDER_FORM_ACTION)
             ? process.env.CUSTOM_ORDER_FORM_ACTION : null}
           customProducts={storefrontProducts(inventory).filter(isApparel).map(({ id, name }) => ({ id, name }))}
         />
         <DigitalShop />
-        {process.env.WAITLIST_FORM_ACTION && safeUrl(process.env.WAITLIST_FORM_ACTION) && <EmailSignup action={process.env.WAITLIST_FORM_ACTION} />}
       </main>
       <SiteFooter />
     </>

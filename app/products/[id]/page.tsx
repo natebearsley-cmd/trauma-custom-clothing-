@@ -5,6 +5,7 @@ import { galleryProducts } from '@/lib/inventory'
 import { productMetaDescription } from '@/lib/seo'
 import { productStructuredData, serializeStructuredData } from '@/lib/search-schema'
 import { ProductDetail } from '@/components/product-detail'
+import { InsiderPlacement } from '@/components/insider-placement'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
 
@@ -22,5 +23,5 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const product = products.find((item) => item.id === id)
   if (!product) notFound()
   const schema = productStructuredData(product)
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(schema) }} /><SiteHeader /><main id="main-content"><ProductDetail product={product} /></main><SiteFooter /></>
+  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: serializeStructuredData(schema) }} /><SiteHeader /><main id="main-content"><ProductDetail product={product} /><InsiderPlacement placement="product" compact className="mx-auto max-w-7xl px-4 py-8 md:px-8" /></main><SiteFooter /></>
 }
