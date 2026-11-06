@@ -1058,7 +1058,8 @@
       "featuredApparel": true,
       "featuredCollection": true,
       "homepageCollection": true,
-      "depopUrl": "https://www.depop.com/traumacc/"
+      "depopUrl": "https://www.depop.com/traumacc/",
+      "sku": "PMH-001"
     },
     {
       "id": "unspoken-red-letter-trucker",
