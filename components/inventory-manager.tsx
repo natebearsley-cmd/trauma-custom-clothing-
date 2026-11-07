@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from 'react'
 import { commerceCatalog } from '@/lib/commerce'
+import { commerceMasterCsv, tiktokPublicationRecords, tiktokPublicationIssues } from '@/lib/commerce-master'
 import {
   validateInventory,
   safeUrl,
@@ -175,6 +176,15 @@ export function InventoryManager() {
     link.click()
     URL.revokeObjectURL(url)
   }
+  function exportCommerce(tiktok = false) {
+    if (!inventory) return
+    const origin = 'https://tra-coral.vercel.app'
+    const contents = tiktok ? JSON.stringify(tiktokPublicationRecords(inventory, origin), null, 2) : commerceMasterCsv(inventory, origin)
+    const url = URL.createObjectURL(new Blob([tiktok ? contents : `\uFEFF${contents}`], { type: tiktok ? 'application/json' : 'text/csv;charset=utf-8' }))
+    const link = document.createElement('a'); link.href = url
+    link.download = tiktok ? 'TIKTOK_PUBLICATION_PREP.json' : 'TRAUMA_COMMERCE_MASTER.csv'
+    link.click(); URL.revokeObjectURL(url)
+  }
   async function save() {
     setBusy(true)
     try {
@@ -280,6 +290,7 @@ export function InventoryManager() {
           </p>
           <section id="commerce-catalog" aria-labelledby="commerce-catalog-title" className="mt-8 scroll-mt-24 border border-border p-5">
             <h2 id="commerce-catalog-title" className="text-xl font-semibold">PayPal product catalog</h2>
+            <div className="mt-4 flex flex-wrap gap-3"><button type="button" onClick={() => exportCommerce()} className={buttonClass}>Export commerce CSV</button><button type="button" onClick={() => exportCommerce(true)} className={buttonClass}>Export TikTok preparation JSON</button></div>
             <p className="mt-3 text-sm text-muted-foreground">One record per physical item. Save its SKU, inventory tag, price, stock, original photos and product-specific PayPal checkout URL. Confirm and publish it to add BUY NOW and include it in <a href="/shop" className="underline underline-offset-4">Shop Now</a> after deployment.</p>
             <div className="mt-5 overflow-x-auto">
               <table className="w-full min-w-[700px] text-left text-sm">
@@ -294,7 +305,7 @@ export function InventoryManager() {
                 </tr>)}</tbody>
               </table>
             </div>
-            <p className="mt-4 text-sm text-muted-foreground">These are connection statuses, not PayPal account verification. The PMH-001, RTS-001 and ANX-001 launch queue does not create product records or payment links. Mark a sold one-of-one item sold and set stock to zero promptly.</p>
+            <p className="mt-4 text-sm text-muted-foreground">Website, payment links and TikTok preparation read the same inventory record. Exports include current unsaved edits. Preparation JSON is not TikTok's official import workbook. External PayPal prices and TikTok listings are not automatically updated. Mark sold items sold and set stock to zero promptly.</p>
           </section>
           <fieldset disabled={busy} className="mt-8 border border-border p-5">
             <legend className="px-2 text-lg font-semibold">Direct From TRAUMA — PayPal settings</legend>
@@ -375,7 +386,7 @@ export function InventoryManager() {
                       <button type="button" disabled={busy} onClick={() => setSelected(p.id)}
                         aria-current={selected === p.id ? 'true' : undefined}
                         className={`w-full break-words border p-4 text-left hover:border-foreground disabled:opacity-50 ${selected === p.id ? 'border-accent bg-card' : 'border-border'}`}>
-                        <span className="block font-semibold">{p.name || 'Unsaved entry'}</span>
+                        <span className="block font-semibold">{p.name || p.sku || 'Unsaved entry'}</span>
                         <span className="mt-2 block text-xs text-muted-foreground">
                           {p.published ? 'Published' : 'Draft'}{p.sold ? ' · Sold' : ''}
                           {p.category ? ` · ${p.category}` : ''}
@@ -390,7 +401,7 @@ export function InventoryManager() {
             {product && (
               <fieldset id="product-editor" disabled={busy} className="scroll-mt-24 min-w-0 border border-border p-5 md:p-8 disabled:opacity-60">
                 <legend className="px-2 font-semibold">Edit product</legend>
-                <h2 className="break-words text-xl font-semibold">{product.name || 'Unsaved entry'}</h2>
+                <h2 className="break-words text-xl font-semibold">{product.name || product.sku || 'Unsaved entry'}</h2>
                 <p className="mt-2 mb-4 text-sm text-muted-foreground">
                   {product.published ? 'Published' : 'Draft'}{product.sold ? ' · Sold' : ''}
                   {!filtered.some((p) => p.id === product.id) && ' · This selected product is outside the current filters. Your edits are preserved.'}
@@ -405,6 +416,10 @@ export function InventoryManager() {
                   <label className="text-sm font-semibold">Physical inventory tag
                     <input value={product.physicalInventoryTag ?? ''} maxLength={64} onChange={(event) => update({ physicalInventoryTag: event.target.value.trim() })} className={fieldClass} />
                     <span className="mt-2 block text-xs font-normal text-muted-foreground">Keep leading zeroes exactly as printed on the tag.</span>
+                  </label>
+                  <label className="text-sm font-semibold sm:col-span-2">Saved website product URL
+                    <input type="url" value={product.productUrl ?? ''} onChange={(event) => update({ productUrl: event.target.value.trim() })} className={fieldClass} />
+                    <span className="mt-2 block text-xs font-normal text-muted-foreground">Record the actual published product URL. Private records have no public product page; exports derive the canonical route only after publication.</span>
                   </label>
                   {(
                     [
@@ -452,6 +467,25 @@ export function InventoryManager() {
                     <input type="number" min="0" step="1" value={product.stockQuantity ?? ''} onChange={(e) => update({ stockQuantity: e.target.value === '' ? undefined : Number(e.target.value) })} className={fieldClass} />
                     <span className="block text-xs font-normal text-muted-foreground">One-of-one pieces have at most one unit. Mark sold after marketplace sales.</span>
                   </label>
+                  <div className="border border-border p-4 sm:col-span-2">
+                    <h3 className="font-semibold">Measured package dimensions (inches)</h3>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-3">{(['length', 'width', 'height'] as const).map((dimension) => <label key={dimension} className="text-sm capitalize">{dimension}<input type="number" min="0.01" max="200" step="0.01" value={product.packageDimensionsIn?.[dimension] ?? ''} onChange={(event) => update({ packageDimensionsIn: { length: product.packageDimensionsIn?.length ?? 0, width: product.packageDimensionsIn?.width ?? 0, height: product.packageDimensionsIn?.height ?? 0, [dimension]: Number(event.target.value) } })} className={fieldClass} /></label>)}</div>
+                    <button type="button" onClick={() => update({ packageDimensionsIn: undefined })} className={`${buttonClass} mt-3`}>Clear dimensions</button>
+                    <p className="mt-2 text-xs text-muted-foreground">Measure the sealed parcel. Complete all three dimensions before saving; do not guess.</p>
+                  </div>
+                  <div className="space-y-4 border border-border p-4 sm:col-span-2">
+                    <h3 className="font-semibold">TikTok publication record</h3>
+                    <div className="grid gap-4 sm:grid-cols-2">{([
+                      ['tiktokProductId', 'Existing TikTok product ID'], ['tiktokCategoryId', 'Seller Center leaf category ID'],
+                      ['tiktokCategoryPath', 'Seller Center category path'], ['paypalProductId', 'PayPal Catalog Product ID (optional)'],
+                    ] as const).map(([field, label]) => <label key={field} className="text-sm font-semibold">{label}<input value={product[field] ?? ''} onChange={(event) => update({ [field]: event.target.value.trim() })} className={fieldClass} /></label>)}</div>
+                    <p className="text-xs text-muted-foreground">A hosted PayPal payment link is not a PayPal Catalog Product ID. Leave unknown IDs blank. Recording an ID does not create or update an external listing.</p>
+                    <label className="block text-sm font-semibold">TikTok draft title<input maxLength={200} value={product.tiktokTitle ?? ''} onChange={(event) => update({ tiktokTitle: event.target.value })} className={fieldClass} /></label>
+                    <label className="block text-sm font-semibold">TikTok draft description<textarea maxLength={5000} rows={5} value={product.tiktokDescription ?? ''} onChange={(event) => update({ tiktokDescription: event.target.value })} className={fieldClass} /></label>
+                    <label className="flex min-h-11 items-center gap-3 text-sm"><input type="checkbox" checked={product.tiktokPhotosApproved ?? false} onChange={(event) => update({ tiktokPhotosApproved: event.target.checked })} />I reviewed the actual photos for this product.</label>
+                    <label className="flex min-h-11 items-center gap-3 text-sm"><input type="checkbox" checked={product.tiktokListingChecked ?? false} onChange={(event) => update({ tiktokListingChecked: event.target.checked })} />I checked this exact SKU in Seller Center and recorded an existing product ID when present.</label>
+                    <p className="text-sm font-semibold">Remaining publication inputs</p><ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">{tiktokPublicationIssues(product).map((issue) => <li key={issue}>{issue}</li>)}</ul>
+                  </div>
                   <datalist id="product-categories">
                     {[
                       'Books',

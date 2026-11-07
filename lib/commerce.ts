@@ -3,8 +3,8 @@ import { isApparel, isCustomApparel, isPayPalProductUrl, paypalBuyNowDestination
 // Owner-named launch queue, not public product records. Inventory remains the
 // single source of product photos, copy, pricing, stock and payment links.
 export const PAYPAL_LAUNCH_SKUS = ['PMH-001', 'RTS-001', 'ANX-001'] as const
-const confirmedLaunchReferences: Record<string, { name: string; physicalInventoryTag: string }> = {
-  'RTS-001': { name: 'TRAUMA Respect The Scars Pink Trucker Hat', physicalInventoryTag: '0465' },
+export function commerceSkus(inventory: Inventory): string[] {
+  return [...new Set<string>([...PAYPAL_LAUNCH_SKUS, ...inventory.products.flatMap((p) => p.sku ? [p.sku.toUpperCase()] : [])])]
 }
 
 export function paypalShopProducts(inventory: Inventory): Product[] {
@@ -29,11 +29,11 @@ export function commerceRequirements(product?: Product): string[] {
 }
 
 export function commerceCatalog(inventory: Inventory) {
-  const skus = [...new Set<string>([...PAYPAL_LAUNCH_SKUS, ...inventory.products.flatMap((p) => p.sku ? [p.sku.toUpperCase()] : [])])]
+  const skus = commerceSkus(inventory)
   return skus.map((sku) => {
     const product = inventory.products.find((p) => p.sku?.toUpperCase() === sku)
-    return { sku, product, name: product?.name || confirmedLaunchReferences[sku]?.name || '',
-      physicalInventoryTag: product?.physicalInventoryTag || confirmedLaunchReferences[sku]?.physicalInventoryTag || null,
+    return { sku, product, name: product?.name || '',
+      physicalInventoryTag: product?.physicalInventoryTag || null,
       paypalUrl: product?.paypalUrl && isPayPalProductUrl(product.paypalUrl) ? product.paypalUrl : null,
       missing: commerceRequirements(product) }
   })

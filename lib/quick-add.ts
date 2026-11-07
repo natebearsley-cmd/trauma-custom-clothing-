@@ -11,6 +11,8 @@ export type QuickAddFields = {
   size?: string; condition?: string; color?: string; collection?: string; productType?: string
   featuredCollection?: boolean; featuredApparel?: boolean; photoViews?: PhotoView[]
   tiktokReady?: boolean
+  prepareTikTok?: boolean
+  sku?: string; physicalInventoryTag?: string; stockQuantity?: number
   featured: boolean; published: boolean; ownerConfirmed: boolean; reviewApproved: boolean
 }
 export function buildQuickAddProduct(fields: QuickAddFields, paths: string[], session: string): Product {
@@ -32,10 +34,15 @@ export function buildQuickAddProduct(fields: QuickAddFields, paths: string[], se
   if (!Array.isArray(paths) || paths.length < 1 || paths.length > MAX_PRODUCT_PHOTOS || paths.some((path) => !/^\/images\/products\/admin\/[a-z0-9-]+\.(jpg|png|webp)$/.test(path))) throw new Error('Upload between 1 and 12 real product photos.')
   for (const field of ['size', 'condition', 'color', 'collection', 'productType'] as const)
     if (fields[field] !== undefined && (typeof fields[field] !== 'string' || fields[field]!.length > 200)) throw new Error(`Invalid ${field}.`)
+  for (const field of ['sku', 'physicalInventoryTag'] as const)
+    if (fields[field] !== undefined && (typeof fields[field] !== 'string' || fields[field]!.length > 64 ||
+      (fields[field] !== '' && !/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(fields[field]!)))) throw new Error(`Invalid ${field}.`)
+  if (fields.stockQuantity !== undefined && (!Number.isSafeInteger(fields.stockQuantity) || fields.stockQuantity < 0)) throw new Error('Inventory must be a nonnegative whole number.')
   for (const flag of ['featuredCollection', 'featuredApparel'] as const) if (fields[flag] !== undefined && typeof fields[flag] !== 'boolean') throw new Error('Review your featured selections.')
   const featuredCollection = fields.featuredCollection ?? fields.featured
   const featuredApparel = apparel && fields.category !== 'Matching Sets' && (fields.featuredApparel ?? fields.featured)
   if (fields.tiktokReady !== undefined && typeof fields.tiktokReady !== 'boolean') throw new Error('Invalid TikTok Shop readiness.')
+  if (fields.prepareTikTok !== undefined && typeof fields.prepareTikTok !== 'boolean') throw new Error('Invalid TikTok preparation selection.')
   const product: Product = {
     id: `product-${session}`, name: fields.name.trim(), description: fields.description.trim(),
     brand: apparel ? 'Trauma Custom Clothing' : '', category: fields.category,
@@ -48,7 +55,10 @@ export function buildQuickAddProduct(fields: QuickAddFields, paths: string[], se
     source: fields.depopUrl.trim() ? 'depop' : fields.payhipUrl.trim() ? 'payhip' : 'manual', sourceUrl: fields.depopUrl.trim() || fields.payhipUrl.trim(),
     sold: false, soldDisplay: 'show', published: fields.published, featured: featuredCollection || featuredApparel, featuredCollection, featuredApparel,
     ownerConfirmed: true, requestCustomPiece: apparel,
-    ...(fields.tiktokReady ? { tiktokShopStatus: 'ready' as const } : {}),
+    ...(fields.sku?.trim() ? { sku: fields.sku.trim().toUpperCase() } : {}),
+    ...(fields.physicalInventoryTag?.trim() ? { physicalInventoryTag: fields.physicalInventoryTag.trim() } : {}),
+    ...(fields.stockQuantity === undefined ? {} : { stockQuantity: fields.stockQuantity }),
+    ...(fields.tiktokReady ? { tiktokShopStatus: 'ready' as const } : fields.prepareTikTok ? { tiktokShopStatus: 'in-preparation' as const } : {}),
   }
   if (fields.tiktokReady && tiktokReadinessIssues(product).length) throw new Error('Complete the product details before marking it ready for TikTok Shop.')
   return product
