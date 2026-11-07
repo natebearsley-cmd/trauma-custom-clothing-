@@ -21,6 +21,7 @@ export default function Page() {
       <StructuredData />
       <SiteHeader />
       <main id="main-content">
+        <a href="/collections/tiktok" className="block bg-primary px-4 py-4 text-center font-bold text-primary-foreground hover:bg-accent">Shop the Live Showcase →</a>
         <Hero />
         <FounderStory />
         <FeaturedPieces inventory={inventory} />
