@@ -17,6 +17,7 @@ export function SiteFooter() {
           </p>
           <ul className="flex flex-wrap gap-5">
             {[
+              ['Shop Now', '/shop'],
               ['Shipping', '/shipping'], ['Returns', '/returns'], ['FAQ', '/faq'], ['Contact TRAUMA', '/contact'], ['TRAUMA Gives Back', '/gives-back'],
             ].map(([label, href]) => <li key={href}><a href={href} className="inline-flex min-h-11 items-center text-sm underline underline-offset-4">{label}</a></li>)}
             <li>

@@ -1,5 +1,19 @@
 # TRAUMA inventory
 
+## PayPal primary checkout and Shop Now
+
+`/shop` and the homepage Shop Now shelf use the same saved inventory as the product pages. Published, owner-confirmed ready-made apparel with a positive price and stock, original photos, approved description, SKU, physical tag, and product-specific PayPal `/ncp/payment/` URL gets a BUY NOW button automatically. Sold items disappear from Shop Now. Existing checkout-page links for these items redirect to their saved PayPal checkout. Generic PayPal.me links never qualify as a product checkout.
+
+Use **Admin → PayPal Product Catalog** to edit SKU, physical tag (preserving leading zeroes), quantity and PayPal URL on the existing product record. The catalog includes the owner-named launch queue PMH-001, RTS-001 and ANX-001; missing connections do not create products or public placeholder cards. Each SKU, physical tag and product checkout URL must identify one inventory record. Save once, wait for the repository deployment, and check Shop Now. Photos and descriptions stay on the original record. Books and digital products retain Payhip checkout; custom orders retain quotes.
+
+### Next automation step: PayPal Orders
+
+Current checkout remains hosted-link based. A future shared PayPal JavaScript checkout UI and server-side Orders v2 create/capture endpoints can generate an order from an approved inventory record without creating a PayPal Catalog Product or hosted link for every garment. Send a product ID and quantity from the browser; calculate prices, stock, shipping and any applicable tax on the server from trusted data. Keep the merchant client secret server-side.
+
+Before enabling this payment integration, configure business-account application credentials, sandbox tests, durable order/capture records and idempotency, verified payment webhooks, and atomic stock reservation for one-of-one items. GitHub JSON and a deployment alone are not a live inventory lock or an order ledger. Shipping currently requires a carrier quote; automated checkout needs a configured pricing rule or rate integration. Do not silently treat a missing shipping quote as free shipping. Keep existing hosted links usable during migration.
+
+Primary references: https://developer.paypal.com/api/rest/integration/orders-api and https://developer.paypal.com/studio/checkout/standard/integrate
+
 For the current phone-first workflow, use [Admin quick start](admin-quick-start.md). Earlier sections retain implementation history; code deployment and product publication are separate. Products stay private until you explicitly approve publishing them.
 
 ## Store rules

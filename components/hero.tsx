@@ -33,8 +33,8 @@ export function Hero() {
         </h1>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-          <a href="/collections" className="inline-flex min-h-12 items-center justify-center bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent">
-            Shop Collection
+          <a href="/shop" className="inline-flex min-h-12 items-center justify-center bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent">
+            Shop Now
           </a>
           <a href="#story" className="inline-flex min-h-12 items-center justify-center gap-2 border border-foreground/40 px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background">
             Our Story <ArrowDown className="size-4" aria-hidden="true" />

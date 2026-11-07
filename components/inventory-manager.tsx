@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, type FormEvent } from 'react'
+import { commerceCatalog } from '@/lib/commerce'
 import {
   validateInventory,
   safeUrl,
@@ -60,6 +61,7 @@ export function InventoryManager() {
   const [galleryMode, setGalleryMode] = useState(false)
   const [filters, setFilters] = useState<InventoryFilters>(emptyFilters)
   const products = inventory?.products ?? []
+  const catalog = inventory ? commerceCatalog(inventory) : []
   const filtered = filterInventoryProducts(products, filters)
   const categories = [...new Set(products.map((p) => p.category).filter(Boolean))].sort()
   function changeFilter(patch: Partial<InventoryFilters>) {
@@ -276,6 +278,24 @@ export function InventoryManager() {
             {dirty ? 'Unsaved changes' : 'No unsaved changes'} · Saving creates
             a repository commit. Store changes appear after deployment.
           </p>
+          <section id="commerce-catalog" aria-labelledby="commerce-catalog-title" className="mt-8 scroll-mt-24 border border-border p-5">
+            <h2 id="commerce-catalog-title" className="text-xl font-semibold">PayPal product catalog</h2>
+            <p className="mt-3 text-sm text-muted-foreground">One record per physical item. Save its SKU, inventory tag, price, stock, original photos and product-specific PayPal checkout URL. Confirm and publish it to add BUY NOW and include it in <a href="/shop" className="underline underline-offset-4">Shop Now</a> after deployment.</p>
+            <div className="mt-5 overflow-x-auto">
+              <table className="w-full min-w-[700px] text-left text-sm">
+                <thead><tr className="border-b border-border">{['SKU', 'Physical tag', 'Product', 'PayPal checkout', 'Status', 'Action'].map((label) => <th key={label} scope="col" className="px-3 py-3">{label}</th>)}</tr></thead>
+                <tbody>{catalog.map((row) => <tr key={row.sku} className="border-b border-border align-top">
+                  <th scope="row" className="px-3 py-4">{row.sku}</th>
+                  <td className="px-3 py-4">{row.physicalInventoryTag || 'Not connected'}</td>
+                  <td className="px-3 py-4">{row.name || 'Connect the existing product'}</td>
+                  <td className="max-w-56 break-all px-3 py-4">{row.paypalUrl ? <a href={row.paypalUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">{row.paypalUrl}<span className="sr-only"> (opens in new tab)</span></a> : 'Product checkout URL missing'}</td>
+                  <td className="max-w-64 px-3 py-4">{row.missing.length ? row.missing.join(' · ') : 'BUY NOW connected'}</td>
+                  <td className="px-3 py-4">{row.product && <button type="button" className={buttonClass} onClick={() => { setSelected(row.product!.id); document.getElementById('product-editor')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }}>Edit</button>}</td>
+                </tr>)}</tbody>
+              </table>
+            </div>
+            <p className="mt-4 text-sm text-muted-foreground">These are connection statuses, not PayPal account verification. The PMH-001, RTS-001 and ANX-001 launch queue does not create product records or payment links. Mark a sold one-of-one item sold and set stock to zero promptly.</p>
+          </section>
           <fieldset disabled={busy} className="mt-8 border border-border p-5">
             <legend className="px-2 text-lg font-semibold">Direct From TRAUMA — PayPal settings</legend>
             <div className="grid gap-5 sm:grid-cols-2">
@@ -298,7 +318,7 @@ export function InventoryManager() {
                   onChange={(e) => changeFilter({ search: e.target.value })}
                   className={fieldClass} aria-describedby="search-help" />
                 <span id="search-help" className="mt-2 block text-sm font-normal text-muted-foreground">
-                  Search names, IDs, brands, descriptions, categories, sizes, and colors.
+                  Search names, IDs, SKUs, physical tags, brands, descriptions, categories, sizes, and colors.
                 </span>
               </label>
               <label className="text-sm font-semibold">Status
@@ -379,6 +399,13 @@ export function InventoryManager() {
                   ID: {product.id}
                 </p>
                 <div className="grid gap-5 sm:grid-cols-2">
+                  <label className="text-sm font-semibold">SKU
+                    <input value={product.sku ?? ''} maxLength={64} onChange={(event) => update({ sku: event.target.value.trim().toUpperCase() })} className={fieldClass} />
+                  </label>
+                  <label className="text-sm font-semibold">Physical inventory tag
+                    <input value={product.physicalInventoryTag ?? ''} maxLength={64} onChange={(event) => update({ physicalInventoryTag: event.target.value.trim() })} className={fieldClass} />
+                    <span className="mt-2 block text-xs font-normal text-muted-foreground">Keep leading zeroes exactly as printed on the tag.</span>
+                  </label>
                   {(
                     [
                       'name',
@@ -583,7 +610,7 @@ export function InventoryManager() {
                     PayPal URL — direct apparel purchases
                     <input type="url" value={product.paypalUrl ?? ''} disabled={!isApparel(product)}
                       onChange={(e) => update({ paypalUrl: e.target.value.trim() })} className={fieldClass} />
-                    <span className="mt-2 block text-sm font-normal text-muted-foreground">Adds Pay With PayPal alongside Depop for ready-made apparel. Leave blank to omit the button. Sold pieces and custom quote products do not show purchase buttons. Digital products stay on Payhip.</span>
+                    <span className="mt-2 block text-sm font-normal text-muted-foreground">Use this product's https://www.paypal.com/ncp/payment/ link for primary BUY NOW. With a SKU, physical tag, price, stock, photos and publication, it joins Shop Now automatically after deployment. Do not reuse another item's payment link. Generic PayPal.me links do not enable direct checkout. Digital products stay on Payhip.</span>
                   </label>
                   <label className="text-sm font-semibold sm:col-span-2">
                     Depop listing URL — apparel only

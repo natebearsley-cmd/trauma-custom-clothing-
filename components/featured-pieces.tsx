@@ -105,6 +105,7 @@ export function FeaturedPieces({ inventory }: { inventory: Inventory }) {
         <Shelf id="accessories" title="Accessories" products={accessories} href="/collections?category=headwear&availability=available" />
         <Shelf id="one-of-one" title="One of One Collection" description="No two pieces are identical." products={oneOfOne} href="/collections?category=artwear&availability=available" />
         <nav aria-label="Shop more TRAUMA pieces" className="mt-8 flex flex-wrap gap-3">
+          <Link href="/shop" className="inline-flex min-h-12 items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-accent">Shop Now with PayPal <ArrowUpRight aria-hidden="true" className="size-4" /></Link>
           <Link href="/collections/tiktok" className="inline-flex min-h-11 items-center gap-2 bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-accent">Shop the TikTok Collection <ArrowUpRight aria-hidden="true" className="size-4" /></Link>
           <Link href="/collections" className="inline-flex min-h-11 items-center border border-border px-4 py-2 text-sm font-semibold hover:border-accent">View full gallery</Link>
         </nav>
