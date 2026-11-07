@@ -7,6 +7,7 @@ import {
   safeUrl,
   isDepopUrl,
   isPayhipProductUrl,
+  isPayPalUrl,
 } from '../lib/inventory.ts'
 const releasedInventory = JSON.parse(
   readFileSync(new URL('../data/inventory.json', import.meta.url)),
@@ -404,7 +405,7 @@ test('PayPal is an independent apparel action without replacing Depop or digital
 test('payment settings and optional per-product PayPal fields validate without publishing inventory', () => {
   assert.equal(inventory.payments.paypalUrl, 'https://paypal.me/NathanialBearsley')
   assert.equal(inventory.payments.paypalQrImage, '')
-  assert.ok(inventory.products.filter((p) => p.paypalUrl).every((p) => p.paypalUrl === inventory.payments.paypalUrl))
+  assert.ok(inventory.products.filter((p) => p.paypalUrl).every((p) => isPayPalUrl(p.paypalUrl)))
   assert.equal(inventory.products.filter((p) => p.published).length, 0)
   for (const mutate of [
     (d) => { d.products[0].paypalUrl = 'https://attacker.example/payment' },
