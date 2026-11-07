@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { SiteHeader } from '@/components/site-header'
 import { SiteFooter } from '@/components/site-footer'
-import { galleryProducts, paypalDestination, productDestination } from '@/lib/inventory'
+import { galleryProducts, paypalDestination, paypalBuyNowDestination, productDestination } from '@/lib/inventory'
 import { inventory } from '@/lib/inventory-store'
 
 export const metadata = publicPageMetadata('/collections/tiktok')
@@ -28,7 +28,7 @@ export default function TikTokCollectionPage() {
     <>
       <SiteHeader />
       <main id="main-content" className="mx-auto max-w-6xl px-4 pb-16 pt-7 sm:px-8 md:pb-24 md:pt-12">
-        <p className="eyebrow">LIVE_SHOWCASE_COLLECTION</p>
+        <p className="eyebrow">LIVE_SHOWCASE_COLLECTION · Trucker hats first</p>
         <h1 className="section-title mt-2">Live Showcase</h1>
         <p className="mt-4 max-w-2xl text-muted-foreground">Explore the pieces featured in our live show. Ships from Albany, Illinois. Buyer-paid UPS Ground shipping is confirmed before payment.</p>
         <p className="mt-3 text-sm text-muted-foreground">{products.length} pieces available to view</p>
@@ -38,6 +38,7 @@ export default function TikTokCollectionPage() {
               const href = `/products/${product.id}`
               const price = new Intl.NumberFormat('en-US', { style: 'currency', currency: product.currency }).format(product.price!)
               const story = product.description.trim().split(/\n\s*\n/).slice(0, 2).join(' ')
+              const buyNow = paypalBuyNowDestination(product)
               const paypal = paypalDestination(product)
               const depop = productDestination(product)
               const secondaryButton = 'inline-flex min-h-11 flex-1 items-center justify-center border border-border px-3 py-2 text-sm font-semibold hover:border-accent'
@@ -54,7 +55,8 @@ export default function TikTokCollectionPage() {
                         View Product · {price}<ArrowUpRight aria-hidden="true" className="size-4 shrink-0" />
                       </Link>
                       <div className="flex flex-wrap gap-2">
-                        {paypal && <Link href={`/checkout/${product.id}`} className={secondaryButton}>Shipping &amp; PayPal</Link>}
+                        {buyNow && <a href={buyNow} className="inline-flex min-h-12 w-full items-center justify-center bg-primary px-4 py-3 font-bold text-primary-foreground hover:bg-accent">BUY NOW · {price}</a>}
+                        {paypal && !buyNow && <Link href={`/checkout/${product.id}`} className={secondaryButton}>Shipping &amp; PayPal</Link>}
                         {depop?.platform === 'Depop' && <a href={depop.url} className={secondaryButton}>Shop on Depop</a>}
                       </div>
                     </div>
