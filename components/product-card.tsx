@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
-import { DEPOP_SHOP_URL, productDestination, paypalDestination, productPhotoLabel, isApparel, isCustomApparel, type Product } from '@/lib/inventory'
+import { DEPOP_SHOP_URL, productDestination, paypalDestination, paypalBuyNowDestination, productPhotoLabel, isApparel, isCustomApparel, type Product } from '@/lib/inventory'
 
 export function ProductCard({
   product,
@@ -17,6 +17,7 @@ export function ProductCard({
 }) {
   const [photo, setPhoto] = useState(0)
   const destination = productDestination(product)
+  const buyNow = paypalBuyNowDestination(product)
   const paypalUrl = paypalDestination(product)
   const apparel = isApparel(product)
   const custom = isCustomApparel(product)
@@ -130,6 +131,10 @@ export function ProductCard({
             Request Quote <ArrowUpRight className="size-4" aria-hidden="true" />
             <span className="sr-only"> for {product.name}</span>
           </a>
+        ) : buyNow ? (
+          <a href={buyNow} aria-label={`Buy ${product.name} now with PayPal`} className="mt-auto inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-accent">
+            BUY NOW <ArrowUpRight className="size-4" aria-hidden="true" />
+          </a>
         ) : destination ? (
           <a
             href={destination.url}
@@ -143,7 +148,7 @@ export function ProductCard({
             </span>
           </a>
         ) : null}
-        {paypalUrl && (
+        {paypalUrl && !buyNow && (
           <a href={`/checkout/${product.id}`}
             className="inline-flex min-h-12 items-center justify-center gap-2 border border-input px-4 py-3 text-sm font-semibold hover:border-accent">
             Review shipping & PayPal <ArrowUpRight className="size-4" aria-hidden="true" />

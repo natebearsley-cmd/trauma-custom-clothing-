@@ -1035,7 +1035,7 @@
       "category": "Headwear",
       "size": "",
       "color": "",
-      "condition": "",
+      "condition": "New With Tags",
       "photos": [
         "/images/products/featured-depop/pain-made-me-rose-trucker-1.jpg"
       ],
@@ -1059,7 +1059,10 @@
       "featuredCollection": true,
       "homepageCollection": true,
       "depopUrl": "https://www.depop.com/traumacc/",
-      "sku": "PMH-001"
+      "sku": "PMH-001",
+      "physicalInventoryTag": "0461",
+      "stockQuantity": 1,
+      "paypalUrl": "https://www.paypal.com/ncp/payment/A4R6L7DCHWYPN"
     },
     {
       "id": "unspoken-red-letter-trucker",

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
-import { DEPOP_SHOP_URL, productDestination, paypalDestination, productPhotoLabel, productCollection, isApparel, isCustomApparel, type Product } from '@/lib/inventory'
+import { DEPOP_SHOP_URL, productDestination, paypalDestination, paypalBuyNowDestination, productPhotoLabel, productCollection, isApparel, isCustomApparel, type Product } from '@/lib/inventory'
 
 export function ProductDetail({ product }: { product: Product }) {
   const [photo, setPhoto] = useState(0)
@@ -12,6 +12,7 @@ export function ProductDetail({ product }: { product: Product }) {
   const apparel = isApparel(product)
   const custom = isCustomApparel(product)
   const destination = productDestination(product)
+  const buyNow = paypalBuyNowDestination(product)
   const paypal = paypalDestination(product)
   const money = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: product.currency }).format(value)
   const external = (url: string) => url.startsWith('https://') && new URL(url).hostname !== 'images.depop.com'
@@ -40,8 +41,9 @@ export function ProductDetail({ product }: { product: Product }) {
         <section className="mt-8 border-l-2 border-[#a52d41] pl-4"><h2 className="font-semibold">{product.themes?.length ? "The story behind the piece" : "About this piece"}</h2><p className="mt-2 whitespace-pre-line leading-relaxed text-muted-foreground">{product.description}</p></section>
         {([['Features', product.features], ['Key artwork', product.keyArtwork], ['Themes', product.themes]] as const).map(([title, items]) => items?.length ? <div key={title} className="mt-6"><h2 className="font-semibold">{title}</h2><ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted-foreground">{items.map((item, index) => <li key={`${index}-${item}`}>{item}</li>)}</ul></div> : null)}
         <div className="mt-8 flex flex-col gap-3">
-          {destination && <a href={destination.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-5 py-4 font-semibold text-primary-foreground hover:bg-accent">{apparel ? (destination.url === DEPOP_SHOP_URL ? 'Visit TRAUMA on Depop' : 'View On Depop') : 'Buy on Payhip'}<ArrowUpRight className="size-4" aria-hidden="true" /><span className="sr-only"> (opens in new tab)</span></a>}
-          {paypal && <Link href={`/checkout/${product.id}`} className="inline-flex min-h-12 items-center justify-center gap-2 border border-input px-5 py-4 font-semibold hover:border-accent">Review shipping & PayPal<ArrowUpRight className="size-4" aria-hidden="true" /></Link>}
+          {buyNow && <a href={buyNow} className="inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-5 py-4 font-semibold text-primary-foreground hover:bg-accent" aria-label={`Buy ${product.name} now with PayPal`}>BUY NOW<ArrowUpRight className="size-4" aria-hidden="true" /></a>}
+          {!buyNow && destination && <a href={destination.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 bg-primary px-5 py-4 font-semibold text-primary-foreground hover:bg-accent">{apparel ? (destination.url === DEPOP_SHOP_URL ? 'Visit TRAUMA on Depop' : 'View On Depop') : 'Buy on Payhip'}<ArrowUpRight className="size-4" aria-hidden="true" /><span className="sr-only"> (opens in new tab)</span></a>}
+          {paypal && !buyNow && <Link href={`/checkout/${product.id}`} className="inline-flex min-h-12 items-center justify-center gap-2 border border-input px-5 py-4 font-semibold hover:border-accent">Review shipping & PayPal<ArrowUpRight className="size-4" aria-hidden="true" /></Link>}
           {apparel && !product.sold && <Link href={`/custom-orders?customProduct=${encodeURIComponent(product.id)}`} className="inline-flex min-h-12 items-center justify-center gap-2 border border-input px-5 py-4 font-semibold hover:border-accent">{custom ? 'Request Custom Order' : 'Request Custom Piece'}<ArrowUpRight className="size-4" aria-hidden="true" /></Link>}
           {apparel && !product.sold && <p className="text-sm leading-relaxed text-muted-foreground">Ships from Albany, Illinois. <Link href="/shipping" className="underline underline-offset-4">Shipping and delivery</Link></p>}
         </div>

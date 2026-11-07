@@ -8,6 +8,8 @@ export const PHOTO_VIEW_LABELS: Record<PhotoView, string> = { front: 'Front view
 
 export type Product = {
   id: string
+  sku?: string
+  physicalInventoryTag?: string
   inventoryType?: 'apparel' | 'reworked-denim' | 'one-of-one' | 'digital'
   fulfillmentType?: 'physical' | 'digital'
   packedWeightOz?: number
@@ -109,6 +111,15 @@ export function isPayPalUrl(value: string): boolean {
 export function paypalDestination(product: Product): string | null {
   return isApparel(product) && !product.sold && !isCustomApparel(product) &&
     product.paypalUrl && isPayPalUrl(product.paypalUrl) ? product.paypalUrl : null
+}
+
+export function paypalBuyNowDestination(product: Product): string | null {
+  if (product.id !== 'pain-made-me-rose-trucker' || product.stockQuantity === 0) return null
+  const destination = paypalDestination(product)
+  if (!destination) return null
+  const url = new URL(destination)
+  return ['paypal.com', 'www.paypal.com'].includes(url.hostname) &&
+    /^\/ncp\/payment\/[^/]+\/?$/.test(url.pathname) ? destination : null
 }
 
 export function productDestination(product: Product): { url: string; platform: 'Depop' | 'Payhip' } | null {

@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
-import type { Product } from '@/lib/inventory'
+import { paypalBuyNowDestination, type Product } from '@/lib/inventory'
 
 export function GalleryCard({ product, imageSizes = "(min-width: 1024px) 30vw, 48vw" }: { product: Product; imageSizes?: string }) {
+  const buyNow = paypalBuyNowDestination(product)
   return (
-    <li className="min-w-0">
-      <Link href={`/products/${product.id}`} className="group flex h-full flex-col border border-white/10 border-t-2 border-t-[#a52d41] bg-[#211f23] transition-colors hover:border-[#e98793] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#e98793]">
+    <li className="min-w-0 flex flex-col">
+      <Link href={`/products/${product.id}`} className="group flex flex-1 flex-col border border-white/10 border-t-2 border-t-[#a52d41] bg-[#211f23] transition-colors hover:border-[#e98793] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#e98793]">
         <div className="relative aspect-[4/5] overflow-hidden bg-[#171619]">
           <Image src={product.photos[0]} alt={product.name} fill sizes={imageSizes} className="object-contain p-2 sm:p-3" />
         </div>
@@ -18,6 +19,7 @@ export function GalleryCard({ product, imageSizes = "(min-width: 1024px) 30vw, 4
           </div>
         </div>
       </Link>
+      {buyNow && <a href={buyNow} aria-label={`Buy ${product.name} now with PayPal`} className="inline-flex min-h-12 w-full items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground hover:bg-accent">BUY NOW<ArrowUpRight className="size-4" aria-hidden="true" /></a>}
     </li>
   )
 }
