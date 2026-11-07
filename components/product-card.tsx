@@ -155,7 +155,7 @@ export function ProductCard({
             <span className="sr-only"> for {product.name}</span>
           </a>
         )}
-        {apparel && !custom && !product.sold && product.requestCustomPiece && (
+        {apparel && !custom && !product.sold && !buyNow && product.requestCustomPiece && (
           <a href={`/?customProduct=${encodeURIComponent(product.id)}#custom`}
             className="inline-flex min-h-12 items-center justify-center gap-2 border border-input px-4 py-3 text-sm font-semibold hover:border-accent">
             Request Custom Piece <ArrowUpRight className="size-4" aria-hidden="true" />
