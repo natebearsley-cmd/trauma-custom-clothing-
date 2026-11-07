@@ -5,6 +5,7 @@ import { TikTokListingPackage } from '@/components/tiktok-listing-package'
 import { isDepopUrl, productPhotoLabel, type Inventory } from '@/lib/inventory'
 import { generateTikTokListing, tiktokPriority, tiktokReadinessIssues, tiktokReviewFlags, TIKTOK_STATUSES, TIKTOK_STATUS_LABELS, type TikTokShopStatus } from '@/lib/tiktok-shop'
 import { TIKTOK_URL } from '@/lib/site'
+import { tiktokPublicationIssues } from '@/lib/commerce-master'
 
 const button = 'inline-flex min-h-11 items-center border border-input px-4 py-2 text-sm font-semibold hover:border-accent'
 
@@ -34,10 +35,10 @@ export function TikTokShopDashboard() {
   }, [])
   const products = (record?.inventory.products ?? []).filter((product) =>
     (status === 'all' || (product.tiktokShopStatus ?? 'not-started') === status) &&
-    [product.name, product.category, product.productType, tiktokPriority(product).label].some((value) => value?.toLowerCase().includes(search.trim().toLowerCase())))
+    [product.name, product.sku, product.physicalInventoryTag, product.category, product.productType, tiktokPriority(product).label].some((value) => value?.toLowerCase().includes(search.trim().toLowerCase())))
     .sort((a, b) => tiktokPriority(a).rank - tiktokPriority(b).rank || a.name.localeCompare(b.name))
   const product = products.find((item) => item.id === selected) ?? products[0]
-  const issues = product ? tiktokReadinessIssues(product) : []
+  const issues = product ? tiktokPublicationIssues(product) : []
   const reviewFlags = product ? tiktokReviewFlags(product) : []
   const listing = product ? generateTikTokListing(product) : null
   const current = product?.tiktokShopStatus ?? 'not-started'
@@ -68,12 +69,13 @@ export function TikTokShopDashboard() {
         <p className="mt-4 text-sm text-muted-foreground">{products.length} inventory items</p>
         <ul className="mt-3 max-h-72 space-y-2 overflow-auto lg:max-h-[70vh]">
           {products.map((item) => <li key={item.id}><button type="button" aria-pressed={item.id === product?.id} onClick={() => { setSelected(item.id); setMessage(''); setError('') }} className="min-h-12 w-full break-words border border-border px-3 py-3 text-left text-sm aria-pressed:border-accent">
-            <span className="block font-semibold">{item.name}</span><span className="mt-1 block text-xs text-muted-foreground">{tiktokPriority(item).label} · {TIKTOK_STATUS_LABELS[item.tiktokShopStatus ?? 'not-started']}</span>
+            <span className="block font-semibold">{item.name || item.sku}</span><span className="mt-1 block text-xs text-muted-foreground">{item.sku ? `${item.sku} · ` : ''}{tiktokPriority(item).label} · {TIKTOK_STATUS_LABELS[item.tiktokShopStatus ?? 'not-started']}</span>
           </button></li>)}
         </ul>
       </section>
       {product ? <section aria-label="Selected inventory item" className="min-w-0 border border-border bg-card p-4 sm:p-6">
-        <h2 className="break-words text-2xl font-semibold">{product.name}</h2>
+        <h2 className="break-words text-2xl font-semibold">{product.name || product.sku}</h2>
+        <p className="mt-2 text-sm text-muted-foreground">SKU {product.sku || 'not recorded'} · Physical tag {product.physicalInventoryTag || 'not recorded'} · TikTok product ID {product.tiktokProductId || 'not recorded'}</p>
         <p className="mt-2 text-sm text-muted-foreground">{product.category || 'Category needed'} · {product.price === null ? 'Price needed' : new Intl.NumberFormat('en-US', { style: 'currency', currency: product.currency }).format(product.price)}</p>
         <p className="mt-4 whitespace-pre-wrap break-words text-sm">{product.description || 'Add the product description in inventory.'}</p>
         {product.photos.length > 0 && <ul aria-label="Original product photos" className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4">

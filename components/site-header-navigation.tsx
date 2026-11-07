@@ -7,6 +7,7 @@ import { InsiderQr } from '@/components/insider-qr'
 import { insiderHref } from '@/lib/insider'
 
 const NAV = [
+  { label: 'Shop Now', href: '/shop', external: false },
   { label: 'Story', href: '/#story', external: false },
   { label: 'Collections', href: '/#drops', external: false },
   { label: 'Apparel', href: '/collections?category=apparel&availability=available', external: false },
@@ -66,12 +67,10 @@ export function SiteHeaderNavigation({ insiderEnabled }: { insiderEnabled: boole
 
         <div className="flex items-center gap-2">
           <a
-            href={PAYHIP_SHOP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden items-center gap-2 bg-primary px-4 py-2.5 text-xs font-bold uppercase tracking-[0.18em] text-primary-foreground transition-colors hover:bg-accent lg:inline-flex"
+            href="/shop"
+            className="inline-flex min-h-11 items-center gap-2 bg-primary px-3 py-2.5 text-xs font-bold uppercase tracking-[0.1em] text-primary-foreground transition-colors hover:bg-accent sm:px-4"
           >
-            Shop on Payhip
+            Shop Now
             <ArrowUpRight className="size-4" aria-hidden="true" />
           </a>
           <button

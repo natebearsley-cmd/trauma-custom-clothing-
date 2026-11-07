@@ -10,6 +10,16 @@ export type Product = {
   id: string
   sku?: string
   physicalInventoryTag?: string
+  productUrl?: string
+  paypalProductId?: string
+  tiktokProductId?: string
+  tiktokCategoryId?: string
+  tiktokCategoryPath?: string
+  tiktokTitle?: string
+  tiktokDescription?: string
+  tiktokPhotosApproved?: boolean
+  tiktokListingChecked?: boolean
+  packageDimensionsIn?: { length: number; width: number; height: number }
   inventoryType?: 'apparel' | 'reworked-denim' | 'one-of-one' | 'digital'
   fulfillmentType?: 'physical' | 'digital'
   packedWeightOz?: number
@@ -113,13 +123,21 @@ export function paypalDestination(product: Product): string | null {
     product.paypalUrl && isPayPalUrl(product.paypalUrl) ? product.paypalUrl : null
 }
 
+export function isPayPalProductUrl(value: string): boolean {
+  if (!isPayPalUrl(value)) return false
+  const url = new URL(value)
+  return ['paypal.com', 'www.paypal.com'].includes(url.hostname) &&
+    /^\/ncp\/payment\/[^/]+\/?$/.test(url.pathname)
+}
+
 export function paypalBuyNowDestination(product: Product): string | null {
-  if (product.id !== 'pain-made-me-rose-trucker' || product.stockQuantity === 0) return null
+  if (!product.published || !product.ownerConfirmed || !product.sku?.trim() ||
+    !product.physicalInventoryTag?.trim() || !product.photos.length || !product.description.trim() ||
+    product.price === null || !Number.isFinite(product.price) || product.price <= 0 ||
+    !Number.isSafeInteger(product.stockQuantity) || product.stockQuantity! < 1) return null
   const destination = paypalDestination(product)
   if (!destination) return null
-  const url = new URL(destination)
-  return ['paypal.com', 'www.paypal.com'].includes(url.hostname) &&
-    /^\/ncp\/payment\/[^/]+\/?$/.test(url.pathname) ? destination : null
+  return isPayPalProductUrl(destination) ? destination : null
 }
 
 export function productDestination(product: Product): { url: string; platform: 'Depop' | 'Payhip' } | null {
@@ -150,6 +168,9 @@ export function validateInventory(value: unknown): asserts value is Inventory {
       throw new Error('Payment settings require a valid PayPal link and an optional HTTPS QR image URL or /images/ path')
   }
   const ids = new Set<string>()
+  const skus = new Set<string>()
+  const physicalTags = new Set<string>()
+  const checkoutLinks = new Set<string>()
   for (const p of inventory.products) {
     if (!p || typeof p !== 'object') throw new Error('Invalid product')
     for (const key of [
@@ -175,6 +196,19 @@ export function validateInventory(value: unknown): asserts value is Inventory {
     if (!/^[a-z0-9][a-z0-9-]{0,99}$/.test(p.id) || ids.has(p.id))
       throw new Error('Product IDs must be unique lowercase slugs')
     ids.add(p.id)
+    for (const [field, seen, label] of [
+      ['sku', skus, 'SKU'], ['physicalInventoryTag', physicalTags, 'Physical inventory tag'],
+    ] as const) {
+      const value = p[field]
+      if (value !== undefined && (typeof value !== 'string' || value.length > 64 ||
+        (value !== '' && !/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/.test(value))))
+        throw new Error(`${label} must be at most 64 letters, numbers, dots, underscores or hyphens`)
+      if (value) {
+        const normalized = value.toUpperCase()
+        if (seen.has(normalized)) throw new Error(`${label} must identify one product only`)
+        seen.add(normalized)
+      }
+    }
     if (p.inventoryType !== undefined && !['apparel', 'reworked-denim', 'one-of-one', 'digital'].includes(p.inventoryType)) throw new Error('Invalid inventory type')
     if (p.inventoryType === 'digital' && p.fulfillmentType === 'physical') throw new Error('Digital inventory cannot require physical fulfillment')
     if (p.sold && p.stockQuantity !== undefined && p.stockQuantity !== 0) throw new Error('Sold inventory must have zero stock')
@@ -183,7 +217,21 @@ export function validateInventory(value: unknown): asserts value is Inventory {
     if (p.packedWeightOz !== undefined && (!Number.isFinite(p.packedWeightOz) || p.packedWeightOz <= 0 || p.packedWeightOz > 2400)) throw new Error('Packed weight must be greater than zero and at most 2400 ounces')
     if (p.stockQuantity !== undefined && (!Number.isSafeInteger(p.stockQuantity) || p.stockQuantity < 0)) throw new Error('Stock quantity must be a nonnegative integer')
     if (p.inventoryType === 'one-of-one' && p.stockQuantity !== undefined && p.stockQuantity > 1) throw new Error('One-of-one stock cannot exceed one')
-    if (!p.name.trim()) throw new Error('Product name is required')
+    if (!p.name.trim() && (p.published || !p.sku?.trim())) throw new Error('Product name is required before publication. A private incomplete record must have a SKU.')
+    if (p.productUrl !== undefined && (typeof p.productUrl !== 'string' || p.productUrl.length > 2000 ||
+      (p.productUrl !== '' && !safeUrl(p.productUrl)))) throw new Error('Product URL must be HTTPS')
+    for (const field of ['paypalProductId', 'tiktokProductId', 'tiktokCategoryId'] as const)
+      if (p[field] !== undefined && (typeof p[field] !== 'string' || p[field]!.length > 100 ||
+        (p[field] !== '' && !/^[a-zA-Z0-9_-]+$/.test(p[field]!)))) throw new Error(`Invalid ${field}`)
+    for (const [field, max] of [['tiktokCategoryPath', 300], ['tiktokTitle', 200], ['tiktokDescription', 5000]] as const)
+      if (p[field] !== undefined && (typeof p[field] !== 'string' || p[field]!.length > max)) throw new Error(`Invalid ${field}`)
+    for (const field of ['tiktokPhotosApproved', 'tiktokListingChecked'] as const)
+      if (p[field] !== undefined && typeof p[field] !== 'boolean') throw new Error(`Invalid ${field}`)
+    if (p.packageDimensionsIn !== undefined && (!p.packageDimensionsIn || typeof p.packageDimensionsIn !== 'object' ||
+      ['length', 'width', 'height'].some((dimension) => {
+        const value = p.packageDimensionsIn![dimension as keyof NonNullable<Product['packageDimensionsIn']>]
+        return typeof value !== 'number' || !Number.isFinite(value) || value <= 0 || value > 200
+      }))) throw new Error('Package length, width and height must be measured positive inches, at most 200 each')
     if (p.tiktokShopStatus !== undefined && !TIKTOK_STATUSES.includes(p.tiktokShopStatus)) throw new Error('Invalid TikTok Shop status')
     if (
       p.price !== null &&
@@ -243,6 +291,12 @@ export function validateInventory(value: unknown): asserts value is Inventory {
     if (p.paypalUrl !== undefined && (typeof p.paypalUrl !== 'string' || p.paypalUrl.length > 2000 ||
       (p.paypalUrl !== '' && !isPayPalUrl(p.paypalUrl))))
       throw new Error('PayPal URL must be a direct HTTPS PayPal.me or PayPal payment link')
+    if (p.paypalUrl && isPayPalProductUrl(p.paypalUrl)) {
+      const url = new URL(p.paypalUrl)
+      const checkoutId = url.pathname.replace(/\/$/, '')
+      if (checkoutLinks.has(checkoutId)) throw new Error('Each PayPal product checkout link must belong to one inventory record only')
+      checkoutLinks.add(checkoutId)
+    }
     if (p.depopUrl !== undefined &&
       (typeof p.depopUrl !== 'string' || p.depopUrl.length > 2000 ||
         (p.depopUrl !== '' && p.depopUrl !== DEPOP_SHOP_URL && !isDepopProductUrl(p.depopUrl))))
@@ -346,7 +400,7 @@ export function filterInventoryProducts(
 ): Product[] {
   const terms = filters.search.trim().toLowerCase().split(/\s+/).filter(Boolean)
   return products.filter((p) => {
-    const searchable = [p.name, p.id, p.brand, p.category, p.description, p.size, p.color]
+    const searchable = [p.name, p.id, p.sku, p.physicalInventoryTag, p.brand, p.category, p.description, p.size, p.color]
       .join(' ').toLowerCase()
     return terms.every((term) => searchable.includes(term)) &&
       (filters.status === 'all' ||

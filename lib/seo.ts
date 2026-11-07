@@ -9,6 +9,7 @@ export const siteUrl = new URL(`${configuredUrl.origin}/`)
 export const canonicalUrl = (path: string) => new URL(path, siteUrl).href
 
 export const PUBLIC_PAGE_SEO = {
+  '/shop': { title: 'Shop Now | TRAUMA Custom Clothing', description: 'Shop available TRAUMA apparel, hats and one-of-one pieces. Original product photos, clear prices and direct PayPal checkout. Ships from Albany, Illinois.' },
   '/': { title: 'TRAUMA Custom Clothing | Custom Apparel & Reworked Denim', description: 'Explore TRAUMA custom apparel, reworked denim, one-of-one pieces and recovery-inspired digital products. Independent clothing from Albany, Illinois.' },
   '/collections': { title: 'Apparel & One-of-One Collections | TRAUMA Custom Clothing', description: 'Browse TRAUMA hoodies, graphic tees, reworked denim, hats and one-of-one clothing. View garment photos, sizing, stories and purchase options.' },
   '/collections/tiktok': { title: 'TikTok Collection | TRAUMA Custom Clothing', description: 'Discover the TRAUMA TikTok collection: statement hoodies, custom denim and graphic tees. Explore available pieces and confirm shipping before payment.' },

@@ -2,6 +2,8 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 const actions = [
+  ['📱', 'TRAUMA Merchant', '/admin/merchant'],
+  ['🛍', 'PayPal Product Catalog', '/admin/inventory#commerce-catalog'],
   ['🎬', 'TikTok Shop Prep', '/admin/tiktok-shop'],
   ['💵', 'Offer Guardrails', '/admin/offers'],
   ['📦', 'Quick Add Product', '/admin/quick-add'],

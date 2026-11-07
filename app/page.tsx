@@ -3,6 +3,7 @@ import { SiteHeader } from '@/components/site-header'
 import { Hero } from '@/components/hero'
 import { FounderStory } from '@/components/founder-story'
 import { FeaturedPieces } from '@/components/featured-pieces'
+import { ShopNow } from '@/components/shop-now'
 import { CustomInquiry } from '@/components/custom-inquiry'
 import { InsiderPlacement } from '@/components/insider-placement'
 import { DigitalShop } from '@/components/digital-shop'
@@ -23,6 +24,7 @@ export default function Page() {
       <main id="main-content">
         <Hero />
         <FounderStory />
+        <ShopNow inventory={inventory} />
         <FeaturedPieces inventory={inventory} />
         <InsiderPlacement placement="home" className="mx-auto max-w-7xl px-4 py-10 md:px-8" />
         <CustomInquiry

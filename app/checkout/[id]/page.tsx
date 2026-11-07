@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { StoreInfo } from '@/components/store-info'
 import { InsiderPlacement } from '@/components/insider-placement'
 import { insiderEligibleIds, insiderHref } from '@/lib/insider'
-import { galleryProducts, paypalDestination, productDestination } from '@/lib/inventory'
+import { galleryProducts, paypalDestination, paypalBuyNowDestination, productDestination } from '@/lib/inventory'
 import { inventory } from '@/lib/inventory-store'
 import { DELIVERY_TIMES, PROCESSING_TIME, SHIPPING_ORIGIN, shippingEstimate, usd } from '@/lib/shipping'
 
@@ -13,6 +13,8 @@ export default async function CheckoutPage({ params }: { params: Promise<{ id: s
   const { id } = await params
   const product = galleryProducts(inventory, 'apparel', '', 'available').find((item) => item.id === id)
   if (!product) notFound()
+  const buyNow = paypalBuyNowDestination(product)
+  if (buyNow) redirect(buyNow)
   const paypal = paypalDestination(product)
   if (!paypal) notFound()
   const marketplace = productDestination(product)

@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "commerce:export": "node --experimental-strip-types scripts/export-commerce.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "1.6.1",

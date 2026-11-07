@@ -1,5 +1,31 @@
 # TRAUMA inventory
 
+## Commerce master and publication exports
+
+`data/inventory.json` owns the product facts and channel references. One record contains `name`, `sku`, `physicalInventoryTag`, `price`, `stockQuantity`, `productUrl`, `paypalUrl`, and `tiktokShopStatus`. Optional PayPal Catalog Product IDs and TikTok product/category IDs stay on that record. Existing hosted payment-link tokens are not PayPal Catalog Product IDs.
+
+The existing product catalog is unchanged by this release. PMH-001 remains connected to its original record. Additional owner records require a private catalog storage decision before they are seeded; the current repository is public. An incomplete SKU record can be saved with publication disabled and cannot enter the storefront until required facts are completed. This does not make repository data confidential. Do not map an unknown SKU to a similarly named garment without owner confirmation.
+
+Edit the existing product in **Admin → PayPal Product Catalog**. Save the same record used by the storefront and TikTok Prep. The catalog exports current commerce CSV and TikTok preparation JSON. `pnpm commerce:export /absolute/output/directory` generates machine-readable snapshots directly from the saved JSON. New product SKUs are included automatically. Exports are derived views, not a second editable catalog. The requested Excel master is generated from this same export; it is not a live connector or a TikTok upload template.
+
+TikTok publication metadata includes the seller SKU, existing TikTok product ID, selected leaf category, original photo URLs, size, condition, price, quantity, and measured packed weight and dimensions. The preparation check requires actual photo review and a Seller Center SKU lookup to prevent duplicate listings. If an existing TikTok ID is recorded, the export directs the operator to review that listing instead of making another. The generated JSON is preparation data only. For bulk import, map it into the current official Seller Center Excel template for each leaf category without changing that template's layout. Category attributes, warehouse and identifier/brand permissions must still be completed in Seller Center. Nothing auto-posts.
+
+Saving the catalog updates website data after a successful deployment and regenerates future exports. It does **not** change an existing hosted PayPal link's title, price or stock, and it does not change a TikTok listing. Full external synchronization requires separately authorized APIs, stored external IDs, verified order/payment events, a durable order ledger and stock reservation. PayPal Orders API checkout can read current catalog prices without maintaining a PayPal Catalog Product per garment. Credentials must remain server-side; never put customer/order personal data or tokens in this public repository.
+
+## PayPal primary checkout and Shop Now
+
+`/shop` and the homepage Shop Now shelf use the same saved inventory as the product pages. Published, owner-confirmed ready-made apparel with a positive price and stock, original photos, approved description, SKU, physical tag, and product-specific PayPal `/ncp/payment/` URL gets a BUY NOW button automatically. Sold items disappear from Shop Now. Existing checkout-page links for these items redirect to their saved PayPal checkout. Generic PayPal.me links never qualify as a product checkout.
+
+Use **Admin → PayPal Product Catalog** to edit SKU, physical tag (preserving leading zeroes), quantity and PayPal URL on the existing product record. The catalog includes the owner-named launch queue PMH-001, RTS-001 and ANX-001; missing connections do not create products or public placeholder cards. Each SKU, physical tag and product checkout URL must identify one inventory record. Save once, wait for the repository deployment, and check Shop Now. Photos and descriptions stay on the original record. Books and digital products retain Payhip checkout; custom orders retain quotes.
+
+### Next automation step: PayPal Orders
+
+Current checkout remains hosted-link based. A future shared PayPal JavaScript checkout UI and server-side Orders v2 create/capture endpoints can generate an order from an approved inventory record without creating a PayPal Catalog Product or hosted link for every garment. Send a product ID and quantity from the browser; calculate prices, stock, shipping and any applicable tax on the server from trusted data. Keep the merchant client secret server-side.
+
+Before enabling this payment integration, configure business-account application credentials, sandbox tests, durable order/capture records and idempotency, verified payment webhooks, and atomic stock reservation for one-of-one items. GitHub JSON and a deployment alone are not a live inventory lock or an order ledger. Shipping currently requires a carrier quote; automated checkout needs a configured pricing rule or rate integration. Do not silently treat a missing shipping quote as free shipping. Keep existing hosted links usable during migration.
+
+Primary references: https://developer.paypal.com/api/rest/integration/orders-api and https://developer.paypal.com/studio/checkout/standard/integrate
+
 For the current phone-first workflow, use [Admin quick start](admin-quick-start.md). Earlier sections retain implementation history; code deployment and product publication are separate. Products stay private until you explicitly approve publishing them.
 
 ## Store rules
