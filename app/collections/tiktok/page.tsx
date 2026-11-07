@@ -15,7 +15,7 @@ const picks = showcase.productIds
 
 export default function TikTokCollectionPage() {
   const available = galleryProducts(inventory, 'apparel', '', 'available').filter(
-    (product) => product.photos.length && product.price !== null && productDestination(product),
+    (product) => product.photos.length && product.price !== null && (productDestination(product) || paypalBuyNowDestination(product)),
   )
   const byId = new Map(available.map((product) => [product.id, product]))
   const selected = picks.flatMap((id) => {

@@ -1,5 +1,6 @@
 import { publicPageMetadata } from '@/lib/seo'
 import { SiteHeader } from '@/components/site-header'
+import { LiveLaunchCollection } from '@/components/live-launch-collection'
 import { Hero } from '@/components/hero'
 import { FounderStory } from '@/components/founder-story'
 import { FeaturedPieces } from '@/components/featured-pieces'
@@ -23,6 +24,7 @@ export default function Page() {
       <main id="main-content">
         <a href="/collections/tiktok" className="block bg-primary px-4 py-4 text-center font-bold text-primary-foreground hover:bg-accent">Shop the Live Showcase →</a>
         <Hero />
+        <LiveLaunchCollection inventory={inventory} />
         <FounderStory />
         <FeaturedPieces inventory={inventory} />
         <InsiderPlacement placement="home" className="mx-auto max-w-7xl px-4 py-10 md:px-8" />
