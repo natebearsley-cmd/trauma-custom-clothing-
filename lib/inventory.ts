@@ -114,7 +114,10 @@ export function paypalDestination(product: Product): string | null {
 }
 
 export function paypalBuyNowDestination(product: Product): string | null {
-  if (product.id !== 'pain-made-me-rose-trucker' || product.stockQuantity === 0) return null
+  const isExistingHat = product.id === 'pain-made-me-rose-trucker'
+  const isConfirmedPinkHat = product.sku === 'RTS-001' &&
+    product.physicalInventoryTag === '0465' && product.stockQuantity === 1
+  if ((!isExistingHat && !isConfirmedPinkHat) || product.stockQuantity === 0) return null
   const destination = paypalDestination(product)
   if (!destination) return null
   const url = new URL(destination)
