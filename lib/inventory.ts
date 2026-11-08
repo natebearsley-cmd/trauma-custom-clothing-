@@ -114,7 +114,7 @@ export function paypalDestination(product: Product): string | null {
 }
 
 export function paypalBuyNowDestination(product: Product): string | null {
-  if (!['PMH-001', 'RTS-001', 'ANX-001'].includes(product.sku ?? '') || product.stockQuantity === 0) return null
+  if (!product.published || !product.ownerConfirmed || product.stockQuantity === 0) return null
   const destination = paypalDestination(product)
   if (!destination) return null
   const url = new URL(destination)

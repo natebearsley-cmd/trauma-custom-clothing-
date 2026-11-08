@@ -22,7 +22,7 @@ export default function Page() {
       <StructuredData />
       <SiteHeader />
       <main id="main-content">
-        <a href="/collections/tiktok" className="block bg-primary px-4 py-4 text-center font-bold text-primary-foreground hover:bg-accent">Shop the Live Showcase →</a>
+        <a href="/collections/live-launch" className="block bg-primary px-4 py-4 text-center font-bold text-primary-foreground hover:bg-accent">Shop the Live Launch Collection →</a>
         <Hero />
         <LiveLaunchCollection inventory={inventory} />
         <FounderStory />

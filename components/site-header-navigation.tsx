@@ -7,7 +7,7 @@ import { InsiderQr } from '@/components/insider-qr'
 import { insiderHref } from '@/lib/insider'
 
 const NAV = [
-  { label: 'Live Showcase', href: '/collections/tiktok', external: false },
+  { label: 'Live Launch', href: '/collections/live-launch', external: false },
   { label: 'Story', href: '/#story', external: false },
   { label: 'Collections', href: '/#drops', external: false },
   { label: 'Apparel', href: '/collections?category=apparel&availability=available', external: false },
