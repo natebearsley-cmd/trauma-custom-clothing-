@@ -1,14 +1,15 @@
 import type { Product } from './inventory.ts'
 import { isCustomApparel } from './inventory.ts'
 import { STORE_NAME, canonicalUrl, productMetaDescription } from './seo.ts'
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from './brand.ts'
 
 export function organizationStructuredData() {
   return {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Organization', '@id': canonicalUrl('/#organization'), name: STORE_NAME, alternateName: 'TRAUMA CC', url: canonicalUrl('/'), description: 'Independent custom clothing, reworked denim and recovery-inspired products from Nathanial Bearsley.', email: 'traumacustomclothingofficial@gmail.com', address: { '@type': 'PostalAddress', addressLocality: 'Albany', addressRegion: 'IL', postalCode: '61230', addressCountry: 'US' }, founder: { '@id': canonicalUrl('/#founder') }, sameAs: ['https://payhip.com/Thereversal1', 'https://www.depop.com/traumacc/', 'https://www.tiktok.com/@nateb19841'] },
+      { '@type': 'Organization', '@id': canonicalUrl('/#organization'), name: STORE_NAME, alternateName: ['TRAUMA CC', 'TCC'], url: canonicalUrl('/'), description: BRAND_DESCRIPTION, slogan: BRAND_TAGLINE, email: 'traumacustomclothingofficial@gmail.com', address: { '@type': 'PostalAddress', addressLocality: 'Albany', addressRegion: 'IL', postalCode: '61230', addressCountry: 'US' }, founder: { '@id': canonicalUrl('/#founder') }, sameAs: ['https://payhip.com/Thereversal1', 'https://www.depop.com/traumacc/', 'https://www.tiktok.com/@nateb19841'] },
       { '@type': 'Person', '@id': canonicalUrl('/#founder'), name: 'Nathanial Bearsley', jobTitle: ['Founder', 'Author', 'Recovery Coach', 'Entrepreneur'] },
-      { '@type': 'WebSite', '@id': canonicalUrl('/#website'), name: STORE_NAME, alternateName: 'TRAUMA CC', url: canonicalUrl('/'), publisher: { '@id': canonicalUrl('/#organization') } },
+      { '@type': 'WebSite', '@id': canonicalUrl('/#website'), name: STORE_NAME, alternateName: ['TRAUMA CC', 'TCC'], description: BRAND_DESCRIPTION, url: canonicalUrl('/'), publisher: { '@id': canonicalUrl('/#organization') } },
     ],
   }
 }

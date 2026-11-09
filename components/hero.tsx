@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { ArrowDown } from 'lucide-react'
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from '@/lib/brand'
 
 export function Hero() {
   return (
@@ -31,6 +32,11 @@ export function Hero() {
           <span className="block">Never Broke.</span>
           <span className="block text-accent">Just Bent.</span>
         </h1>
+
+        <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-foreground/90 sm:text-lg">
+          {BRAND_DESCRIPTION}
+        </p>
+        <p className="mt-3 text-lg font-semibold text-accent">{BRAND_TAGLINE}</p>
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <a href="/collections" className="inline-flex min-h-12 items-center justify-center bg-primary px-8 py-4 text-sm font-bold uppercase tracking-[0.2em] text-primary-foreground transition-colors hover:bg-accent">

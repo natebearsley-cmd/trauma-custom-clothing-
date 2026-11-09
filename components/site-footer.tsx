@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react'
 import { InsiderPlacement } from '@/components/insider-placement'
 import { DEPOP_SHOP_HANDLE, DEPOP_SHOP_URL, TIKTOK_URL, PAYHIP_SHOP_URL } from '@/lib/site'
+import { BRAND_DESCRIPTION, BRAND_TAGLINE } from '@/lib/brand'
 
 export function SiteFooter() {
   return (
@@ -9,6 +10,10 @@ export function SiteFooter() {
         <p className="font-display text-5xl uppercase leading-none text-foreground/10 sm:text-8xl md:text-9xl">
           Still Breathing
         </p>
+        <div className="max-w-2xl">
+          <p className="text-sm leading-relaxed text-muted-foreground">{BRAND_DESCRIPTION}</p>
+          <p className="mt-3 font-semibold">{BRAND_TAGLINE}</p>
+        </div>
         <InsiderPlacement placement="footer" compact />
         <h2 className="section-title">Contact</h2>
         <div className="flex flex-col gap-6 border-t border-border pt-8 md:flex-row md:items-center md:justify-between">

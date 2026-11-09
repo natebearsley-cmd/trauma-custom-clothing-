@@ -16,7 +16,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const product = products.find((item) => item.id === id)
   if (!product) return { title: 'Piece unavailable | TRAUMA', robots: { index: false, follow: false } }
   const description = productMetaDescription(product)
-  return { title: `${product.name} | TRAUMA Custom Clothing`, description, openGraph: { title: product.name, description, images: product.photos.slice(0, 1), url: `/products/${product.id}` }, twitter: { card: 'summary_large_image', title: product.name, description, images: product.photos.slice(0, 1) }, alternates: { canonical: `/products/${product.id}` } }
+  const title = `${product.name} | TRAUMA Custom Clothing`
+  return { title, description, openGraph: { title, description, images: product.photos.slice(0, 1), url: `/products/${product.id}` }, twitter: { card: 'summary_large_image', title, description, images: product.photos.slice(0, 1) }, alternates: { canonical: `/products/${product.id}` } }
 }
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

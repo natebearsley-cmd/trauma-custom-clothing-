@@ -25,19 +25,17 @@ export const metadata: Metadata = {
   applicationName: STORE_NAME,
   twitter: {
     card: 'summary_large_image',
-    title: 'TRAUMA CC | Trauma Custom Clothing',
-    description:
-      'Original garments and pieces from Nathanial Bearsley’s own inventory.',
+    title: PUBLIC_PAGE_SEO['/'].title,
+    description: PUBLIC_PAGE_SEO['/'].description,
     images: ['/images/hero.png'],
   },
   openGraph: {
     type: 'website',
     url: '/',
-    siteName: 'TRAUMA CC',
+    siteName: STORE_NAME,
     locale: 'en_US',
-    title: 'TRAUMA CC | Built From Trauma. Never Broke Just Bent.',
-    description:
-      'Streetwear forged through survival. 1-of-1 cuts and limited garments.',
+    title: PUBLIC_PAGE_SEO['/'].title,
+    description: PUBLIC_PAGE_SEO['/'].description,
     images: ['/images/hero.png'],
   },
   icons: {
