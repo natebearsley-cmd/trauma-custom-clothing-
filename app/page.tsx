@@ -22,7 +22,16 @@ export default function Page() {
       <StructuredData />
       <SiteHeader />
       <main id="main-content">
-        <a href="/collections/live-launch" className="block bg-primary px-4 py-4 text-center font-bold text-primary-foreground hover:bg-accent">Shop the Live Launch Collection →</a>
+        <div className="border-b border-border">
+          <div className="mx-auto grid max-w-7xl grid-cols-2">
+            <a href="/custom-orders" className="flex min-h-14 items-center justify-center gap-1 bg-primary px-2 py-3 text-center text-sm font-bold text-primary-foreground transition-colors hover:bg-accent focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-foreground sm:px-4">
+              Get a Custom Quote <span aria-hidden="true">→</span>
+            </a>
+            <a href="/collections/live-launch" className="flex min-h-14 items-center justify-center gap-1 bg-background px-2 py-3 text-center text-sm font-semibold text-foreground transition-colors hover:text-accent focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-foreground sm:px-4">
+              Shop the Live Launch Collection <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </div>
         <Hero />
         <LiveLaunchCollection inventory={inventory} />
         <FounderStory />
